@@ -1,4 +1,4 @@
-package misc;
+package misc.name;
 
 /**
  * ...
@@ -9,7 +9,7 @@ class LayerName
 
 	public static var back : String  = "backLayer";
 	public static var screens : String  = "screensLayer";
-	public static var ath : String  = "athLayer"
+	public static var ath : String  = "athLayer";
 	public static var popup : String = "popupLayer";
 	public static var front : String = "frontLayer";
 	public static var debug : String = "debugLayer";
@@ -19,6 +19,6 @@ class LayerName
 															LayerName.ath, 
 															LayerName.popup, 
 															LayerName.front, 
-															LayerName.debug ]
+															LayerName.debug ];
 	
 }

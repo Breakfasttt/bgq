@@ -3,27 +3,27 @@
 	<!-- NMML reference: https://gist.github.com/1763850 -->
 	
 	<!-- metadata, make sure 'package' is at least 3 segments (ie. com.mycompany.myproject) -->
-	<meta title="PGK" package="fr.pachygames.PGK" version="1.0.0" company="Pachygames" />
+	<meta title="BGQ" package="fr.pachygames.BGQ" version="1.0.0" company="Pachygames" />
 	
 	<!-- output -->
 	<app main="Main" file="PGK" path="bin" />
 	
 	<section if="flash">
 		<window background="#00000F" fps="60" />
-		<window width="1280" height="720" />
+		<window width="1920" height="1080" />
 		<window resizable="true" orientation="landscape" vsync="false" antialiasing="0" />
 	</section>
 	
 	<section if="desktop">
 		<window background="#00122F" fps="60" />
-		<window width="1280" height="720" />
+		<window width="1920" height="1080" />
 		<window resizable="true" orientation="landscape" vsync="false" antialiasing="0" />
 	</section>
 	
 	
 	<section if="mobile">
 		<window background="#000888" fps="60" />
-		<window width="1280" height="720" />
+		<window width="1920" height="1080" />
 		<window resizable="false" orientation="auto" vsync="false" antialiasing="0" />
 	</section>
 	

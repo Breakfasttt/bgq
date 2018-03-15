@@ -1,3 +1,10 @@
 [
-
+	{
+		"name":"mainMenuBg",
+		"mainResourcePath":"img/mainMenuBg.png"
+	},
+	{
+		"name":"genericBtn",
+		"mainResourcePath":"model/btn/generic.tl"
+	}
 ]

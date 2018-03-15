@@ -1,11 +1,16 @@
 package src;
+import assets.model.library.ModelFactory;
 import assets.model.library.ModelLibrary;
 import core.Application;
 import core.entity.Entity;
-import misc.LayerName;
+import misc.name.LayerName;
+import misc.name.ScreenName;
 import openfl.Lib;
+import screen.ScreenFactory;
 import standard.components.graphic.display.impl.Layer;
 import standard.components.space2d.UtilitySize2D;
+import standard.components.space2d.resizer.Resizer;
+import standard.components.space2d.resizer.impl.RatioResizer;
 import standard.factory.EntityFactory;
 import standard.module.debug.DebugModule;
 import standard.module.graphic.AnimRenderModule;
@@ -15,6 +20,7 @@ import standard.module.graphic.LocationModule;
 import standard.module.graphic.PopUpModule;
 import standard.module.graphic.ScreenModule;
 import standard.module.input.PointerBehavioursModule;
+import tools.math.Anchor;
 import tools.time.FrameTicker;
 
 /**
@@ -24,6 +30,8 @@ import tools.time.FrameTicker;
 class BGQApp 
 {
 
+	
+	public static var self : BGQApp;
 	
 	//base
 	public var app(default, null) : Application;
@@ -52,18 +60,24 @@ class BGQApp
 	
 	//debug
 	
-	public var debugModule : DebugModule;
+	public var debugModule(default, null) : DebugModule;
 	
+	//Screen 
+	
+	public var screenFactory(default, null) : ScreenFactory;
 	
 	
 	public function new() 
 	{
+		BGQApp.self = this;
+		
 		this.app = new Application();
-		this.app.init("Application test", 1280, 720);
+		this.app.init("Application test", 1920, 1080);
 		
 		loadModel();
 		createLayer();
 		prepareGameModule();
+		prepareScreen();
 	}
 	
 	
@@ -76,13 +90,13 @@ class BGQApp
 	
 	private function createLayer() : Void
 	{
-		
 		this.layerModule = new LayerModule(Lib.current.stage);
 		this.app.addModule(this.layerModule, 0);
 		
 		for (i in 0...LayerName.ordonedLayerNames.length)
 		{
-			var layerEntity : Entity = this.entityFactory.createLayer(LayerName.ordonedLayerNames[i], i , this.app.width, this.app.height);
+			var layerEntity : Entity = this.entityFactory.createLayer(LayerName.ordonedLayerNames[i], i , this.app.width, this.app.height, Anchor.center, Anchor.center);
+			layerEntity.add(new RatioResizer());
 			this.app.addEntity(layerEntity);
 		}
 	}	
@@ -90,8 +104,10 @@ class BGQApp
 	private function prepareGameModule() : Void
 	{
 		this.screenModule = new ScreenModule(this.layerModule.getLayer(LayerName.screens));
-		var popupLayer : Layer = this.layerModule.getLayer(LayerName.popup);
-		this.popupModule = new PopUpModule(popupLayer, popupLayer.getComponent(UtilitySize2D));	
+		
+		var popupLayerEntity : Entity = this.app.getEntity(LayerName.popup);
+		this.popupModule = new PopUpModule(popupLayerEntity.getComponent(Layer), popupLayerEntity.getComponent(UtilitySize2D));	
+		
 		this.geModule = new GameElementModule();
 		this.animRenderModule = new AnimRenderModule();
 		this.locationModule = new LocationModule(Lib.current.stage);
@@ -111,7 +127,13 @@ class BGQApp
 			
 	}
 	
-
-	
+	private function prepareScreen() : Void
+	{
+		this.screenFactory = new ScreenFactory(this.app, this.entityFactory);
+		this.screenFactory.init();
+		
+		this.screenModule.goToScreen(ScreenName.mainMenu);
+		
+	}
 	
 }
