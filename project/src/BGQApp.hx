@@ -7,6 +7,7 @@ import misc.name.LayerName;
 import misc.name.ScreenName;
 import openfl.Lib;
 import screen.ScreenFactory;
+import src.misc.name.FontName;
 import standard.components.graphic.display.impl.Layer;
 import standard.components.space2d.UtilitySize2D;
 import standard.components.space2d.resizer.Resizer;
@@ -70,6 +71,8 @@ class BGQApp
 	public function new() 
 	{
 		BGQApp.self = this;
+		
+		FontName.init();
 		
 		this.app = new Application();
 		this.app.init("Application test", 1920, 1080);
