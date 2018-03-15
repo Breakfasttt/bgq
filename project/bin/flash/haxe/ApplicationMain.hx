@@ -24,7 +24,7 @@ import haxe.macro.Expr;
 		
 		var config = {
 			
-			build: "6",
+			build: "7",
 			company: "Pachygames",
 			file: "PGK",
 			fps: 60,
