@@ -70,6 +70,19 @@ class MainMenu extends ScreenContainer
 		this.add(m_title);
 	}
 	
+	private function createTitle() : Void
+	{
+		m_title = m_entityFactoryRef.createTextField("mainMenu::title", this.entity, "Bubble World : Une aventure galactique (nom temporaire)", 99,
+													new Anchor(0.5, 0.05), Anchor.center);
+													
+		var textdisplay : TextDisplay =  m_title.getComponent(TextDisplay);
+		textdisplay.setFont(FontName.scienceFair);
+		textdisplay.setTextColor(0x846248);
+		textdisplay.setAlignment(TextFormatAlign.CENTER);
+		textdisplay.setFontSize(50);
+		textdisplay.setSize(m_appRef.width, 60);
+		textdisplay.setMiscProperties(false, false, false, false, false, false);
+	}
 	
 	private function onPlayBtn() : Void
 	{
@@ -86,18 +99,5 @@ class MainMenu extends ScreenContainer
 		
 	}
 	
-	private function createTitle() : Void
-	{
-		m_title = m_entityFactoryRef.createTextField("mainMenu::title", this.entity, "Bubble World : Une aventure galactique (nom temporaire)", 99,
-													new Anchor(0.5, 0.05), Anchor.center);
-													
-		var textdisplay : TextDisplay =  m_title.getComponent(TextDisplay);
-		textdisplay.setFont(FontName.scienceFair);
-		textdisplay.setTextColor(0x846248);
-		textdisplay.setAlignment(TextFormatAlign.CENTER);
-		textdisplay.setFontSize(50);
-		textdisplay.setSize(m_appRef.width, 60);
-		textdisplay.setMiscProperties(false, false, false, false, false, false);
-	}
 	
 }

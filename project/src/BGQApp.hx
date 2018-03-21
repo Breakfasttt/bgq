@@ -3,6 +3,8 @@ import assets.model.library.ModelFactory;
 import assets.model.library.ModelLibrary;
 import core.Application;
 import core.entity.Entity;
+import data.randomizer.NamePicker;
+import data.randomizer.NameRandomizer;
 import misc.name.LayerName;
 import misc.name.ScreenName;
 import openfl.Lib;
@@ -67,6 +69,11 @@ class BGQApp
 	
 	public var screenFactory(default, null) : ScreenFactory;
 	
+	//randomize 
+	
+	public var namePicker(default, null) : NamePicker;
+	//public var nameRandomize(default, null) : NameRandomizer;
+	
 	
 	public function new() 
 	{
@@ -76,6 +83,8 @@ class BGQApp
 		
 		this.app = new Application();
 		this.app.init("Application test", 1920, 1080);
+		
+		this.namePicker = new NamePicker("datas/name.txt", "datas/firstname.txt");
 		
 		loadModel();
 		createLayer();
