@@ -2,6 +2,7 @@ package screen.menu;
 
 import core.Application;
 import core.entity.Entity;
+import data.crew.CrewMember;
 import misc.name.ScreenName;
 import openfl.text.TextFormatAlign;
 import src.BGQApp;
@@ -86,7 +87,14 @@ class MainMenu extends ScreenContainer
 	
 	private function onPlayBtn() : Void
 	{
+		var exemple : Array<CrewMember> = [];
 		
+		for (i in 0...10)
+			exemple.push(BGQApp.self.crewMemberPicker.generate());
+		
+		for (m in exemple)
+			trace(m.toString());
+			
 	}
 	
 	private function onOptionsBtn() : Void
