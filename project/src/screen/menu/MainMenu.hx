@@ -22,8 +22,6 @@ import tools.math.Anchor;
 class MainMenu extends ScreenContainer 
 {
 	
-	private var m_bg : Entity;
-	
 	private var m_title : Entity;
 	
 	private var m_playBtn : TextButton;
@@ -40,13 +38,13 @@ class MainMenu extends ScreenContainer
 	override function configure():Void 
 	{
 		super.configure();
+		
+	
 		//nothing special
 	}
 	
 	override function createElement():Void 
 	{
-		m_bg = this.m_entityFactoryRef.createGameElement("mainMenu::Bg", this.entity, "mainMenuBg", 0, Anchor.topLeft, Anchor.topLeft);
-		
 		m_playBtn = new TextButton("mainMenu::playBtn", this.m_appRef, this.m_entityFactoryRef);
 		m_playBtn.init("Jouer", "genericBtn", 1 , new Anchor(0.5, 0.3), Anchor.center, onPlayBtn);
 		m_playBtn.textDisplay.setFont(FontName.scienceFair);
@@ -64,7 +62,6 @@ class MainMenu extends ScreenContainer
 		
 		createTitle();
 		
-		this.add(m_bg);
 		this.add(m_playBtn.entity);
 		this.add(m_optionsBtn.entity);
 		this.add(m_creditsBtn.entity);
@@ -87,14 +84,7 @@ class MainMenu extends ScreenContainer
 	
 	private function onPlayBtn() : Void
 	{
-		var exemple : Array<CrewMember> = [];
-		
-		for (i in 0...10)
-			exemple.push(BGQApp.self.crewMemberPicker.generate());
-		
-		for (m in exemple)
-			trace(m.toString());
-			
+		BGQApp.self.screenModule.goToScreen(ScreenName.crewSelection);
 	}
 	
 	private function onOptionsBtn() : Void

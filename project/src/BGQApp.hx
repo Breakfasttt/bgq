@@ -3,6 +3,7 @@ import assets.model.library.ModelFactory;
 import assets.model.library.ModelLibrary;
 import core.Application;
 import core.entity.Entity;
+import data.DataManager;
 import data.randomizer.CrewMemberPicker;
 import data.randomizer.NamePicker;
 import data.randomizer.NameRandomizer;
@@ -70,12 +71,9 @@ class BGQApp
 	
 	public var screenFactory(default, null) : ScreenFactory;
 	
-	//randomize 
+	//data
 	
-	public var crewMemberPicker : CrewMemberPicker;
-	
-	//public var namePicker(default, null) : NamePicker;
-	//public var nameRandomize(default, null) : NameRandomizer;
+	public var datas(default, null) : DataManager;
 	
 	
 	public function new() 
@@ -87,7 +85,7 @@ class BGQApp
 		this.app = new Application();
 		this.app.init("Application test", 1920, 1080);
 		
-		this.crewMemberPicker = new CrewMemberPicker("datas/name.txt", "datas/firstname.txt");
+		this.datas = new DataManager();
 		
 		loadModel();
 		createLayer();

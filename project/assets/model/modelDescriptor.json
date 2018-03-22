@@ -6,5 +6,9 @@
 	{
 		"name":"genericBtn",
 		"mainResourcePath":"model/btn/generic.tl"
+	},
+	{
+		"name":"crewfile",
+		"mainResourcePath":"img/crewSelection/crewfile.png"
 	}
 ]
