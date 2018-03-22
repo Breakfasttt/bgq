@@ -3,13 +3,16 @@ package screen.crewSelection;
 import core.Application;
 import core.entity.Entity;
 import data.crew.CrewMember;
+import input.behaviour.SlideEntity;
 import openfl.text.TextFormatAlign;
 import src.misc.name.FontName;
 import standard.components.graphic.display.impl.GameElementDisplay;
 import standard.components.graphic.display.impl.TextDisplay;
+import standard.components.input.PointerBehavioursComponent;
 import standard.components.misc.ParentEntity;
 import standard.components.space2d.Depth;
 import standard.factory.EntityFactory;
+import standard.module.graphic.LocationModule;
 import standard.utils.uicontainer.UiContainer;
 import tools.math.Anchor;
 
@@ -20,6 +23,8 @@ import tools.math.Anchor;
 class CrewFileUi extends UiContainer 
 {
 
+	private var m_pointerBehaviours : PointerBehavioursComponent;
+	
 	private var m_bg : Entity;
 	
 	private var m_icon : Entity;
@@ -45,6 +50,13 @@ class CrewFileUi extends UiContainer
 		this.entity.add(this.display);
 		this.entity.add(new ParentEntity(parentEntity));
 		this.entity.add(new Depth(depth));
+		
+		m_pointerBehaviours = new PointerBehavioursComponent();
+		m_pointerBehaviours.addBehaviour(new SlideEntity(m_appRef.modManager.getModule(LocationModule)), 0);
+		
+		this.entity.add(m_pointerBehaviours);
+		
+		
 		/*this.utilitySize.autoUtilitySize = false;
 		this.utilitySize.width = 800;
 		this.utilitySize.height = 600;*/

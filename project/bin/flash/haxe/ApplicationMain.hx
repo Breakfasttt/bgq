@@ -20,13 +20,13 @@ import haxe.macro.Expr;
 	
 	public static function main () {
 		
-		var projectName = "PGK";
+		var projectName = "BGQ";
 		
 		var config = {
 			
-			build: "11",
+			build: "12",
 			company: "Pachygames",
-			file: "PGK",
+			file: "BGQ",
 			fps: 60,
 			name: "BGQ",
 			orientation: "landscape",
@@ -38,7 +38,7 @@ import haxe.macro.Expr;
 					allowHighDPI: true,
 					alwaysOnTop: false,
 					antialiasing: 0,
-					background: 15,
+					background: 15728655,
 					borderless: false,
 					colorDepth: 16,
 					depthBuffer: false,

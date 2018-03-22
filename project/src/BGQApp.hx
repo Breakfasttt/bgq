@@ -136,6 +136,7 @@ class BGQApp
 		#if debug
 		this.debugModule = new DebugModule();
 		this.app.addModule(this.debugModule);
+		//this.locationModule.debugShowLocGroupRect();
 		#end
 			
 	}

@@ -23,6 +23,6 @@
 -cp bin/flash
 -swf-lib obj/assets.swf
 -swf-version 17
--swf bin/flash/bin/PGK.swf
+-swf bin/flash/bin/BGQ.swf
 -cp bin/flash/haxe
 -debug

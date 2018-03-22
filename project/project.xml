@@ -6,10 +6,10 @@
 	<meta title="BGQ" package="fr.pachygames.BGQ" version="1.0.0" company="Pachygames" />
 	
 	<!-- output -->
-	<app main="Main" file="PGK" path="bin" />
+	<app main="Main" file="BGQ" path="bin" />
 	
 	<section if="flash">
-		<window background="#00000F" fps="60" />
+		<window background="#f0000F" fps="60" />
 		<window width="1920" height="1080" />
 		<window resizable="true" orientation="landscape" vsync="false" antialiasing="0" />
 	</section>
@@ -26,9 +26,6 @@
 		<window width="1920" height="1080" />
 		<window resizable="false" orientation="auto" vsync="false" antialiasing="0" />
 	</section>
-	
-	
-	
 	
 	
 	<!-- classpath, haxe libs -->

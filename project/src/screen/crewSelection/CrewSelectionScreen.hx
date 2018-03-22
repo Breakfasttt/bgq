@@ -65,7 +65,9 @@ class CrewSelectionScreen extends ScreenContainer
 		m_crewBtn.textDisplay.setTextColor(0x846248);
 		
 		m_crewFile = new CrewFileUi("CrewSelectionScreen::crewFile", this.m_appRef, this.m_entityFactoryRef, this.entity, 3);
-		m_crewFile.position.position2d = new Anchor(0.5,0.7);
+		m_crewFile.position.position2d.ratioMode = false;
+		m_crewFile.position.position2d.anchor.x = this.utilitySize.width / 2.0;
+		m_crewFile.position.position2d.anchor.y = this.utilitySize.height * 0.80;
 		m_crewFile.pivot.pivot = Anchor.botCenter;
 		
 		
