@@ -42,6 +42,9 @@ class CrewFileUi extends UiContainer
 	
 	private var m_dnaTf: Entity;
 	
+	public var slider(default,null) : SlideEntity;
+
+	
 	public function new(name:String, appRef:Application, entityFactory:EntityFactory, parentEntity : Entity, depth : Float) 
 	{
 		super(name, appRef, entityFactory);
@@ -52,14 +55,10 @@ class CrewFileUi extends UiContainer
 		this.entity.add(new Depth(depth));
 		
 		m_pointerBehaviours = new PointerBehavioursComponent();
-		m_pointerBehaviours.addBehaviour(new SlideEntity(m_appRef.modManager.getModule(LocationModule)), 0);
+		this.slider = new SlideEntity(m_appRef, 550);
+		m_pointerBehaviours.addBehaviour(this.slider, 0);
 		
 		this.entity.add(m_pointerBehaviours);
-		
-		
-		/*this.utilitySize.autoUtilitySize = false;
-		this.utilitySize.width = 800;
-		this.utilitySize.height = 600;*/
 		
 		createElement();
 	}
