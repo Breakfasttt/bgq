@@ -64,7 +64,7 @@ class CrewSelectionScreen extends ScreenContainer
 		textdisplay.setMiscProperties(false, false, false, false, false, false);
 		
 		m_backBtn = new TextButton("CrewSelectionScreen::backButton", this.m_appRef, this.m_entityFactoryRef);
-		m_backBtn.init("Retour", "genericBtn", 1 , new Anchor(0.01, 0.01), Anchor.topLeft, onBackButton, null, null, 0.8,0.8);
+		m_backBtn.init("Retour", "genericBtn", 1 , new Anchor(0.0, 0.0,true), Anchor.topLeft, onBackButton, null, null, 0.75,0.75);
 		m_backBtn.textDisplay.setFont(FontName.scienceFair);
 		m_backBtn.textDisplay.setTextColor(0x846248);
 		m_backBtn.textDisplay.setFontSize(50);
