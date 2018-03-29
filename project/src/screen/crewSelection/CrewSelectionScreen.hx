@@ -2,6 +2,8 @@ package screen.crewSelection;
 
 import core.Application;
 import core.entity.Entity;
+import data.crew.CrewMember;
+import misc.mover.SimpleEntityMover;
 import misc.name.ScreenName;
 import openfl.text.TextFormatAlign;
 import src.BGQApp;
@@ -31,9 +33,14 @@ class CrewSelectionScreen extends ScreenContainer
 	
 	private var m_crewFile : CrewFileUi;
 	
+	private var m_currentCrewToHire : CrewMember;
+	
+	private var m_mover : SimpleEntityMover;
+	
 	public function new(appRef:Application, entityFactory:EntityFactory) 
 	{
 		super(ScreenName.crewSelection, appRef, entityFactory);	
+		m_mover = new SimpleEntityMover(m_appRef.tick);
 	}
 	
 	override function configure():Void 
@@ -79,7 +86,7 @@ class CrewSelectionScreen extends ScreenContainer
 		m_slideTextDisplay.skin.alpha = 0.0;
 		
 		
-		m_crewFile = new CrewFileUi("CrewSelectionScreen::crewFile", this.m_appRef, this.m_entityFactoryRef, this.entity, 3);
+		m_crewFile = new CrewFileUi("CrewSelectionScreen::crewFile", this.m_appRef, this.m_entityFactoryRef, this.entity, 3, 650, -this.utilitySize.width / 2.0, this.utilitySize.width*1.5);
 		m_crewFile.position.position2d.ratioMode = false;
 		m_crewFile.position.position2d.anchor.x = this.utilitySize.width / 2.0;
 		m_crewFile.position.position2d.anchor.y = this.utilitySize.height * 0.80;
@@ -87,6 +94,8 @@ class CrewSelectionScreen extends ScreenContainer
 		m_crewFile.slider.onSlideCallback = onFileSlide;
 		m_crewFile.slider.onSlideStartCallback = onFileSlide;
 		m_crewFile.slider.onSlideBackCallback = onFileSlide;
+		m_crewFile.slider.onSlideConfirm = onSlideConfirm;
+		m_crewFile.slider.onSlideStartConfirmAnimCallback = onSlideStartConfirm;
 		
 		this.add(m_infos);
 		this.add(m_backBtn.entity);
@@ -99,7 +108,8 @@ class CrewSelectionScreen extends ScreenContainer
 	
 	private function onOpen() : Void
 	{
-		m_crewFile.setCrewData(BGQApp.self.datas.crewManager.getGeneratedCrewMember());
+		m_currentCrewToHire = BGQApp.self.datas.crewManager.getGeneratedCrewMember();
+		m_crewFile.setCrewData(m_currentCrewToHire);
 	}
 	
 	private function onBackButton() : Void
@@ -115,7 +125,7 @@ class CrewSelectionScreen extends ScreenContainer
 	private function onFileSlide() : Void
 	{
 		if (m_crewFile.slider.slideSens < 0.0)
-			m_slideTextDisplay.text.text = "Merci pour cette entretien, on vous rappelera...";
+			m_slideTextDisplay.text.text = "Merci pour cet entretien, on vous rappellera...";
 		else if(m_crewFile.slider.slideSens > 0.0)
 			m_slideTextDisplay.text.text = "On vous engage ! Bienvenue au BSE.";
 		else
@@ -124,9 +134,51 @@ class CrewSelectionScreen extends ScreenContainer
 		
 		m_slideTextDisplay.skin.alpha = m_crewFile.slider.confirmRatio;
 		
-		if (m_slideTextDisplay.skin.alpha > 1.0)
+		if (m_crewFile.slider.confirmRatio >= 1.0)
+		{
+			m_slideTextDisplay.setTextColor(0x005f1a);
 			m_slideTextDisplay.skin.alpha = 1.0;
+		}
+		else
+			m_slideTextDisplay.setTextColor(0x846248);
 		
 	}
+	
+	private function onSlideStartConfirm() : Void
+	{
+		m_slideTextDisplay.setTextColor(0x005f1a);
+		m_slideTextDisplay.skin.alpha = 1.0;
+	}
+	
+	private function onSlideConfirm(sens : Float) : Void
+	{
+		m_slideTextDisplay.text.text = "";
+		m_slideTextDisplay.setTextColor(0x846248);
+		m_slideTextDisplay.skin.alpha = 1.0;
+		
+		if (sens > 0.0)
+		{
+			BGQApp.self.datas.crewManager.addToSelected(m_currentCrewToHire);
+			trace("added : " + m_currentCrewToHire.toString());
+		}
+		
+		m_currentCrewToHire = BGQApp.self.datas.crewManager.getGeneratedCrewMember();
+		m_crewFile.setCrewData(m_currentCrewToHire);
+		m_crewFile.slider.enable = false;
+		
+		m_mover.setEntityRef(m_crewFile.entity);
+		
+		m_crewFile.position.position2d.anchor.x = this.utilitySize.width / 2.0;
+		m_crewFile.position.position2d.anchor.y = -10.0;  //this.utilitySize.height * 0.80;
+		m_mover.moveTo(this.utilitySize.width / 2.0, this.utilitySize.height * 0.80, 4000, onNewCrewReveal);
+		
+	}
+	
+	private function onNewCrewReveal() : Void
+	{
+		m_crewFile.slider.reinitPosition();
+		m_crewFile.slider.enable = true;
+	}
+	
 	
 }

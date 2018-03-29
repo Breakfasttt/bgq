@@ -45,7 +45,7 @@ class CrewFileUi extends UiContainer
 	public var slider(default,null) : SlideEntity;
 
 	
-	public function new(name:String, appRef:Application, entityFactory:EntityFactory, parentEntity : Entity, depth : Float) 
+	public function new(name:String, appRef:Application, entityFactory:EntityFactory, parentEntity : Entity, depth : Float, distToConfirm : Float, leftValidXpos : Float, rightValidXpos : Float) 
 	{
 		super(name, appRef, entityFactory);
 		this.display = new GameElementDisplay(null);
@@ -55,7 +55,7 @@ class CrewFileUi extends UiContainer
 		this.entity.add(new Depth(depth));
 		
 		m_pointerBehaviours = new PointerBehavioursComponent();
-		this.slider = new SlideEntity(m_appRef, 550);
+		this.slider = new SlideEntity(m_appRef, distToConfirm, leftValidXpos, rightValidXpos);
 		m_pointerBehaviours.addBehaviour(this.slider, 0);
 		
 		this.entity.add(m_pointerBehaviours);

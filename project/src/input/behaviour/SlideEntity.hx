@@ -36,15 +36,22 @@ class SlideEntity extends EntityPointerBehaviour
 	
 	private var m_distanceToStartToConfirm : Float; //  pixel
 	
-	private var m_backToInit : Bool; 
+	private var m_backToInit : Bool;
+	
+	private var m_validAnim : Bool;
 	
 	private var m_calculVector : Vector2D;
 	
-	private var m_atLeftWhenEndBegin : Bool;
+	private var m_atLeftWhenAnimBegin : Bool;
 	
 	private var m_angleRotation : Float;
 	
 	private var m_backSpeed : Float;
+	
+	private var m_speedConfirm : Float;
+	
+	private var m_leftXValidPosition : Float;
+	private var m_rightXValidPosition : Float;
 	
 	public var speedDetected(default, null) : Float;
 	
@@ -52,13 +59,16 @@ class SlideEntity extends EntityPointerBehaviour
 	
 	public var slideSens(default, null) : Float;
 	
+	public var enable : Bool ;
+	
 	public var onSlideStartCallback : Void->Void;
 	public var onSlideCallback : Void->Void;
 	public var onSlideBackCallback : Void->Void;
-	public var onSlideEndCallback : Void->Void;
+	public var onSlideStartConfirmAnimCallback : Void->Void;
+	public var onSlideConfirm : Float->Void;
 	
 	
-	public function new(appRef : Application, distToConfirm : Float, angleRotation : Float = 5.0, backSpeed : Float = 4000.0) 
+	public function new(appRef : Application, distToConfirm : Float, leftValidPosition : Float, rightValidPosition : Float, angleRotation : Float = 5.0, backSpeed : Float = 4000.0, speedConfirmation : Float = 500.0) 
 	{
 		super();
 		
@@ -66,13 +76,18 @@ class SlideEntity extends EntityPointerBehaviour
 		m_locModuleRef = m_appRef.modManager.getModule(LocationModule);
 		m_locGroupRef = null;
 		m_distanceToStartToConfirm = distToConfirm;
+		m_leftXValidPosition = leftValidPosition;
+		m_rightXValidPosition = rightValidPosition;
 		m_backSpeed = backSpeed;
+		m_speedConfirm = speedConfirmation;
 		this.speedDetected = 0.0;
 		this.confirmRatio = 0.0;
 		this.slideSens = 0.0;
+		enable = true;
 		m_angleRotation = angleRotation;
 		m_calculVector = new Vector2D();
 		m_backToInit = false;
+		m_validAnim = false;
 	}
 	
 	override public function setEntityRef(entityRef:Entity):Void 
@@ -130,7 +145,7 @@ class SlideEntity extends EntityPointerBehaviour
 	
 	private function onStartSlide(pos : PointerData) : Void
 	{
-		if (m_backToInit)
+		if (m_backToInit || m_validAnim || !enable)
 			return;
 		
 		m_startPointerPosition.copy(pos.localPosition);
@@ -149,7 +164,7 @@ class SlideEntity extends EntityPointerBehaviour
 		var deltaPixel : Float = (pos.worldPosition.x - m_lastPointerWorldPosition.x);
 		//m_locGroupRef.display;
 		deltaPixel /= getScaleRatio();
-		this.speedDetected = deltaPixel / m_appRef.tick.lastDelta;
+		this.speedDetected = Math.abs(deltaPixel / (m_appRef.tick.lastDelta/1000));
 		m_lastPointerWorldPosition.copy(pos.worldPosition);
 		m_currentXPosition.x += deltaPixel;
 		rotateEntity();
@@ -160,23 +175,34 @@ class SlideEntity extends EntityPointerBehaviour
 	
 	private function onEndSlide(pos : PointerData) : Void
 	{
-		m_calculVector.copy(m_currentXPosition).vSubstract(m_initSkinPosition);
-		m_backToInit = true;
-		m_atLeftWhenEndBegin = m_calculVector.x < 0.0;
-		m_appRef.tick.tick.add(onBackToInit);
+		if ( (m_speedConfirm <= this.speedDetected && this.confirmRatio >= 0.7) || this.confirmRatio >= 1.0)
+		{
+			m_validAnim = true;
+			m_calculVector.copy(m_currentXPosition).vSubstract(m_initSkinPosition);
+			m_atLeftWhenAnimBegin = m_calculVector.x < 0.0;
+			m_appRef.tick.tick.add(goToValidPosition);
+			
+			if (onSlideStartConfirmAnimCallback != null)
+				onSlideStartConfirmAnimCallback();
+			
+		}
+		else
+		{
+			m_backToInit = true;
+			m_calculVector.copy(m_currentXPosition).vSubstract(m_initSkinPosition);
+			m_atLeftWhenAnimBegin = m_calculVector.x < 0.0;
+			m_appRef.tick.tick.add(onBackToInit);
+		}
 	}
 	
 	private function onBackToInit(dt : Float) : Void
 	{
 		m_calculVector.copy(m_initSkinPosition).vSubstract(m_currentXPosition);
 		m_calculVector.normalize();
-		
 		m_currentXPosition.x += m_calculVector.x * dt/1000 * m_backSpeed;
-		
-		
 		m_calculVector.copy(m_initSkinPosition).vSubstract(m_currentXPosition);
 		
-		if ((m_atLeftWhenEndBegin != (m_calculVector.x > 0)))
+		if ((m_atLeftWhenAnimBegin != (m_calculVector.x > 0)))
 		{
 			m_backToInit = false;
 			m_appRef.tick.tick.remove(onBackToInit);
@@ -207,6 +233,46 @@ class SlideEntity extends EntityPointerBehaviour
 		this.confirmRatio = m_calculVector.length() / m_distanceToStartToConfirm;
 		if (m_locGroupRef.rotation != null)
 			m_locGroupRef.rotation.angle = m_angleRotation * this.confirmRatio * this.slideSens;
+	}
+	
+	
+	private function goToValidPosition(dt : Float) : Void
+	{
+		m_calculVector.copy(m_currentXPosition).vSubstract(m_initSkinPosition);
+		m_calculVector.normalize();
+		m_calculVector.scale(dt / 1000 * m_backSpeed);
+		m_locGroupRef.position.position2d.anchor.vAdd(m_calculVector);
+		
+		var isValid : Float = 0;
+		
+		if (m_locGroupRef.position.position2d.anchor.x < m_leftXValidPosition)
+		{
+			isValid = -1;
+		}
+		else if(m_locGroupRef.position.position2d.anchor.x > m_rightXValidPosition)
+		{
+			isValid = 1;
+		}
+		
+		if (isValid != 0.0)
+		{
+			m_validAnim = false;
+			m_appRef.tick.tick.remove(goToValidPosition); // just in case
+			reinitPosition();
+			
+			if(this.onSlideConfirm != null)
+				this.onSlideConfirm(isValid);
+		}
+	}
+	
+	public function reinitPosition() : Void
+	{
+		m_backToInit = false;
+		m_validAnim = false;
+		m_appRef.tick.tick.remove(onBackToInit); // just in case
+		m_appRef.tick.tick.remove(goToValidPosition); // just in case
+		m_currentXPosition.copy(m_initSkinPosition);
+		rotateEntity();
 	}
 	
 }

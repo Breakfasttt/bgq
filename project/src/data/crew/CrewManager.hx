@@ -44,8 +44,10 @@ class CrewManager
 	
 	public function addToSelected(crew : CrewMember) : Void
 	{
-		if (m_selectedCrew.length < 5)
+		if (m_selectedCrew.length < 5 && !Lambda.has(m_selectedCrew, crew))
 			m_selectedCrew.push(crew);
+		else
+			trace("can't add this crew because to many crew or already added : " + crew);
 	}
 	
 	public function crewIsFull() : Bool
