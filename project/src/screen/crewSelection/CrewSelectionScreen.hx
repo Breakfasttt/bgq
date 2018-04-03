@@ -136,7 +136,11 @@ class CrewSelectionScreen extends ScreenContainer
 		
 		if (m_crewFile.slider.confirmRatio >= 1.0)
 		{
-			m_slideTextDisplay.setTextColor(0x005f1a);
+			if(m_crewFile.slider.slideSens > 0.0)
+				m_slideTextDisplay.setTextColor(0x005f1a);
+			else
+				m_slideTextDisplay.setTextColor(0x5f1a00);
+				
 			m_slideTextDisplay.skin.alpha = 1.0;
 		}
 		else
@@ -146,7 +150,11 @@ class CrewSelectionScreen extends ScreenContainer
 	
 	private function fixTitleWhileConfirmAnim() : Void
 	{
-		m_slideTextDisplay.setTextColor(0x005f1a);
+		if(m_crewFile.slider.slideSens > 0.0)
+			m_slideTextDisplay.setTextColor(0x005f1a);
+		else
+			m_slideTextDisplay.setTextColor(0x5f1a00);
+				
 		m_slideTextDisplay.skin.alpha = 1.0;
 	}
 	
@@ -168,7 +176,7 @@ class CrewSelectionScreen extends ScreenContainer
 		
 		m_mover.setEntityRef(m_crewFile.entity);
 		
-		m_crewFile.position.position2d.anchor.x = this.utilitySize.width / 2.0;
+		m_crewFile.position.position2d.anchor.x = this.utilitySize.width / 2.0 - 80;
 		m_crewFile.position.position2d.anchor.y = -10.0;  //this.utilitySize.height * 0.80;
 		m_mover.moveTo(this.utilitySize.width / 2.0, this.utilitySize.height * 0.80, 4000, onNewCrewReveal);
 		

@@ -57,6 +57,7 @@ class SimpleEntityMover
 		m_startVector.copy(m_cible).vSubstract( m_position.position2d.anchor);
 		m_startVector.normalize();
 		m_tickerRef.tick.add(update);
+		trace("=== Start ===");
 	}
 	
 	private function update(dt : Float) : Void
@@ -65,16 +66,28 @@ class SimpleEntityMover
 		m_calculVector.normalize();
 		m_calculVector.scale(dt / 1000  * m_speed);
 		m_position.position2d.anchor.vAdd(m_calculVector);
+		
+		m_calculVector.copy(m_cible).vSubstract(m_position.position2d.anchor);
 		m_calculVector.normalize();
+		
+		trace("=======");
+		trace("cible = " + m_cible.toString());
+		trace("pos = " + m_position.position2d.anchor.toString());
+		trace(m_calculVector.toString());
+		trace(m_startVector.toString());
+		trace("=======");
+		
 		m_calculVector.vAdd(m_startVector);
 		
-		if (m_calculVector.sqLength() == 0.0)
+		if (m_calculVector.isLengthEqual(0.0))
 		{
 			m_position.position2d.anchor.copy(m_cible);
 			m_tickerRef.tick.remove(update);
 			
 			if (m_onEnd != null)
 				m_onEnd();
+				
+			trace("=== end ===");
 		}
 	}
 }
