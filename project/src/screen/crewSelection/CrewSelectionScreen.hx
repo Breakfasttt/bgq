@@ -92,10 +92,10 @@ class CrewSelectionScreen extends ScreenContainer
 		m_crewFile.position.position2d.anchor.y = this.utilitySize.height * 0.80;
 		m_crewFile.pivot.pivot = Anchor.botCenter;
 		m_crewFile.slider.onSlideCallback = onFileSlide;
-		m_crewFile.slider.onSlideStartCallback = onFileSlide;
-		m_crewFile.slider.onSlideBackCallback = onFileSlide;
-		m_crewFile.slider.onSlideConfirm = onSlideConfirm;
-		m_crewFile.slider.onSlideStartConfirmAnimCallback = onSlideStartConfirm;
+		m_crewFile.slider.onStartSlideCallback = onFileSlide;
+		m_crewFile.slider.backToInitCallback = onFileSlide;
+		m_crewFile.slider.onValidPosition = validFile;
+		m_crewFile.slider.startConfirmAnimCallback = fixTitleWhileConfirmAnim;
 		
 		this.add(m_infos);
 		this.add(m_backBtn.entity);
@@ -144,13 +144,13 @@ class CrewSelectionScreen extends ScreenContainer
 		
 	}
 	
-	private function onSlideStartConfirm() : Void
+	private function fixTitleWhileConfirmAnim() : Void
 	{
 		m_slideTextDisplay.setTextColor(0x005f1a);
 		m_slideTextDisplay.skin.alpha = 1.0;
 	}
 	
-	private function onSlideConfirm(sens : Float) : Void
+	private function validFile(sens : Float) : Void
 	{
 		m_slideTextDisplay.text.text = "";
 		m_slideTextDisplay.setTextColor(0x846248);
@@ -177,7 +177,6 @@ class CrewSelectionScreen extends ScreenContainer
 	private function onNewCrewReveal() : Void
 	{
 		m_crewFile.slider.reinitPosition();
-		m_crewFile.slider.enable = true;
 	}
 	
 	

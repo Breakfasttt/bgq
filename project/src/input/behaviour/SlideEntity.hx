@@ -59,13 +59,13 @@ class SlideEntity extends EntityPointerBehaviour
 	
 	public var slideSens(default, null) : Float;
 	
-	public var enable : Bool ;
+	public var enable(default, set) : Bool ;
 	
-	public var onSlideStartCallback : Void->Void;
+	public var onStartSlideCallback : Void->Void;
 	public var onSlideCallback : Void->Void;
-	public var onSlideBackCallback : Void->Void;
-	public var onSlideStartConfirmAnimCallback : Void->Void;
-	public var onSlideConfirm : Float->Void;
+	public var backToInitCallback : Void->Void;
+	public var startConfirmAnimCallback : Void->Void;
+	public var onValidPosition : Float->Void;
 	
 	
 	public function new(appRef : Application, distToConfirm : Float, leftValidPosition : Float, rightValidPosition : Float, angleRotation : Float = 5.0, backSpeed : Float = 4000.0, speedConfirmation : Float = 500.0) 
@@ -83,7 +83,6 @@ class SlideEntity extends EntityPointerBehaviour
 		this.speedDetected = 0.0;
 		this.confirmRatio = 0.0;
 		this.slideSens = 0.0;
-		enable = true;
 		m_angleRotation = angleRotation;
 		m_calculVector = new Vector2D();
 		m_backToInit = false;
@@ -112,7 +111,7 @@ class SlideEntity extends EntityPointerBehaviour
 		cast (m_pointerBehaviour, DragBehaviour).startCb = onStartSlide;
 		cast (m_pointerBehaviour, DragBehaviour).moveCb = onSlide;
 		cast (m_pointerBehaviour, DragBehaviour).endCb = onEndSlide;
-		
+		enable = true;
 		
 		m_startPointerPosition = new Vector2D();
 		m_startPointerWorldPosition = new Vector2D();
@@ -145,7 +144,7 @@ class SlideEntity extends EntityPointerBehaviour
 	
 	private function onStartSlide(pos : PointerData) : Void
 	{
-		if (m_backToInit || m_validAnim || !enable)
+		if (m_backToInit || m_validAnim)
 			return;
 		
 		m_startPointerPosition.copy(pos.localPosition);
@@ -154,8 +153,8 @@ class SlideEntity extends EntityPointerBehaviour
 		this.speedDetected = 0.0;
 		rotateEntity();
 		
-		if (onSlideStartCallback != null)
-			onSlideStartCallback();
+		if (onStartSlideCallback != null)
+			onStartSlideCallback();
 		
 	}
 	
@@ -182,8 +181,8 @@ class SlideEntity extends EntityPointerBehaviour
 			m_atLeftWhenAnimBegin = m_calculVector.x < 0.0;
 			m_appRef.tick.tick.add(goToValidPosition);
 			
-			if (onSlideStartConfirmAnimCallback != null)
-				onSlideStartConfirmAnimCallback();
+			if (startConfirmAnimCallback != null)
+				startConfirmAnimCallback();
 			
 		}
 		else
@@ -212,8 +211,8 @@ class SlideEntity extends EntityPointerBehaviour
 		rotateEntity();
 		
 		
-		if (onSlideBackCallback != null)
-			onSlideBackCallback();
+		if (backToInitCallback != null)
+			backToInitCallback();
 	}
 	
 	
@@ -260,8 +259,8 @@ class SlideEntity extends EntityPointerBehaviour
 			m_appRef.tick.tick.remove(goToValidPosition); // just in case
 			reinitPosition();
 			
-			if(this.onSlideConfirm != null)
-				this.onSlideConfirm(isValid);
+			if(this.onValidPosition != null)
+				this.onValidPosition(isValid);
 		}
 	}
 	
@@ -269,10 +268,21 @@ class SlideEntity extends EntityPointerBehaviour
 	{
 		m_backToInit = false;
 		m_validAnim = false;
+		this.enable = true;
 		m_appRef.tick.tick.remove(onBackToInit); // just in case
 		m_appRef.tick.tick.remove(goToValidPosition); // just in case
 		m_currentXPosition.copy(m_initSkinPosition);
 		rotateEntity();
+	}
+	
+	function set_enable(value:Bool):Bool 
+	{
+		enable = value;
+		
+		if (this.m_pointerBehaviour != null)
+			this.m_pointerBehaviour.enable = enable;
+			
+		return enable;
 	}
 	
 }
