@@ -10,5 +10,9 @@
 	{
 		"name":"crewfile",
 		"mainResourcePath":"img/crewSelection/crewfile.png"
+	},
+	{
+		"name":"crewHeadTimeline",
+		"mainResourcePath":"model/timeline/crewHeadTimeline.flss"
 	}
 ]

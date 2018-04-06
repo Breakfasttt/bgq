@@ -119,7 +119,7 @@ class CrewSelectionScreen extends ScreenContainer
 	
 	private function onCrewButton() : Void
 	{
-		
+		BGQApp.self.screenModule.goToScreen(ScreenName.crewSummary);
 	}
 	
 	private function onFileSlide() : Void
