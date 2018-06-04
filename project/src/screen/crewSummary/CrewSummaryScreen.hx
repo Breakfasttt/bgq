@@ -3,10 +3,14 @@ package screen.crewSummary;
 import assets.model.Model;
 import core.Application;
 import core.entity.Entity;
+import data.crew.CrewMember;
 import misc.name.ScreenName;
 import src.BGQApp;
 import src.misc.name.FontName;
 import standard.components.graphic.animation.Animation;
+import standard.components.graphic.display.impl.Screen;
+import standard.components.input.PointerBehavioursComponent;
+import standard.components.input.utils.EntityAsSimpleButton;
 import standard.factory.EntityFactory;
 import standard.utils.uicontainer.impl.ScreenContainer;
 import standard.utils.uicontainer.impl.TextButton;
@@ -25,7 +29,7 @@ class CrewSummaryScreen extends ScreenContainer
 	
 	public function new(appRef:Application, entityFactory:EntityFactory) 
 	{
-		m_crewSummaryBlock = new Array<Entity>();
+		
 		super(ScreenName.crewSummary, appRef, entityFactory);
 	}
 	
@@ -34,11 +38,14 @@ class CrewSummaryScreen extends ScreenContainer
 		super.configure();
 	}
 	
+	
 	override function createElement():Void 
 	{
 		super.createElement();
 		
 		var entity : Entity = null;
+		
+		m_crewSummaryBlock = new Array<Entity>();
 		
 		for (i in 0...5)
 		{
@@ -49,8 +56,14 @@ class CrewSummaryScreen extends ScreenContainer
 																Model.defaultAnim);
 																
 			entity.getComponent(Animation).useAnimationPivot = false;
-			entity.getComponent(Animation).gotoAndStop(i);
+			entity.getComponent(Animation).gotoAndStop(0);
+			var behaviours : PointerBehavioursComponent = new PointerBehavioursComponent();
+			var btnBehaviour : EntityAsSimpleButton = new EntityAsSimpleButton(false,"", false);
+			btnBehaviour.onSelect = showCrew.bind(i+1);
+			behaviours.addBehaviour(btnBehaviour,0);
+			entity.add(behaviours);
 			this.add(entity);
+			m_crewSummaryBlock.push(entity);
 		}
 		
 		m_recruitBtn = new TextButton(this.entity.name + "::recruitBtn", m_appRef, m_entityFactoryRef);
@@ -60,12 +73,34 @@ class CrewSummaryScreen extends ScreenContainer
 		m_recruitBtn.textDisplay.setFontSize(50);
 		
 		this.add(m_recruitBtn.entity);
+		
+		cast(this.display, Screen).onOpen = refreshInformation;
+		
 	}
-	
 	
 	private function onSelectRecruitBtn() : Void
 	{
 		BGQApp.self.screenModule.goToScreen(ScreenName.crewSelection);
+	}
+	
+	
+	private function refreshInformation() : Void
+	{
+		var crews : Array<CrewMember> = BGQApp.self.datas.crewManager.getSelectedCrews();
+		
+		//todo
+		for (i in 0...crews.length)
+		{
+			if(crews[i] != null)
+				m_crewSummaryBlock[i].getComponent(Animation).gotoAndStop(i+1);
+		}
+		
+	}
+	
+	
+	private function showCrew(index : Int) : Void
+	{
+		trace("showCrew" + index);
 	}
 	
 }

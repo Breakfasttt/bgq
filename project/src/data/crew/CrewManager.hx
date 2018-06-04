@@ -12,7 +12,7 @@ class CrewManager
 	
 	private var m_selectedCrew : Array<CrewMember>;
 	
-	//todo
+	//todo => héros déja revenu d'une mission
 	private var m_crewMemberHeroes : Array<CrewMember>;
 	
 	private var m_selectableCrewMember : Array<CrewMember>;
@@ -53,6 +53,11 @@ class CrewManager
 	public function crewIsFull() : Bool
 	{
 		return m_selectedCrew.length == 5;
+	}
+	
+	public function getSelectedCrews() : Array<CrewMember>
+	{
+		return m_selectedCrew.copy();
 	}
 	
 	

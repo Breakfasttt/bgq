@@ -14,5 +14,9 @@
 	{
 		"name":"crewHeadTimeline",
 		"mainResourcePath":"model/timeline/crewHeadTimeline.flss"
+	},
+	{
+		"name":"simplePopupBg",
+		"mainResourcePath":"img/simplePopup/bg.png"
 	}
 ]

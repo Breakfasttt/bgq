@@ -6,10 +6,12 @@ import data.crew.CrewMember;
 import misc.mover.SimpleEntityMover;
 import misc.name.ScreenName;
 import openfl.text.TextFormatAlign;
+import popup.confirmPopup.ConfirmPopup;
 import src.BGQApp;
 import src.misc.name.FontName;
 import standard.components.graphic.display.impl.Screen;
 import standard.components.graphic.display.impl.TextDisplay;
+import standard.components.space2d.Position2D;
 import standard.factory.EntityFactory;
 import standard.utils.uicontainer.impl.ScreenContainer;
 import standard.utils.uicontainer.impl.TextButton;
@@ -37,10 +39,15 @@ class CrewSelectionScreen extends ScreenContainer
 	
 	private var m_mover : SimpleEntityMover;
 	
+	private var m_backToMenuPopup : ConfirmPopup;
+	
 	public function new(appRef:Application, entityFactory:EntityFactory) 
 	{
 		super(ScreenName.crewSelection, appRef, entityFactory);	
 		m_mover = new SimpleEntityMover(m_appRef.tick);
+		m_backToMenuPopup = new ConfirmPopup(this.m_appRef, this.m_entityFactoryRef, "Quitter la partie ?", "Vous êtes sur le point de quitter la partie, votre recrutement sera annulé. Etes vous sûr ?");
+		m_backToMenuPopup.confirmCb = onBackToMenu;
+		//m_backToMenuPopup.cancelCb = onCancelBackToMenu;
 	}
 	
 	override function configure():Void 
@@ -110,12 +117,21 @@ class CrewSelectionScreen extends ScreenContainer
 	{
 		m_currentCrewToHire = BGQApp.self.datas.crewManager.getGeneratedCrewMember();
 		m_crewFile.setCrewData(m_currentCrewToHire);
+		updateInfos();
 	}
 	
 	private function onBackButton() : Void
 	{
+		this.m_appRef.addEntity(m_backToMenuPopup.entity);
+	}
+	
+	private function onBackToMenu() : Void
+	{
+		//BGQApp.self.datas.crewManager; //todo
 		BGQApp.self.screenModule.goToScreen(ScreenName.mainMenu);
 	}
+	
+	
 	
 	private function onCrewButton() : Void
 	{
@@ -170,6 +186,12 @@ class CrewSelectionScreen extends ScreenContainer
 			trace("added : " + m_currentCrewToHire.toString());
 		}
 		
+		if (BGQApp.self.datas.crewManager.crewIsFull())
+		{
+			updateInfos();
+			return;
+		}
+		
 		m_currentCrewToHire = BGQApp.self.datas.crewManager.getGeneratedCrewMember();
 		m_crewFile.setCrewData(m_currentCrewToHire);
 		m_crewFile.slider.enable = false;
@@ -187,5 +209,22 @@ class CrewSelectionScreen extends ScreenContainer
 		m_crewFile.slider.reinitPosition();
 	}
 	
-	
+	private function updateInfos() : Void
+	{
+		var pos : Position2D = m_infos.getComponent(Position2D);
+		var td : TextDisplay = m_infos.getComponent(TextDisplay);
+		
+		if (BGQApp.self.datas.crewManager.crewIsFull())
+		{
+			pos.position2d.setValue(0.5, 0.5);
+			td.text.text = "Votre équipage est au complet. Appuyez sur le bouton Equipage pour l'inspecter.";
+			this.remove(m_crewFile.entity);
+		}
+		else
+		{
+			pos.position2d.setValue(0.5, 0.1);
+			td.text.text = "Engager les membres d'équipages";
+			this.add(m_crewFile.entity);
+		}
+	}
 }

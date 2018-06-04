@@ -10,6 +10,8 @@ import data.crew.profession.Profession;
 class CrewMember 
 {
 
+	public var idTimeLine : Int;
+	
 	public var crewModelName(default, null) : String;
 	
 	public var firstname(default, null) : String;
