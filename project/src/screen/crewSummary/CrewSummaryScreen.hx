@@ -41,8 +41,6 @@ class CrewSummaryScreen extends ScreenContainer
 	
 	override function createElement():Void 
 	{
-		super.createElement();
-		
 		var entity : Entity = null;
 		
 		m_crewSummaryBlock = new Array<Entity>();
