@@ -60,5 +60,18 @@ class CrewManager
 		return m_selectedCrew.copy();
 	}
 	
+	public function getSelectedCrew(index : Int) : CrewMember
+	{
+		if (index < 0 || index >= m_selectedCrew.length)
+			return null;
+			
+		return m_selectedCrew[index];
+	}
+	
+	public function reset() : Void
+	{
+		m_selectedCrew = new Array<CrewMember>();
+	}
+	
 	
 }

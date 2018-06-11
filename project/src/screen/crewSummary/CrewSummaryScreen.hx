@@ -5,11 +5,14 @@ import core.Application;
 import core.entity.Entity;
 import data.crew.CrewMember;
 import misc.name.ScreenName;
+import openfl.text.TextFieldAutoSize;
+import openfl.text.TextFormatAlign;
 import screen.crewSelection.CrewFileUi;
 import src.BGQApp;
 import src.misc.name.FontName;
 import standard.components.graphic.animation.Animation;
 import standard.components.graphic.display.impl.Screen;
+import standard.components.graphic.display.impl.TextDisplay;
 import standard.components.input.PointerBehavioursComponent;
 import standard.components.input.utils.EntityAsSimpleButton;
 import standard.factory.EntityFactory;
@@ -29,6 +32,10 @@ class CrewSummaryScreen extends ScreenContainer
 	private var m_crewSummaryBlock : Array<Entity>;
 	
 	private var m_crewFile : CrewFileUi;
+	
+	private var m_infos : Entity;
+	
+	private var m_lastSelected : Int;
 	
 	public function new(appRef:Application, entityFactory:EntityFactory) 
 	{
@@ -60,7 +67,7 @@ class CrewSummaryScreen extends ScreenContainer
 			entity.getComponent(Animation).gotoAndStop(0);
 			var behaviours : PointerBehavioursComponent = new PointerBehavioursComponent();
 			var btnBehaviour : EntityAsSimpleButton = new EntityAsSimpleButton(false,"", false);
-			btnBehaviour.onSelect = showCrew.bind(i+1);
+			btnBehaviour.onSelect = showCrew.bind(i);
 			behaviours.addBehaviour(btnBehaviour,0);
 			entity.add(behaviours);
 			this.add(entity);
@@ -73,17 +80,23 @@ class CrewSummaryScreen extends ScreenContainer
 		m_recruitBtn.textDisplay.setTextColor(0x846248);
 		m_recruitBtn.textDisplay.setFontSize(50);
 		
+		m_infos = this.m_entityFactoryRef.createTextField(this.entity.name + "::infos", null, "Aucun membre d'équipage recruté", 10, Anchor.center, Anchor.center);
+		var dispInfos : TextDisplay = m_infos.getComponent(TextDisplay);
+		dispInfos.setFont(FontName.scienceFair);
+		dispInfos.setAutoSize(TextFieldAutoSize.LEFT);
+		dispInfos.setAlignment(TextFormatAlign.CENTER);
+		dispInfos.setTextColor(0x846248);
+		dispInfos.setFontSize(40);
+		dispInfos.setMiscProperties(false, false, false, false, false, false);
 		
-		m_crewFile = new CrewFileUi("CrewSummaryScreen::crewFile", this.m_appRef, this.m_entityFactoryRef, this.entity, 3);
+		m_crewFile = new CrewFileUi(this.entity.name + "::crewFile", this.m_appRef, this.m_entityFactoryRef, this.entity, 3);
 		m_crewFile.scale.scale.set(1.5,1.5);
 		m_crewFile.position.position2d = new Anchor(0.5, 0.05);
 		m_crewFile.pivot.pivot = Anchor.topCenter;
 		
 		this.add(m_recruitBtn.entity);
-		this.add(m_crewFile.entity);
 		
-		cast(this.display, Screen).onOpen = refreshInformation;
-		
+		cast(this.display, Screen).onInit = refreshInformation;
 	}
 	
 	private function onSelectRecruitBtn() : Void
@@ -96,19 +109,41 @@ class CrewSummaryScreen extends ScreenContainer
 	{
 		var crews : Array<CrewMember> = BGQApp.self.datas.crewManager.getSelectedCrews();
 		
-		//todo
-		for (i in 0...crews.length)
+		var anim : Animation = null;
+		for (i in 0...m_crewSummaryBlock.length)
 		{
-			if(crews[i] != null)
-				m_crewSummaryBlock[i].getComponent(Animation).gotoAndStop(i+1);
+			anim = m_crewSummaryBlock[i].getComponent(Animation);
+			
+			if (i < crews.length)
+				anim.gotoAndStop(i + 1);
+			else
+				anim.gotoAndStop(0);
+			
 		}
 		
+		if (crews.length == 0)
+		{
+			this.remove(m_crewFile.entity);
+			this.add(m_infos);
+			m_lastSelected = -1;
+		}
+		else
+		{
+			this.add(m_crewFile.entity);
+			this.remove(m_infos);
+			
+			if (m_lastSelected == -1)
+				m_lastSelected = 0;
+			m_crewFile.setCrewData(BGQApp.self.datas.crewManager.getSelectedCrew(m_lastSelected));
+		}
 	}
-	
 	
 	private function showCrew(index : Int) : Void
 	{
-		trace("showCrew" + index);
+		m_lastSelected = index;
+		var crewMember : CrewMember = BGQApp.self.datas.crewManager.getSelectedCrew(index);
+		if(crewMember!=null)
+			m_crewFile.setCrewData(crewMember);
 	}
 	
 }

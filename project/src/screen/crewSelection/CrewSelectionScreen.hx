@@ -129,11 +129,9 @@ class CrewSelectionScreen extends ScreenContainer
 	
 	private function onBackToMenu() : Void
 	{
-		//BGQApp.self.datas.crewManager; //todo
+		BGQApp.self.datas.crewManager.reset();
 		BGQApp.self.screenModule.goToScreen(ScreenName.mainMenu);
 	}
-	
-	
 	
 	private function onCrewButton() : Void
 	{
