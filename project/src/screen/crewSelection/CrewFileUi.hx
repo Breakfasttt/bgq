@@ -45,7 +45,7 @@ class CrewFileUi extends UiContainer
 	public var slider(default,null) : SlideEntity;
 
 	
-	public function new(name:String, appRef:Application, entityFactory:EntityFactory, parentEntity : Entity, depth : Float, distToConfirm : Float, leftValidXpos : Float, rightValidXpos : Float) 
+	public function new(name:String, appRef:Application, entityFactory:EntityFactory, parentEntity : Entity, depth : Float) 
 	{
 		super(name, appRef, entityFactory);
 		this.display = new GameElementDisplay(null);
@@ -55,28 +55,32 @@ class CrewFileUi extends UiContainer
 		this.entity.add(new Depth(depth));
 		
 		m_pointerBehaviours = new PointerBehavioursComponent();
-		this.slider = new SlideEntity(m_appRef, distToConfirm, leftValidXpos, rightValidXpos);
-		m_pointerBehaviours.addBehaviour(this.slider, 0);
-		
 		this.entity.add(m_pointerBehaviours);
+		this.slider = null;
 		
 		createElement();
 	}
 	
+	public function initSlideBehaviour(distToConfirm : Float, leftValidXpos : Float, rightValidXpos : Float) : Void
+	{
+		this.slider = new SlideEntity(m_appRef, distToConfirm, leftValidXpos, rightValidXpos);
+		m_pointerBehaviours.addBehaviour(this.slider, 0);
+	}
+	
 	override function createElement():Void 
 	{
-		m_bg = m_entityFactoryRef.createGameElement("CrewFileUi::BG", this.entity, "crewfile", 0, Anchor.topLeft, Anchor.topLeft);
+		m_bg = m_entityFactoryRef.createGameElement(this.entity.name + "::BG", this.entity, "crewfile", 0, Anchor.topLeft, Anchor.topLeft);
 		
-		m_nameTf = m_entityFactoryRef.createTextField("CrewFileUi::nameTf", this.entity, "", 1, new Anchor(30,315,false), Anchor.topLeft);
-		m_firstnameTf = m_entityFactoryRef.createTextField("CrewFileUi::firstnameTf", this.entity, "", 2, new Anchor(30,385,false), Anchor.topLeft);
-		m_uniqueIdTf = m_entityFactoryRef.createTextField("CrewFileUi::uniqueId", this.entity, "", 3, new Anchor(30, 455, false), Anchor.topLeft);
+		m_nameTf = m_entityFactoryRef.createTextField(this.entity.name + "::nameTf", this.entity, "", 1, new Anchor(30,315,false), Anchor.topLeft);
+		m_firstnameTf = m_entityFactoryRef.createTextField(this.entity.name + "::firstnameTf", this.entity, "", 2, new Anchor(30,385,false), Anchor.topLeft);
+		m_uniqueIdTf = m_entityFactoryRef.createTextField(this.entity.name + "::uniqueId", this.entity, "", 3, new Anchor(30, 455, false), Anchor.topLeft);
 		
-		m_ProfessionTf = m_entityFactoryRef.createTextField("CrewFileUi::professionTf", this.entity, "", 4, new Anchor(400, 30, false), Anchor.topLeft);
+		m_ProfessionTf = m_entityFactoryRef.createTextField(this.entity.name + "::professionTf", this.entity, "", 4, new Anchor(400, 30, false), Anchor.topLeft);
 		
-		m_gnPersonalityTf = m_entityFactoryRef.createTextField("CrewFileUi::gnPersonalityTf", this.entity, "", 5, new Anchor(400, 160, false), Anchor.topLeft);
-		m_defectPersonalityTf = m_entityFactoryRef.createTextField("CrewFileUi::defectPersonalityTf", this.entity, "", 6, new Anchor(400, 230, false), Anchor.topLeft);
+		m_gnPersonalityTf = m_entityFactoryRef.createTextField(this.entity.name + "::gnPersonalityTf", this.entity, "", 5, new Anchor(400, 160, false), Anchor.topLeft);
+		m_defectPersonalityTf = m_entityFactoryRef.createTextField(this.entity.name + "::defectPersonalityTf", this.entity, "", 6, new Anchor(400, 230, false), Anchor.topLeft);
 		
-		m_dnaTf = m_entityFactoryRef.createTextField("CrewFileUi::dnaTf", this.entity, "Nom : ", 7, new Anchor(400, 380, false), Anchor.topLeft);
+		m_dnaTf = m_entityFactoryRef.createTextField(this.entity.name + "::dnaTf", this.entity, "Nom : ", 7, new Anchor(400, 380, false), Anchor.topLeft);
 		
 		applyTextFormat(m_nameTf);
 		applyTextFormat(m_firstnameTf);

@@ -5,6 +5,7 @@ import core.Application;
 import core.entity.Entity;
 import data.crew.CrewMember;
 import misc.name.ScreenName;
+import screen.crewSelection.CrewFileUi;
 import src.BGQApp;
 import src.misc.name.FontName;
 import standard.components.graphic.animation.Animation;
@@ -26,6 +27,8 @@ class CrewSummaryScreen extends ScreenContainer
 	private var m_recruitBtn : TextButton;
 	
 	private var m_crewSummaryBlock : Array<Entity>;
+	
+	private var m_crewFile : CrewFileUi;
 	
 	public function new(appRef:Application, entityFactory:EntityFactory) 
 	{
@@ -70,7 +73,14 @@ class CrewSummaryScreen extends ScreenContainer
 		m_recruitBtn.textDisplay.setTextColor(0x846248);
 		m_recruitBtn.textDisplay.setFontSize(50);
 		
+		
+		m_crewFile = new CrewFileUi("CrewSummaryScreen::crewFile", this.m_appRef, this.m_entityFactoryRef, this.entity, 3);
+		m_crewFile.scale.scale.set(1.5,1.5);
+		m_crewFile.position.position2d = new Anchor(0.5, 0.05);
+		m_crewFile.pivot.pivot = Anchor.topCenter;
+		
 		this.add(m_recruitBtn.entity);
+		this.add(m_crewFile.entity);
 		
 		cast(this.display, Screen).onOpen = refreshInformation;
 		

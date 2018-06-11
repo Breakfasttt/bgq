@@ -93,11 +93,13 @@ class CrewSelectionScreen extends ScreenContainer
 		m_slideTextDisplay.skin.alpha = 0.0;
 		
 		
-		m_crewFile = new CrewFileUi("CrewSelectionScreen::crewFile", this.m_appRef, this.m_entityFactoryRef, this.entity, 3, 650, -this.utilitySize.width / 2.0, this.utilitySize.width*1.5);
+		m_crewFile = new CrewFileUi("CrewSelectionScreen::crewFile", this.m_appRef, this.m_entityFactoryRef, this.entity, 3);
 		m_crewFile.position.position2d.ratioMode = false;
 		m_crewFile.position.position2d.anchor.x = this.utilitySize.width / 2.0;
 		m_crewFile.position.position2d.anchor.y = this.utilitySize.height * 0.80;
 		m_crewFile.pivot.pivot = Anchor.botCenter;
+		
+		m_crewFile.initSlideBehaviour(650, -this.utilitySize.width / 2.0, this.utilitySize.width * 1.5);
 		m_crewFile.slider.onSlideCallback = onFileSlide;
 		m_crewFile.slider.onStartSlideCallback = onFileSlide;
 		m_crewFile.slider.backToInitCallback = onFileSlide;

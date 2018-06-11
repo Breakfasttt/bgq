@@ -12,6 +12,8 @@ import misc.name.ScreenName;
 import openfl.Lib;
 import screen.ScreenFactory;
 import src.misc.name.FontName;
+import standard.components.debug.impl.ShowFps;
+import standard.components.debug.impl.ShowMousePosition;
 import standard.components.graphic.display.impl.Layer;
 import standard.components.space2d.UtilitySize2D;
 import standard.components.space2d.resizer.Resizer;
@@ -134,20 +136,31 @@ class BGQApp
 		this.app.addModule(this.pointerModule);
 		
 		#if debug
-		this.debugModule = new DebugModule();
+		this.debugModule = new DebugModule(this.app.getEntity(LayerName.debug), this.entityFactory);
 		this.app.addModule(this.debugModule);
 		//this.locationModule.debugShowLocGroupRect();
+		createDebugComponent();
+		this.debugModule.enable(true);
 		#end
-			
 	}
 	
 	private function prepareScreen() : Void
 	{
 		this.screenFactory = new ScreenFactory(this.app, this.entityFactory);
 		this.screenFactory.init();
-		
 		this.screenModule.goToScreen(ScreenName.mainMenu);
+	}
+	
+	private function createDebugComponent() : Void
+	{
+		var fpsEnt : Entity = new Entity("debugFps");
+		fpsEnt.add(new ShowFps());
 		
+		var mouseEnt : Entity = new Entity("debugMouse");
+		mouseEnt.add(new ShowMousePosition(this.layerModule));
+		
+		this.app.addEntity(fpsEnt);
+		this.app.addEntity(mouseEnt);
 	}
 	
 }
