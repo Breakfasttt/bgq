@@ -7,6 +7,7 @@ import data.crew.CrewMember;
 import misc.name.ScreenName;
 import openfl.text.TextFieldAutoSize;
 import openfl.text.TextFormatAlign;
+import popup.confirmPopup.ConfirmPopup;
 import screen.crewSelection.CrewFileUi;
 import src.BGQApp;
 import src.misc.name.FontName;
@@ -29,6 +30,8 @@ class CrewSummaryScreen extends ScreenContainer
 
 	private var m_recruitBtn : TextButton;
 	
+	private var m_firedBtn : TextButton;
+	
 	private var m_crewSummaryBlock : Array<Entity>;
 	
 	private var m_crewFile : CrewFileUi;
@@ -37,10 +40,15 @@ class CrewSummaryScreen extends ScreenContainer
 	
 	private var m_lastSelected : Int;
 	
+	private var m_confirmFiredPopup : ConfirmPopup;
+	
 	public function new(appRef:Application, entityFactory:EntityFactory) 
 	{
-		
 		super(ScreenName.crewSummary, appRef, entityFactory);
+		
+		m_confirmFiredPopup = new ConfirmPopup(this.m_appRef, this.m_entityFactoryRef, "Virer le membre d'équipage ?", "Vous êtes sur le point de virer un membre d'équipage, Etes vous sûr ?");
+		m_confirmFiredPopup.confirmCb = confirmFired;
+		
 	}
 	
 	override function configure():Void 
@@ -75,10 +83,16 @@ class CrewSummaryScreen extends ScreenContainer
 		}
 		
 		m_recruitBtn = new TextButton(this.entity.name + "::recruitBtn", m_appRef, m_entityFactoryRef);
-		m_recruitBtn.init("Recrutement", "genericBtn", 6, new Anchor(0.5, 0.95), Anchor.botCenter, onSelectRecruitBtn);
+		m_recruitBtn.init("Recrutement", "genericBtn", 6, new Anchor(0.33, 0.95), Anchor.botCenter, onSelectRecruitBtn);
 		m_recruitBtn.textDisplay.setFont(FontName.scienceFair);
 		m_recruitBtn.textDisplay.setTextColor(0x846248);
 		m_recruitBtn.textDisplay.setFontSize(50);
+		
+		m_firedBtn = new TextButton(this.entity.name + "::firedBtn", m_appRef, m_entityFactoryRef);
+		m_firedBtn.init("Virer", "genericBtn", 7, new Anchor(0.66, 0.95), Anchor.botCenter, onSelectFiredBtn);
+		m_firedBtn.textDisplay.setFont(FontName.scienceFair);
+		m_firedBtn.textDisplay.setTextColor(0x846248);
+		m_firedBtn.textDisplay.setFontSize(50);
 		
 		m_infos = this.m_entityFactoryRef.createTextField(this.entity.name + "::infos", null, "Aucun membre d'équipage recruté", 10, Anchor.center, Anchor.center);
 		var dispInfos : TextDisplay = m_infos.getComponent(TextDisplay);
@@ -95,6 +109,7 @@ class CrewSummaryScreen extends ScreenContainer
 		m_crewFile.pivot.pivot = Anchor.topCenter;
 		
 		this.add(m_recruitBtn.entity);
+		this.add(m_firedBtn.entity);
 		
 		cast(this.display, Screen).onInit = refreshInformation;
 	}
@@ -104,32 +119,51 @@ class CrewSummaryScreen extends ScreenContainer
 		BGQApp.self.screenModule.goToScreen(ScreenName.crewSelection);
 	}
 	
+	private function onSelectFiredBtn() : Void
+	{
+		this.m_appRef.addEntity(m_confirmFiredPopup.entity);
+	}
+	
+	private function confirmFired() : Void
+	{
+		var crewMember : CrewMember = BGQApp.self.datas.crewManager.getSelectedCrew(m_lastSelected);
+		BGQApp.self.datas.crewManager.removeToSelected(crewMember);
+		
+		if(BGQApp.self.datas.crewManager.getCurrentCrewNumber() <= 0)
+			m_lastSelected = -1;
+		else
+			m_lastSelected = 0;
+		
+		refreshInformation();
+	}
 	
 	private function refreshInformation() : Void
 	{
-		var crews : Array<CrewMember> = BGQApp.self.datas.crewManager.getSelectedCrews();
+		var crewsNumber : Int = BGQApp.self.datas.crewManager.getCurrentCrewNumber();
 		
 		var anim : Animation = null;
 		for (i in 0...m_crewSummaryBlock.length)
 		{
 			anim = m_crewSummaryBlock[i].getComponent(Animation);
 			
-			if (i < crews.length)
+			if (i < crewsNumber)
 				anim.gotoAndStop(i + 1);
 			else
 				anim.gotoAndStop(0);
 			
 		}
 		
-		if (crews.length == 0)
+		if (crewsNumber == 0)
 		{
 			this.remove(m_crewFile.entity);
 			this.add(m_infos);
 			m_lastSelected = -1;
+			this.remove(m_firedBtn.entity);
 		}
 		else
 		{
 			this.add(m_crewFile.entity);
+			this.add(m_firedBtn.entity);
 			this.remove(m_infos);
 			
 			if (m_lastSelected == -1)

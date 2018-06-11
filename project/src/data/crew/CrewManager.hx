@@ -50,6 +50,12 @@ class CrewManager
 			trace("can't add this crew because to many crew or already added : " + crew);
 	}
 	
+	public function removeToSelected(crew : CrewMember) : Void
+	{
+		if (m_selectedCrew != null)
+			m_selectedCrew.remove(crew);
+	}
+	
 	public function crewIsFull() : Bool
 	{
 		return m_selectedCrew.length == 5;
@@ -58,6 +64,14 @@ class CrewManager
 	public function getSelectedCrews() : Array<CrewMember>
 	{
 		return m_selectedCrew.copy();
+	}
+	
+	public function getCurrentCrewNumber() : Int
+	{
+		if (m_selectedCrew == null)
+			return 0;
+		
+		return m_selectedCrew.length;
 	}
 	
 	public function getSelectedCrew(index : Int) : CrewMember
