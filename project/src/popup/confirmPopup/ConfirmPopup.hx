@@ -81,8 +81,14 @@ class ConfirmPopup extends PopupContainer
 		m_confirmBtn = new TextButton("confirmBtn", this.m_appRef, this.m_entityFactoryRef);
 		m_cancelBtn = new TextButton("cancelBtn", this.m_appRef, this.m_entityFactoryRef);
 		
-		m_confirmBtn.init("Confirmer", "genericBtn", 3, new Anchor(0.0, 571.80, false), Anchor.topLeft, onSelectConfirm);
-		m_cancelBtn.init("Annuler", "genericBtn", 4, new Anchor(428.10, 571.80, false), Anchor.topLeft, onSelectCancel);
+		m_confirmBtn.init("Confirmer", "genericBtn", 3, new Anchor(428.10, 571.80, false), Anchor.topLeft, onSelectConfirm);
+		m_cancelBtn.init("Annuler", "genericBtn", 4, new Anchor(0.0, 571.80, false), Anchor.topLeft, onSelectCancel);
+		
+		m_confirmBtn.textDisplay.setTextColor(0xFF9933);
+		m_cancelBtn.textDisplay.setTextColor(0xFF9933);
+		
+		m_confirmBtn.textDisplay.setFont(FontName.scienceFair);
+		m_cancelBtn.textDisplay.setFont(FontName.scienceFair);
 		
 		this.add(m_background);
 		this.add(m_confirmBtn.entity);
