@@ -24,7 +24,7 @@
 	<section if="mobile">
 		<window background="#000888" fps="60" />
 		<window width="1920" height="1080" />
-		<window resizable="false" orientation="auto" vsync="false" antialiasing="0" />
+		<window resizable="false" orientation="landscape" vsync="false" antialiasing="0" />
 	</section>
 	
 	
