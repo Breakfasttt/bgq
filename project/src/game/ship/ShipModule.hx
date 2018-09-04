@@ -1,0 +1,70 @@
+package game.ship;
+
+import core.module.Module;
+import data.ship.ShipTemplate;
+import data.ship.part.ShipPartGroup;
+import tools.math.Vector2D;
+
+/**
+ * ...
+ * @author Breakyt
+ */
+class ShipModule extends Module<ShipPartGroup>
+{
+
+	private var m_moduleSize : Float  = 100.0; //px //todo
+	
+	public var currentShipTemplate(default,null) : ShipTemplate;
+	
+	public function new() 
+	{
+		super(ShipPartGroup);	
+	}
+	
+	override function onCompGroupAdded(group:ShipPartGroup):Void 
+	{
+		
+	}
+	
+	override function onCompGroupRemove(group:ShipPartGroup):Void 
+	{
+		
+	}
+	
+	override public function update(delta:Float):Void 
+	{
+		//super.update(delta);
+	}
+	
+	public function setShipTemplate(newTemplate : ShipTemplate) : Void
+	{
+		this.currentShipTemplate = newTemplate;
+		relocate();
+	}
+	
+	private function relocate() : Void
+	{
+		var positionId : Vector2D = null;
+		var x : Float = 0;
+		var y : Float = 0;
+		
+		if (this.currentShipTemplate == null)
+		{
+			for (group in this.m_compGroups)
+				group.display.skin.visible = false;
+		}
+		else
+		{
+			for (group in this.m_compGroups)
+			{
+				positionId = this.currentShipTemplate.getPosition(group.shipParts.id);
+				
+				x = m_moduleSize * positionId.x;
+				y = m_moduleSize * positionId.y;
+				group.position2d.position2d.ratioMode = false;
+				group.position2d.position2d.setValue(x, y);
+			}
+		}
+	}
+	
+}

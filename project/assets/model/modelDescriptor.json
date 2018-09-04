@@ -18,5 +18,9 @@
 	{
 		"name":"simplePopupBg",
 		"mainResourcePath":"img/simplePopup/bg.png"
+	},
+	{
+		"name":"tempModule",
+		"mainResourcePath":"model/module/tempmodule.png"
 	}
 ]

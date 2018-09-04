@@ -199,6 +199,7 @@ class CrewSummaryScreen extends ScreenContainer
 	private function onSelectNext() : Void
 	{
 		//todo goto next step
+		BGQApp.self.screenModule.goToScreen(ScreenName.shipScreenSelection);
 	}
 	
 }

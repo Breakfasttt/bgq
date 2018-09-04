@@ -7,6 +7,7 @@ import data.DataManager;
 import data.randomizer.CrewMemberPicker;
 import data.randomizer.NamePicker;
 import data.randomizer.NameRandomizer;
+import game.ship.ShipModule;
 import misc.name.LayerName;
 import misc.name.ScreenName;
 import openfl.Lib;
@@ -64,6 +65,7 @@ class BGQApp
 	
 	public var pointerModule(default, null) : PointerBehavioursModule;
 	
+	public var shipModule(default, null) : ShipModule;
 	
 	//debug
 	
@@ -87,9 +89,10 @@ class BGQApp
 		this.app = new Application();
 		this.app.init("Application test", 1920, 1080);
 		
-		this.datas = new DataManager();
 		
 		loadModel();
+		this.datas = new DataManager(this.entityFactory);
+		
 		createLayer();
 		prepareGameModule();
 		prepareScreen();
@@ -128,12 +131,16 @@ class BGQApp
 		this.locationModule = new LocationModule(Lib.current.stage);
 		this.pointerModule = new PointerBehavioursModule();
 		
+		this.shipModule = new ShipModule();
+		
 		this.app.addModule(this.screenModule);
 		this.app.addModule(this.popupModule);
 		this.app.addModule(this.geModule);
 		this.app.addModule(this.animRenderModule);
 		this.app.addModule(this.locationModule);
 		this.app.addModule(this.pointerModule);
+		this.app.addModule(this.shipModule);
+		
 		
 		#if debug
 		this.debugModule = new DebugModule(this.app.getEntity(LayerName.debug), this.entityFactory);
