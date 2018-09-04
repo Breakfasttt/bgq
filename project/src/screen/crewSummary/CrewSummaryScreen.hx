@@ -32,6 +32,8 @@ class CrewSummaryScreen extends ScreenContainer
 	
 	private var m_firedBtn : TextButton;
 	
+	private var m_nextBtn : TextButton;
+	
 	private var m_crewSummaryBlock : Array<Entity>;
 	
 	private var m_crewFile : CrewFileUi;
@@ -94,6 +96,14 @@ class CrewSummaryScreen extends ScreenContainer
 		m_firedBtn.textDisplay.setTextColor(0x846248);
 		m_firedBtn.textDisplay.setFontSize(50);
 		
+		m_nextBtn = new TextButton(this.entity.name + "::nextBtn", m_appRef, m_entityFactoryRef);
+		m_nextBtn.init("Décoller", "genericBtn", 99, new Anchor(0.99, 0.50), Anchor.centerRight, onSelectNext);
+		m_nextBtn.textDisplay.setFont(FontName.scienceFair);
+		m_nextBtn.textDisplay.setTextColor(0x846248);
+		m_nextBtn.textDisplay.setFontSize(50);
+		m_nextBtn.display.skin.visible = false;
+		
+		
 		m_infos = this.m_entityFactoryRef.createTextField(this.entity.name + "::infos", null, "Aucun membre d'équipage recruté", 10, Anchor.center, Anchor.center);
 		var dispInfos : TextDisplay = m_infos.getComponent(TextDisplay);
 		dispInfos.setFont(FontName.scienceFair);
@@ -110,6 +120,7 @@ class CrewSummaryScreen extends ScreenContainer
 		
 		this.add(m_recruitBtn.entity);
 		this.add(m_firedBtn.entity);
+		this.add(m_nextBtn.entity);
 		
 		cast(this.display, Screen).onInit = refreshInformation;
 	}
@@ -153,6 +164,8 @@ class CrewSummaryScreen extends ScreenContainer
 			
 		}
 		
+		m_nextBtn.display.skin.visible = false;
+		
 		if (crewsNumber == 0)
 		{
 			this.remove(m_crewFile.entity);
@@ -169,6 +182,9 @@ class CrewSummaryScreen extends ScreenContainer
 			if (m_lastSelected == -1)
 				m_lastSelected = 0;
 			m_crewFile.setCrewData(BGQApp.self.datas.crewManager.getSelectedCrew(m_lastSelected));
+			
+			if (crewsNumber == 5)
+				m_nextBtn.display.skin.visible = true;
 		}
 	}
 	
@@ -178,6 +194,11 @@ class CrewSummaryScreen extends ScreenContainer
 		var crewMember : CrewMember = BGQApp.self.datas.crewManager.getSelectedCrew(index);
 		if(crewMember!=null)
 			m_crewFile.setCrewData(crewMember);
+	}
+	
+	private function onSelectNext() : Void
+	{
+		//todo goto next step
 	}
 	
 }

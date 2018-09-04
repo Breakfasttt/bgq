@@ -10,7 +10,7 @@
 	
 	<section if="flash">
 		<window background="#f0000F" fps="60" />
-		<window width="1920" height="1080" />
+		<window width="1280" height="720" />
 		<window resizable="true" orientation="landscape" vsync="false" antialiasing="0" />
 	</section>
 	

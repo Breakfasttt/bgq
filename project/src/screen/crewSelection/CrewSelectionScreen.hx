@@ -112,13 +112,15 @@ class CrewSelectionScreen extends ScreenContainer
 		this.add(m_crewFile.entity);
 		this.add(m_slideInfos);
 			
-		cast(this.display, Screen).onOpen = onOpen;
+		cast(this.display, Screen).onInit = onOpen;
+		//cast(this.display, Screen).onOpen = onOpen;
 	}
 	
 	private function onOpen() : Void
 	{
 		m_currentCrewToHire = BGQApp.self.datas.crewManager.getGeneratedCrewMember();
 		m_crewFile.setCrewData(m_currentCrewToHire);
+		m_crewFile.slider.reinitPosition();
 		updateInfos();
 	}
 	
@@ -218,12 +220,14 @@ class CrewSelectionScreen extends ScreenContainer
 		{
 			pos.position2d.setValue(0.5, 0.5);
 			td.text.text = "Votre équipage est au complet. Appuyez sur le bouton Equipage pour l'inspecter.";
+			//m_crewFile.display.skin.visible = false;
 			this.remove(m_crewFile.entity);
 		}
 		else
 		{
 			pos.position2d.setValue(0.5, 0.1);
 			td.text.text = "Engager les membres d'équipages";
+			//m_crewFile.display.skin.visible = true;
 			this.add(m_crewFile.entity);
 		}
 	}
