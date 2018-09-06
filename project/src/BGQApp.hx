@@ -10,6 +10,7 @@ import data.randomizer.NameRandomizer;
 import game.ship.ShipModule;
 import misc.name.LayerName;
 import misc.name.ScreenName;
+import openfl.Assets;
 import openfl.Lib;
 import screen.ScreenFactory;
 import src.misc.name.FontName;
@@ -28,6 +29,7 @@ import standard.module.graphic.LocationModule;
 import standard.module.graphic.PopUpModule;
 import standard.module.graphic.ScreenModule;
 import standard.module.input.PointerBehavioursModule;
+import tools.file.CsvParser;
 import tools.math.Anchor;
 import tools.time.FrameTicker;
 
@@ -93,11 +95,21 @@ class BGQApp
 		loadModel();
 		this.datas = new DataManager(this.entityFactory);
 		
+		testParsing();
+		
 		createLayer();
 		prepareGameModule();
 		prepareScreen();
 	}
 	
+	private function testParsing() : Void
+	{
+		
+		var parser : CsvParser = new CsvParser();
+		var result = parser.parse(Assets.getText("datas/test.csv"));
+		trace(result.toString());
+		
+	}
 	
 	private function loadModel() : Void
 	{
