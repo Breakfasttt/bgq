@@ -163,7 +163,7 @@ class BGQApp
 		#if debug
 		this.debugModule = new DebugModule(this.app.getEntity(LayerName.debug), this.entityFactory);
 		this.app.addModule(this.debugModule);
-		//this.locationModule.debugShowLocGroupRect();
+		this.locationModule.debugShowLocGroupRect();
 		createDebugComponent();
 		this.debugModule.enable(true);
 		#end

@@ -45,7 +45,7 @@ class CrewSelectionScreen extends ScreenContainer
 	{
 		super(ScreenName.crewSelection, appRef, entityFactory);	
 		m_mover = new SimpleEntityMover(m_appRef.tick);
-		m_backToMenuPopup = new ConfirmPopup(this.m_appRef, this.m_entityFactoryRef, "Quitter la partie ?", "Vous êtes sur le point de quitter la partie, votre recrutement sera annulé. Etes vous sûr ?");
+		m_backToMenuPopup = new ConfirmPopup(this.m_appRef, this.m_entityFactoryRef, "popupBacktoMenu", "Quitter la partie ?", "Vous êtes sur le point de quitter la partie, votre recrutement sera annulé. Etes vous sûr ?");
 		m_backToMenuPopup.confirmCb = onBackToMenu;
 		//m_backToMenuPopup.cancelCb = onCancelBackToMenu;
 	}

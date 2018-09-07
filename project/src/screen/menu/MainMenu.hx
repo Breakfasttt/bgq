@@ -83,7 +83,7 @@ class MainMenu extends ScreenContainer
 	
 	private function createTitle() : Void
 	{
-		m_title = m_entityFactoryRef.createLocTextField("mainMenu::title", this.entity, "menuTitle", null, 99,
+		m_title = m_entityFactoryRef.createLocTextField("mainMenu::title", null, "menuTitle", null, 99,
 													new Anchor(0.5, 0.05), Anchor.center);
 													
 		var textdisplay : TextDisplay =  m_title.getComponent(TextDisplay);
@@ -93,6 +93,8 @@ class MainMenu extends ScreenContainer
 		textdisplay.setFontSize(50);
 		textdisplay.setSize(m_appRef.width, 60);
 		textdisplay.setMiscProperties(false, false, false, false, false, false);
+		textdisplay.setMouseEnable(false, false);
+		//textdisplay.text.mouseEnabled = false;
 	}
 	
 	private function onPlayBtn() : Void

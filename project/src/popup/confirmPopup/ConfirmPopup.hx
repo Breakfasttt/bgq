@@ -29,13 +29,13 @@ class ConfirmPopup extends PopupContainer
 	private var m_confirmBtn : TextButton;
 	private var m_cancelBtn : TextButton;
 
-	public function new(appRef:Application, entityFactory:EntityFactory, title : String, infos : String) 
+	public function new(appRef:Application, entityFactory:EntityFactory, entityName : String, title : String, infos : String) 
 	{
 		m_title = title;
 		m_infos = infos;
 		this.confirmCb = null;
 		this.cancelCb = null;
-		super("ConfirmPopup", appRef, entityFactory);
+		super(entityName, appRef, entityFactory);
 	}
 	
 	override function configure():Void 
@@ -49,11 +49,11 @@ class ConfirmPopup extends PopupContainer
 	
 	override function createElement():Void 
 	{
-		m_background = this.m_entityFactoryRef.createGameElement("simplePopupBg", null, "simplePopupBg", 0, Anchor.topLeft, Anchor.topLeft);
+		m_background = this.m_entityFactoryRef.createGameElement(this.entity.name + "::simplePopupBg", null, "simplePopupBg", 0, Anchor.topLeft, Anchor.topLeft);
 		
 		
-		m_titleTd = this.m_entityFactoryRef.createTextField("title", m_background, m_title, 1, new Anchor(12.55, 36.35, false), Anchor.topLeft);
-		m_infosTd = this.m_entityFactoryRef.createTextField("infos", m_background, m_infos, 2, new Anchor(38.25, 168.50, false), Anchor.topLeft);
+		m_titleTd = this.m_entityFactoryRef.createTextField(this.entity.name + "title", m_background, m_title, 1, new Anchor(12.55, 36.35, false), Anchor.topLeft);
+		m_infosTd = this.m_entityFactoryRef.createTextField(this.entity.name + "infos", m_background, m_infos, 2, new Anchor(38.25, 168.50, false), Anchor.topLeft);
 		
 		//m_titleTd = this.m_entityFactoryRef.createTextField("title", m_background, m_title, 1, new Anchor(0, 0), Anchor.topLeft);
 		//m_infosTd = this.m_entityFactoryRef.createTextField("infos", m_background, m_infos, 1, new Anchor(0, 0), Anchor.topLeft);
@@ -78,8 +78,8 @@ class ConfirmPopup extends PopupContainer
 		
 		//m_confirmBtn = this.m_entityFactoryRef.createSimpleBtn("confirmBtn", null, "genericBtn", 3, new Anchor(0.0, 571.80, false), Anchor.topCenter, onSelectConfirm);
 		//m_cancelBtn = this.m_entityFactoryRef.createSimpleBtn("cancelBtn", null, "genericBtn", 4, new Anchor(428.10, 571.80, false), Anchor.topCenter, onSelectCancel);
-		m_confirmBtn = new TextButton("confirmBtn", this.m_appRef, this.m_entityFactoryRef);
-		m_cancelBtn = new TextButton("cancelBtn", this.m_appRef, this.m_entityFactoryRef);
+		m_confirmBtn = new TextButton(this.entity.name + "confirmBtn", this.m_appRef, this.m_entityFactoryRef);
+		m_cancelBtn = new TextButton(this.entity.name + "cancelBtn", this.m_appRef, this.m_entityFactoryRef);
 		
 		m_confirmBtn.init("Confirmer", "genericBtn", 3, new Anchor(428.10, 571.80, false), Anchor.topLeft, onSelectConfirm);
 		m_cancelBtn.init("Annuler", "genericBtn", 4, new Anchor(0.0, 571.80, false), Anchor.topLeft, onSelectCancel);

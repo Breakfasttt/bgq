@@ -48,7 +48,7 @@ class CrewSummaryScreen extends ScreenContainer
 	{
 		super(ScreenName.crewSummary, appRef, entityFactory);
 		
-		m_confirmFiredPopup = new ConfirmPopup(this.m_appRef, this.m_entityFactoryRef, "Virer le membre d'équipage ?", "Vous êtes sur le point de virer un membre d'équipage, Etes vous sûr ?");
+		m_confirmFiredPopup = new ConfirmPopup(this.m_appRef, this.m_entityFactoryRef, "popupConfirmFired", "Virer le membre d'équipage ?", "Vous êtes sur le point de virer un membre d'équipage, Etes vous sûr ?");
 		m_confirmFiredPopup.confirmCb = confirmFired;
 		
 	}
