@@ -34,6 +34,7 @@
 	<haxelib name="openfl" />
 	<haxelib name="actuate" />
 	<haxelib name="msignal" />
+	<haxelib name="polygonal-printf" />
 	
 	<!-- assets -->
 	<icon path="assets/openfl.svg" />

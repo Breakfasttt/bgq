@@ -29,7 +29,9 @@ import standard.module.graphic.LocationModule;
 import standard.module.graphic.PopUpModule;
 import standard.module.graphic.ScreenModule;
 import standard.module.input.PointerBehavioursModule;
-import tools.file.CsvParser;
+import standard.module.localization.LocalizationModule;
+import tools.file.csv.CsvManager;
+import tools.file.csv.CsvParser;
 import tools.math.Anchor;
 import tools.time.FrameTicker;
 
@@ -50,6 +52,8 @@ class BGQApp
 	
 	public var entityFactory(default, null) : EntityFactory;
 	
+	public var csvManager(default, null) : CsvManager;
+	
 	
 	//module
 	
@@ -68,6 +72,8 @@ class BGQApp
 	public var pointerModule(default, null) : PointerBehavioursModule;
 	
 	public var shipModule(default, null) : ShipModule;
+	
+	public var localeModule(default, null) : LocalizationModule;
 	
 	//debug
 	
@@ -95,21 +101,13 @@ class BGQApp
 		loadModel();
 		this.datas = new DataManager(this.entityFactory);
 		
-		testParsing();
-		
+		parseCsv();
 		createLayer();
 		prepareGameModule();
 		prepareScreen();
 	}
 	
-	private function testParsing() : Void
-	{
-		
-		var parser : CsvParser = new CsvParser();
-		var result = parser.parse(Assets.getText("datas/test.csv"));
-		trace(result.toString());
-		
-	}
+
 	
 	private function loadModel() : Void
 	{
@@ -129,7 +127,13 @@ class BGQApp
 			layerEntity.add(new RatioResizer());
 			this.app.addEntity(layerEntity);
 		}
-	}	
+	}
+	
+	private function parseCsv() : Void
+	{
+		this.csvManager = new CsvManager();
+		this.csvManager.parseAndRegisterCsv("localization", Assets.getText("datas/localization/localization.csv"));
+	}
 	
 	private function prepareGameModule() : Void
 	{
@@ -142,16 +146,18 @@ class BGQApp
 		this.animRenderModule = new AnimRenderModule();
 		this.locationModule = new LocationModule(Lib.current.stage);
 		this.pointerModule = new PointerBehavioursModule();
+		this.localeModule = new LocalizationModule(this.csvManager.getCsv("localization"), "fr");
 		
 		this.shipModule = new ShipModule();
 		
-		this.app.addModule(this.screenModule);
-		this.app.addModule(this.popupModule);
-		this.app.addModule(this.geModule);
-		this.app.addModule(this.animRenderModule);
-		this.app.addModule(this.locationModule);
-		this.app.addModule(this.pointerModule);
-		this.app.addModule(this.shipModule);
+		this.app.addModule(this.screenModule,0);
+		this.app.addModule(this.popupModule,1);
+		this.app.addModule(this.geModule,2);
+		this.app.addModule(this.animRenderModule,3);
+		this.app.addModule(this.locationModule,4);
+		this.app.addModule(this.pointerModule,5);
+		this.app.addModule(this.shipModule,6);
+		this.app.addModule(this.localeModule,7);
 		
 		
 		#if debug
