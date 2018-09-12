@@ -52,7 +52,7 @@ class BGQApp
 	
 	public var entityFactory(default, null) : EntityFactory;
 	
-	public var csvManager(default, null) : CsvManager;
+	
 	
 	
 	//module
@@ -95,13 +95,12 @@ class BGQApp
 		FontName.init();
 		
 		this.app = new Application();
-		this.app.init("Application test", 1920, 1080);
+		this.app.init("Bubble Galaxie quest", 1920, 1080);
 		
 		
 		loadModel();
 		this.datas = new DataManager(this.entityFactory);
 		
-		parseCsv();
 		createLayer();
 		prepareGameModule();
 		prepareScreen();
@@ -129,12 +128,6 @@ class BGQApp
 		}
 	}
 	
-	private function parseCsv() : Void
-	{
-		this.csvManager = new CsvManager();
-		this.csvManager.parseAndRegisterCsv("localization", Assets.getText("datas/localization/localization.csv"));
-	}
-	
 	private function prepareGameModule() : Void
 	{
 		this.screenModule = new ScreenModule(this.layerModule.getLayer(LayerName.screens));
@@ -146,7 +139,11 @@ class BGQApp
 		this.animRenderModule = new AnimRenderModule();
 		this.locationModule = new LocationModule(Lib.current.stage);
 		this.pointerModule = new PointerBehavioursModule();
-		this.localeModule = new LocalizationModule(this.csvManager.getCsv("localization"), "fr");
+		this.localeModule = new LocalizationModule("fr");
+		
+		this.localeModule.addLocalizationFile(this.datas.csvManager.getCsv("localeMenu"));
+		this.localeModule.addLocalizationFile(this.datas.csvManager.getCsv("localeShipPart"));
+		
 		
 		this.shipModule = new ShipModule();
 		

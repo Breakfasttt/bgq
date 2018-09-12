@@ -12,11 +12,16 @@ import data.ship.types.ShipPartType;
 class ShipPartComp extends Component
 {
 
-	public var id(default,null) : String;
+	public static var shipPartSizeX : Float  = 100.0; 
+	public static var shipPartSizeY : Float  = 100.0; 
 	
-	public var name(default,null) : String;
+	public var id(default, null) : String;
 	
-	public var description(default,null) : String;
+	public var modelId(default, null) : String;
+	
+	public var nameLocaleKey(default,null) : String;
+	
+	public var descLocaleKey(default,null) : String;
 	
 	public var type(default,null) : ShipPartType;
 	
@@ -33,6 +38,7 @@ class ShipPartComp extends Component
 	public var level(default,null) : ShipPartLevel;
 	
 	public function new(id : String, 
+						modelId : String,
 						name : String,
 						description : String, 
 						type : ShipPartType, 
@@ -43,8 +49,9 @@ class ShipPartComp extends Component
 		
 		super();
 		this.id = id;
-		this.name = name;
-		this.description = description;
+		this.modelId = modelId;
+		this.nameLocaleKey = name;
+		this.descLocaleKey = description;
 		this.type = type;
 		this.baseResourceGeneration = baseResourceGeneration;
 		this.baseResourceConsumption = baseResourceConsumption;

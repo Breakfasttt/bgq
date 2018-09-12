@@ -2,12 +2,15 @@ package screen.shipSelection;
 
 import core.Application;
 import core.entity.Entity;
+import data.ship.part.ShipPartComp;
 import misc.name.ScreenName;
 import openfl.text.TextFormatAlign;
 import src.BGQApp;
 import src.misc.name.FontName;
 import standard.components.graphic.display.impl.Screen;
 import standard.components.graphic.display.impl.TextDisplay;
+import standard.components.space2d.Position2D;
+import standard.components.space2d.UtilitySize2D;
 import standard.factory.EntityFactory;
 import standard.utils.uicontainer.impl.ScreenContainer;
 import standard.utils.uicontainer.impl.TextButton;
@@ -27,6 +30,10 @@ class ShipSelectionScreen extends ScreenContainer
 	private var m_swapTemplate : TextButton;
 	
 	private var m_currentTemplate : Int;
+	
+	private var m_shipContainer : Entity;
+	
+	private var m_shipPosition : Position2D;
 	
 	public function new(appRef:Application, entityFactory:EntityFactory) 
 	{
@@ -61,15 +68,22 @@ class ShipSelectionScreen extends ScreenContainer
 		m_swapTemplate.textDisplay.setFont(FontName.scienceFair);
 		m_swapTemplate.textDisplay.setTextColor(0x846248);
 		
-		this.add(m_infos);
-		this.add(m_swapTemplate.entity);
+		m_shipContainer = m_entityFactoryRef.createGameElement(this.entity.name + "::shipContainer", this.entity, "", 0, Anchor.topLeft, Anchor.center);
 		
+		var shipNumber : Int = BGQApp.self.datas.shipParts.getShipPartNumb();
+		m_shipContainer.add(new UtilitySize2D(shipNumber * ShipPartComp.shipPartSizeX , shipNumber * ShipPartComp.shipPartSizeY));
+		m_shipPosition = m_shipContainer.getComponent(Position2D);
+		m_shipPosition.position2d.setValue(0.5, 0.5);
+		
+		this.add(m_infos);
+		this.add(m_shipContainer);
+		this.add(m_swapTemplate.entity);
 	}
 	
 	private function  onInit() : Void
 	{
 		m_currentTemplate = 0;
-		BGQApp.self.datas.shipParts.setShipPartParentEntity(this.entity);
+		BGQApp.self.datas.shipParts.setShipPartParentEntity(m_shipContainer);
 		BGQApp.self.datas.shipParts.addShipPartToApp(m_appRef);
 		updateTemplate();
 	}

@@ -1,0 +1,24 @@
+id;fr;en;
+shipPartName0;Générateur;Generator;
+shipPartName1;Centre de Navigation;Navigation center;
+shipPartName2;Salle des moteurs;Engine room;
+shipPartName3;Système de survie;Healthy system;
+shipPartName4;Générateur de bouclier;Shield generator;
+shipPartName5;cGénérateur de gravité;Gravity generator;
+shipPartName6;Centre de défense;Defence center;
+shipPartName7;Centre médical;Hospital;
+shipPartName8;Soute;Storage;
+shipPartName9;Hangar;Hangar;
+shipPartName10;;Quartier de l'équipage;Staff Room
+;;;
+shipPartDesc0;Fournit l’énergie du vaisseau;todo;
+shipPartDesc1;Permet la communication entre les divers modules du vaisseau et la vérification des systèmes;todo;
+shipPartDesc2;Permet au vaisseau d'avancer;todo;
+shipPartDesc3;Génère de l'oxygène et synthétise la nourriture nécessaire à l'équipage;todo;
+shipPartDesc4;Active le bouclier qui protége l'intégrité du vaisseau;todo;
+shipPartDesc5;Génére une gravité artificielle à l'intérieur du vaisseau;todo;
+shipPartDesc6;Contrôle l'armement du vaisseau;todo;
+shipPartDesc7;Soigne les membres de l'équipage situé dans ce module;todo;
+shipPartDesc8;Génére des ressources;todo;
+shipPartDesc9;Stocke les drones et en permet l'utilisation;todo;
+shipPartDesc10;Repose et entraine passivement le personnel présent dans le module;todo;

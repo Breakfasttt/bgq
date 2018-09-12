@@ -4,3 +4,8 @@ menuOptions;Options;Options
 menuCredits;Crédits;Credits
 menuTitle;Bubble World : Une aventure galactique (nom temporaire);Bubble World : A galactic adventure (temporary name)
 menuLocale;Français;English
+;;
+;;
+crewSummaryRecruitBtn;Recrutement;Recruit Office
+crewSummaryHireBtn;Licencier;Hire
+crewSummaryShipSelectionBtn;Hangar;Hanger

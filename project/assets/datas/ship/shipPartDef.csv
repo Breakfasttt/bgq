@@ -1,0 +1,12 @@
+id;modelId;nameLocaleKey;descLocaleKey;type;baseResourceGeneration;baseResourceConsumption
+shipPart0;tempModule;shipPartName0;shipPartDesc0;primary;10;2
+shipPart1;tempModule;shipPartName1;shipPartDesc1;primary;0;2
+shipPart2;tempModule;shipPartName2;shipPartDesc2;primary;0;2
+shipPart3;tempModule;shipPartName3;shipPartDesc3;primary;1;5
+shipPart4;tempModule;shipPartName4;shipPartDesc4;secondary;0;1
+shipPart5;tempModule;shipPartName5;shipPartDesc5;secondary;0;1
+shipPart6;tempModule;shipPartName6;shipPartDesc6;secondary;0;1
+shipPart7;tempModule;shipPartName7;shipPartDesc7;secondary;0;1
+shipPart8;tempModule;shipPartName8;shipPartDesc8;secondary;3;1
+shipPart9;tempModule;shipPartName9;shipPartDesc9;secondary;0;1
+shipPart10;tempModule;shipPartName10;shipPartDesc10;secondary;0;1

@@ -2,6 +2,7 @@ package game.ship;
 
 import core.module.Module;
 import data.ship.ShipTemplate;
+import data.ship.part.ShipPartComp;
 import data.ship.part.ShipPartGroup;
 import tools.math.Vector2D;
 
@@ -12,7 +13,7 @@ import tools.math.Vector2D;
 class ShipModule extends Module<ShipPartGroup>
 {
 
-	private var m_moduleSize : Float  = 100.0; //px //todo
+	
 	
 	public var currentShipTemplate(default,null) : ShipTemplate;
 	
@@ -59,8 +60,8 @@ class ShipModule extends Module<ShipPartGroup>
 			{
 				positionId = this.currentShipTemplate.getPosition(group.shipParts.id);
 				
-				x = m_moduleSize * positionId.x;
-				y = m_moduleSize * positionId.y;
+				x = positionId.x * ShipPartComp.shipPartSizeX;
+				y = positionId.y * ShipPartComp.shipPartSizeY;
 				group.position2d.position2d.ratioMode = false;
 				group.position2d.position2d.setValue(x, y);
 			}

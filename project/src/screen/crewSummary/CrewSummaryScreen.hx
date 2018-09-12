@@ -17,6 +17,7 @@ import standard.components.graphic.display.impl.TextDisplay;
 import standard.components.input.PointerBehavioursComponent;
 import standard.components.input.utils.EntityAsSimpleButton;
 import standard.factory.EntityFactory;
+import standard.utils.uicontainer.impl.LocTextButton;
 import standard.utils.uicontainer.impl.ScreenContainer;
 import standard.utils.uicontainer.impl.TextButton;
 import tools.math.Anchor;
@@ -28,11 +29,11 @@ import tools.math.Anchor;
 class CrewSummaryScreen extends ScreenContainer 
 {
 
-	private var m_recruitBtn : TextButton;
+	private var m_recruitBtn : LocTextButton;
 	
-	private var m_firedBtn : TextButton;
+	private var m_firedBtn : LocTextButton;
 	
-	private var m_nextBtn : TextButton;
+	private var m_nextBtn : LocTextButton;
 	
 	private var m_crewSummaryBlock : Array<Entity>;
 	
@@ -84,20 +85,23 @@ class CrewSummaryScreen extends ScreenContainer
 			m_crewSummaryBlock.push(entity);
 		}
 		
-		m_recruitBtn = new TextButton(this.entity.name + "::recruitBtn", m_appRef, m_entityFactoryRef);
-		m_recruitBtn.init("Recrutement", "genericBtn", 6, new Anchor(0.33, 0.95), Anchor.botCenter, onSelectRecruitBtn);
+		m_recruitBtn = new LocTextButton(this.entity.name + "::recruitBtn", m_appRef, m_entityFactoryRef);
+		m_recruitBtn.init("Recrutement", "genericBtn", 6, new Anchor(0.33, 0.97), Anchor.botCenter, onSelectRecruitBtn);
+		m_recruitBtn.setLoc("crewSummaryRecruitBtn");
 		m_recruitBtn.textDisplay.setFont(FontName.scienceFair);
 		m_recruitBtn.textDisplay.setTextColor(0x846248);
 		m_recruitBtn.textDisplay.setFontSize(50);
 		
-		m_firedBtn = new TextButton(this.entity.name + "::firedBtn", m_appRef, m_entityFactoryRef);
-		m_firedBtn.init("Virer", "genericBtn", 7, new Anchor(0.66, 0.95), Anchor.botCenter, onSelectFiredBtn);
+		m_firedBtn = new LocTextButton(this.entity.name + "::firedBtn", m_appRef, m_entityFactoryRef);
+		m_firedBtn.init("Virer", "genericBtn", 7, new Anchor(0.66, 0.97), Anchor.botCenter, onSelectFiredBtn);
+		m_firedBtn.setLoc("crewSummaryHireBtn");
 		m_firedBtn.textDisplay.setFont(FontName.scienceFair);
 		m_firedBtn.textDisplay.setTextColor(0x846248);
 		m_firedBtn.textDisplay.setFontSize(50);
 		
-		m_nextBtn = new TextButton(this.entity.name + "::nextBtn", m_appRef, m_entityFactoryRef);
-		m_nextBtn.init("Décoller", "genericBtn", 99, new Anchor(0.99, 0.50), Anchor.centerRight, onSelectNext);
+		m_nextBtn = new LocTextButton(this.entity.name + "::nextBtn", m_appRef, m_entityFactoryRef);
+		m_nextBtn.init("Hangar", "genericBtn", 99, new Anchor(0.97, 0.50), Anchor.centerRight, onSelectNext, null, null, null, 0.7, 0.7);
+		m_nextBtn.setLoc("crewSummaryShipSelectionBtn");
 		m_nextBtn.textDisplay.setFont(FontName.scienceFair);
 		m_nextBtn.textDisplay.setTextColor(0x846248);
 		m_nextBtn.textDisplay.setFontSize(50);
