@@ -22,5 +22,13 @@
 	{
 		"name":"tempModule",
 		"mainResourcePath":"model/module/tempmodule.png"
+	},
+	{
+		"name":"lightEffect",
+		"mainResourcePath":"model/lightEffect/lightEffect.flss"
+	},
+	{
+		"name":"spatioport",
+		"mainResourcePath":"img/misc/spatioport.png"
 	}
 ]

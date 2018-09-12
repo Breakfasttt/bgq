@@ -23,17 +23,16 @@
     <class path="C:\dev\HaxeToolkit\haxe\lib\polygonal-printf\1,0,2-beta" />
     <class path="src" />
     <class path="..\..\..\pgk\pgk\src" />
-    <class path="C:\dev\HaxeToolkit\haxe\lib\openfl\8,4,1\externs\flash" />
-    <class path="bin\flash\haxe" />
+    <class path="bin\windows\haxe" />
   </classpaths>
   <!-- Build options -->
   <build>
-    <option directives="openfl=8.4.1&#xA;lime=7.0.0&#xA;actuate=1.8.7&#xA;msignal=1.2.4&#xA;polygonal-printf=1.0.2-beta&#xA;tools=7.0.0&#xA;no-compilation&#xA;openfl-flash&#xA;web&#xA;display" />
+    <option directives="openfl=8.4.1&#xA;lime=7.0.0&#xA;actuate=1.8.7&#xA;msignal=1.2.4&#xA;polygonal-printf=1.0.2-beta&#xA;lime-harfbuzz&#xA;lime-openal&#xA;tools=7.0.0&#xA;lime-cairo&#xA;lime-opengl&#xA;no-compilation&#xA;native&#xA;lime-curl&#xA;lime-native&#xA;lime-vorbis&#xA;openfl-native&#xA;lime-cffi&#xA;windows&#xA;desktop&#xA;display" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
     <option mainClass="ApplicationMain" />
     <option enabledebug="True" />
-    <option additional="--macro openfl._internal.utils.ExtraParams.include()&#xA;--macro lime._internal.macros.DefineMacro.run()&#xA;-swf-version 17&#xA;-debug " />
+    <option additional="--macro openfl._internal.utils.ExtraParams.include()&#xA;--macro lime._internal.macros.DefineMacro.run()&#xA;--remap flash:openfl&#xA;-debug " />
   </build>
   <!-- haxelib libraries -->
   <haxelib>

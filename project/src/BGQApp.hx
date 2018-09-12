@@ -12,8 +12,10 @@ import misc.name.LayerName;
 import misc.name.ScreenName;
 import openfl.Assets;
 import openfl.Lib;
+import openfl.ui.Keyboard;
 import screen.ScreenFactory;
 import src.misc.name.FontName;
+import standard.components.debug.impl.DebugKeyBinding;
 import standard.components.debug.impl.ShowFps;
 import standard.components.debug.impl.ShowMousePosition;
 import standard.components.graphic.display.impl.Layer;
@@ -106,8 +108,6 @@ class BGQApp
 		prepareScreen();
 	}
 	
-
-	
 	private function loadModel() : Void
 	{
 		this.modelLibrary = new ModelLibrary(new ModelFactory());
@@ -160,7 +160,7 @@ class BGQApp
 		#if debug
 		this.debugModule = new DebugModule(this.app.getEntity(LayerName.debug), this.entityFactory);
 		this.app.addModule(this.debugModule);
-		this.locationModule.debugShowLocGroupRect();
+		
 		createDebugComponent();
 		this.debugModule.enable(true);
 		#end
@@ -181,8 +181,51 @@ class BGQApp
 		var mouseEnt : Entity = new Entity("debugMouse");
 		mouseEnt.add(new ShowMousePosition(this.layerModule));
 		
+		var keyboardBindingEnt : Entity = new Entity("debugBinding");
+		var keyboardBinding : DebugKeyBinding = new DebugKeyBinding();
+		keyboardBinding.addCallBack(Keyboard.L, showLayer);
+		keyboardBinding.addCallBack(Keyboard.M, showMousePos);
+		keyboardBinding.addCallBack(Keyboard.F, showFps);
+		keyboardBindingEnt.add(keyboardBinding);
+		
 		this.app.addEntity(fpsEnt);
 		this.app.addEntity(mouseEnt);
+		this.app.addEntity(keyboardBindingEnt);
 	}
 	
+	
+	private function showLayer() : Void
+	{
+		this.locationModule.debugShowLocGroupRect();
+	}
+	
+	private function showMousePos() : Void
+	{
+		var mDebugEnt : Entity = this.app.getEntity("debugMouse");
+		
+		if (mDebugEnt == null)
+			return;
+			
+		var dComp : ShowMousePosition = mDebugEnt.getComponent(ShowMousePosition);
+		
+		if (dComp == null)
+			return;
+			
+		dComp.show();	
+	}
+	
+	private function showFps() : Void
+	{
+		var mDebugEnt : Entity = this.app.getEntity("debugFps");
+		
+		if (mDebugEnt == null)
+			return;
+			
+		var dComp : ShowFps = mDebugEnt.getComponent(ShowFps);
+		
+		if (dComp == null)
+			return;
+			
+		dComp.show();	
+	}
 }
