@@ -8,7 +8,7 @@ import tools.math.Vector2D;
 /**
  * Gére les positions des modules d'un vaisseaux.
  * Prend un Json en entrée.
- * Le vaisseau est un tableau de 12 lignes par 12 colonnes. Les positions sont défini comme suit : 
+ * Le vaisseau est un tableau de 5 lignes par 8 colonnes. Les positions sont défini comme suit : 
  * 
  * 
  * @author Breakyt
@@ -16,6 +16,9 @@ import tools.math.Vector2D;
 class ShipTemplate 
 {
 
+	public static var shipLine : Int = 5;
+	public static var shipRaw : Int = 8;
+	
 	public var name(default,null) : String;
 	//
 	private var m_datas : Dynamic;

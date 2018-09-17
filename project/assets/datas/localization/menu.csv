@@ -9,3 +9,7 @@ menuLocale;Français;English
 crewSummaryRecruitBtn;Recrutement;Recruit Office
 crewSummaryHireBtn;Licencier;Hire
 crewSummaryShipSelectionBtn;Hangar;Hangar
+;;
+;;
+shipSelectionSwapShip;Changer de vaisseau;Swap Ship
+shipSelectionStartButton;Décoller;Fly off
