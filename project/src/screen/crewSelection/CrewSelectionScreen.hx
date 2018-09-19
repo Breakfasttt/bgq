@@ -128,6 +128,9 @@ class CrewSelectionScreen extends ScreenContainer
 	
 	private function onBackToMenu() : Void
 	{
+		this.invertTransition();
+		BGQApp.self.screenFactory.mainMenuScreen.invertTransition();
+		
 		BGQApp.self.datas.crewManager.reset();
 		BGQApp.self.screenModule.goToScreen(ScreenName.mainMenu);
 	}

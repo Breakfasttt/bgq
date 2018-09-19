@@ -28,6 +28,8 @@ class ConfirmPopup extends PopupContainer
 	private var m_infosTd : Entity;
 	private var m_confirmBtn : TextButton;
 	private var m_cancelBtn : TextButton;
+	
+	private var m_canceled : Bool;
 
 	public function new(appRef:Application, entityFactory:EntityFactory, entityName : String, title : String, infos : String) 
 	{
@@ -36,6 +38,7 @@ class ConfirmPopup extends PopupContainer
 		this.confirmCb = null;
 		this.cancelCb = null;
 		super(entityName, appRef, entityFactory);
+		m_canceled = false;
 	}
 	
 	override function configure():Void 
@@ -102,18 +105,23 @@ class ConfirmPopup extends PopupContainer
 	private function onSelectConfirm() : Void
 	{
 		this.closePopup();
-		
-		if (this.confirmCb != null)
-			this.confirmCb();
-			
+		m_canceled = false;
 	}
 	
 	private function onSelectCancel() : Void
 	{
 		this.closePopup();
-		
-		if (this.cancelCb != null)
+		m_canceled = true;
+	}
+	
+	override function onCustomClose():Void 
+	{
+		if (!m_canceled && this.confirmCb != null)
+			this.confirmCb();
+		else if (m_canceled && this.cancelCb != null)
 			this.cancelCb();
+			
+		m_canceled = false;
 	}
 	
 }

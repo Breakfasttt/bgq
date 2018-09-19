@@ -134,6 +134,9 @@ class CrewSummaryScreen extends ScreenContainer
 	
 	private function onSelectRecruitBtn() : Void
 	{
+		
+		this.invertTransition();
+		BGQApp.self.screenFactory.crewSelectionScreen.invertTransition();
 		BGQApp.self.screenModule.goToScreen(ScreenName.crewSelection);
 	}
 	
