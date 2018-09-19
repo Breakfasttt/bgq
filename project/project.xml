@@ -7,6 +7,7 @@
 	
 	<!-- output -->
 	<app main="Main" file="BGQ" path="bin" />
+	<app preloader="BGQPreloader" /> 
 	
 	<section if="flash">
 		<window background="#f0000F" fps="60" />
