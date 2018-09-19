@@ -104,8 +104,9 @@ class ShipSelectionScreen extends ScreenContainer
 		
 		m_shipContainer.add(new UtilitySize2D(ShipTemplate.shipRaw * ShipPartComp.shipPartSizeX , ShipTemplate.shipLine * ShipPartComp.shipPartSizeY));
 		m_shipPosition = m_shipContainer.getComponent(Position2D);
-		m_shipPosition.position2d.ratioMode = false;
-		m_shipPosition.position2d.setValue(this.utilitySize.width/2.0, this.utilitySize.height/2.0);
+		//m_shipPosition.position2d.ratioMode = false;
+		//m_shipPosition.position2d.setValue(this.utilitySize.width/2.0, this.utilitySize.height/2.0);
+		m_shipPosition.position2d.setValue(0.5, 0.5);
 		
 		
 		m_spatioport = m_entityFactoryRef.createGameElement(this.entity.name+ "::spatioport", this.entity, "spatioport", 2, Anchor.topRight, Anchor.topRight);
@@ -163,12 +164,13 @@ class ShipSelectionScreen extends ScreenContainer
 		
 		m_tempPosition.copy(m_shipPosition.position2d.anchor);
 		m_mover.setEntityRef(m_shipContainer);
-		m_mover.moveTo( -m_shipContainer.getComponent(UtilitySize2D).width, m_tempPosition.y, 300 ,onShipOut);
+		m_mover.moveTo( -0.4, m_tempPosition.y, 0.2 ,onShipOut);
 	}
 	
 	private function onShipOut() : Void
 	{
 		//m_shipPosition.position2d.setValue(m_tempPosition.x, m_tempPosition.y);
+		//m_mover.moveTo( -1.0, m_tempPosition.y, 0.2 ,null);
 		this.m_opener.setCloseTransition(m_fadeTransition);
 		BGQApp.self.screenModule.goToScreen(ScreenName.gameScreen, false);
 	}
