@@ -1,4 +1,4 @@
-package game.ship;
+package module.ship;
 
 import core.module.Module;
 import data.ship.ShipTemplate;
@@ -10,7 +10,7 @@ import tools.math.Vector2D;
  * ...
  * @author Breakyt
  */
-class ShipModule extends Module<ShipPartGroup>
+class ShipTemplateModule extends Module<ShipPartGroup>
 {
 
 	

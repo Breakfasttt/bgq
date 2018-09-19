@@ -7,7 +7,7 @@ import data.DataManager;
 import data.randomizer.CrewMemberPicker;
 import data.randomizer.NamePicker;
 import data.randomizer.NameRandomizer;
-import game.ship.ShipModule;
+import module.ship.ShipTemplateModule;
 import misc.name.LayerName;
 import misc.name.ScreenName;
 import openfl.Assets;
@@ -73,7 +73,7 @@ class BGQApp
 	
 	public var pointerModule(default, null) : PointerBehavioursModule;
 	
-	public var shipModule(default, null) : ShipModule;
+	public var shipModule(default, null) : ShipTemplateModule;
 	
 	public var localeModule(default, null) : LocalizationModule;
 	
@@ -145,7 +145,7 @@ class BGQApp
 		this.localeModule.addLocalizationFile(this.datas.csvManager.getCsv("localeShipPart"));
 		
 		
-		this.shipModule = new ShipModule();
+		this.shipModule = new ShipTemplateModule();
 		
 		this.app.addModule(this.screenModule,0);
 		this.app.addModule(this.popupModule,1);

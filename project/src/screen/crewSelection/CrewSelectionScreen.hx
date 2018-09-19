@@ -111,12 +111,9 @@ class CrewSelectionScreen extends ScreenContainer
 		this.add(m_crewBtn.entity);
 		this.add(m_crewFile.entity);
 		this.add(m_slideInfos);
-			
-		cast(this.display, Screen).onInit = onOpen;
-		//cast(this.display, Screen).onOpen = onOpen;
 	}
 	
-	private function onOpen() : Void
+	override function onCustomScreenOpen():Void 
 	{
 		m_currentCrewToHire = BGQApp.self.datas.crewManager.getGeneratedCrewMember();
 		m_crewFile.setCrewData(m_currentCrewToHire);

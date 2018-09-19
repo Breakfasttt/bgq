@@ -58,15 +58,14 @@ class ShipSelectionScreen extends ScreenContainer
 	{
 		super(ScreenName.shipScreenSelection, appRef, entityFactory);
 		
+		m_mover = new SimpleEntityMover(this.m_appRef.tick);
+		m_tempPosition = new Vector2D();
 	}
 	
 	override function configure():Void 
 	{
 		super.configure();
 		
-		cast(this.display, Screen).onInit = onInit;
-		m_mover = new SimpleEntityMover(this.m_appRef.tick);
-		m_tempPosition = new Vector2D();
 	}
 	
 	override function createElement():Void 
@@ -81,7 +80,6 @@ class ShipSelectionScreen extends ScreenContainer
 		m_infosDisplay.setFontSize(50);
 		m_infosDisplay.setSize(600, 60);
 		m_infosDisplay.setMiscProperties(false, false, false, false, false, false);
-		
 		
 		m_swapTemplateBtn = new LocTextButton("ShipSelectionScreen::swapTemplate", this.m_appRef, this.m_entityFactoryRef);
 		m_swapTemplateBtn.init("Changer de vaisseau", "genericBtn", 4 , new Anchor(0.04, 0.11), Anchor.centerLeft, onSwapTemplate);
@@ -126,14 +124,13 @@ class ShipSelectionScreen extends ScreenContainer
 		this.add(m_light2);
 	}
 	
-	private function  onInit() : Void
+	override function onCustomScreenInit():Void 
 	{
 		m_currentTemplate = 0;
 		BGQApp.self.datas.shipParts.setShipPartParentEntity(m_shipContainer);
 		BGQApp.self.datas.shipParts.addShipPartToApp(m_appRef);
 		updateTemplate();
 	}
-	
 	
 	private function onSwapTemplate() : Void
 	{

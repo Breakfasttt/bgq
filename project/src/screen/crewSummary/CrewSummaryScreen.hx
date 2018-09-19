@@ -125,8 +125,11 @@ class CrewSummaryScreen extends ScreenContainer
 		this.add(m_recruitBtn.entity);
 		this.add(m_firedBtn.entity);
 		this.add(m_nextBtn.entity);
-		
-		cast(this.display, Screen).onInit = refreshInformation;
+	}
+	
+	override function onCustomScreenInit():Void 
+	{
+		refreshInformation();
 	}
 	
 	private function onSelectRecruitBtn() : Void

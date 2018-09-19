@@ -11,5 +11,6 @@ class ScreenName
 	public static var crewSelection : String = "crewSelectionScreen";
 	public static var crewSummary : String = "crewSummaryScreen";
 	public static var shipScreenSelection : String = "shipScreenSelection";
+	public static var gameScreen : String = "gameScreen";
 	
 }
