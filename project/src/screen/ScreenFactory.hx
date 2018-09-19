@@ -4,6 +4,7 @@ import core.entity.Entity;
 import misc.name.LayerName;
 import screen.crewSelection.CrewSelectionScreen;
 import screen.crewSummary.CrewSummaryScreen;
+import screen.game.GameScreen;
 import screen.menu.MainMenu;
 import screen.shipSelection.ShipSelectionScreen;
 import standard.factory.EntityFactory;
@@ -24,6 +25,7 @@ class ScreenFactory
 	public var crewSelectionScreen(default, null) : CrewSelectionScreen;
 	public var crewSelectionSummary(default, null) : CrewSummaryScreen;
 	public var shipSelection(default, null) : ShipSelectionScreen;
+	public var gameScreen(default, null) : GameScreen;
 	
 	public function new(appRef : Application, entityFactory : EntityFactory) 
 	{
@@ -41,6 +43,7 @@ class ScreenFactory
 		this.crewSelectionScreen = new CrewSelectionScreen(m_appRef, m_entityFactoryRef);
 		this.crewSelectionSummary = new CrewSummaryScreen(m_appRef, m_entityFactoryRef);
 		this.shipSelection = new ShipSelectionScreen(m_appRef, m_entityFactoryRef);
+		this.gameScreen = new GameScreen(m_appRef, m_entityFactoryRef);
 		
 		
 		this.m_appRef.addEntity(this.m_bg);
@@ -48,6 +51,7 @@ class ScreenFactory
 		this.m_appRef.addEntity(this.crewSelectionScreen.entity);
 		this.m_appRef.addEntity(this.crewSelectionSummary.entity);
 		this.m_appRef.addEntity(this.shipSelection.entity);
+		this.m_appRef.addEntity(this.gameScreen.entity);
 	}
 	
 }

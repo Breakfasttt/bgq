@@ -7,6 +7,7 @@ import data.ship.ShipTemplate;
 import data.ship.part.ShipPartComp;
 import misc.mover.SimpleEntityMover;
 import misc.name.ScreenName;
+import misc.transition.FadeTransition;
 import openfl.text.TextFormatAlign;
 import src.BGQApp;
 import src.misc.name.FontName;
@@ -54,12 +55,15 @@ class ShipSelectionScreen extends ScreenContainer
 	
 	private var m_tempPosition : Vector2D;
 	
+	private var m_fadeTransition : FadeTransition;
+	
 	public function new(appRef:Application, entityFactory:EntityFactory) 
 	{
 		super(ScreenName.shipScreenSelection, appRef, entityFactory);
 		
 		m_mover = new SimpleEntityMover(this.m_appRef.tick);
 		m_tempPosition = new Vector2D();
+		m_fadeTransition = new FadeTransition();
 	}
 	
 	override function configure():Void 
@@ -164,6 +168,8 @@ class ShipSelectionScreen extends ScreenContainer
 	
 	private function onShipOut() : Void
 	{
-		m_shipPosition.position2d.setValue(m_tempPosition.x, m_tempPosition.y);
+		//m_shipPosition.position2d.setValue(m_tempPosition.x, m_tempPosition.y);
+		this.m_opener.setCloseTransition(m_fadeTransition);
+		BGQApp.self.screenModule.goToScreen(ScreenName.gameScreen, false);
 	}
 }

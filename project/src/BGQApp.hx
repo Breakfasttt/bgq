@@ -4,13 +4,9 @@ import assets.model.library.ModelLibrary;
 import core.Application;
 import core.entity.Entity;
 import data.DataManager;
-import data.randomizer.CrewMemberPicker;
-import data.randomizer.NamePicker;
-import data.randomizer.NameRandomizer;
-import module.ship.ShipTemplateModule;
 import misc.name.LayerName;
 import misc.name.ScreenName;
-import openfl.Assets;
+import module.ship.ShipTemplateModule;
 import openfl.Lib;
 import openfl.ui.Keyboard;
 import screen.ScreenFactory;
@@ -20,7 +16,6 @@ import standard.components.debug.impl.ShowFps;
 import standard.components.debug.impl.ShowMousePosition;
 import standard.components.graphic.display.impl.Layer;
 import standard.components.space2d.UtilitySize2D;
-import standard.components.space2d.resizer.Resizer;
 import standard.components.space2d.resizer.impl.RatioResizer;
 import standard.factory.EntityFactory;
 import standard.module.debug.DebugModule;
@@ -32,10 +27,7 @@ import standard.module.graphic.PopUpModule;
 import standard.module.graphic.ScreenModule;
 import standard.module.input.PointerBehavioursModule;
 import standard.module.localization.LocalizationModule;
-import tools.file.csv.CsvManager;
-import tools.file.csv.CsvParser;
 import tools.math.Anchor;
-import tools.time.FrameTicker;
 
 /**
  * ...
@@ -53,9 +45,6 @@ class BGQApp
 	public var modelLibrary(default, null) : ModelLibrary;
 	
 	public var entityFactory(default, null) : EntityFactory;
-	
-	
-	
 	
 	//module
 	
