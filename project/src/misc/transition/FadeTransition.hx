@@ -93,6 +93,9 @@ class FadeTransition extends EntityTransition
 	{
 		m_shadeMask.alpha = m_toAlpha;
 		this.onTransition = false;
+		
+		if(m_toAlpha <= 0.0)
+			m_display.skin.removeChild(m_shadeMask);
 		this.finished.dispatch();
 	}
 	

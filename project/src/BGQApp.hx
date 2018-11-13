@@ -7,7 +7,9 @@ import data.DataManager;
 import misc.name.LayerName;
 import misc.name.ScreenName;
 import module.ship.ShipTemplateModule;
+import openfl.Assets;
 import openfl.Lib;
+import openfl.media.Sound;
 import openfl.ui.Keyboard;
 import screen.ScreenFactory;
 import src.misc.name.FontName;
@@ -15,6 +17,8 @@ import standard.components.debug.impl.DebugKeyBinding;
 import standard.components.debug.impl.ShowFps;
 import standard.components.debug.impl.ShowMousePosition;
 import standard.components.graphic.display.impl.Layer;
+import standard.components.sound.Audio;
+import standard.components.sound.AudioType;
 import standard.components.space2d.UtilitySize2D;
 import standard.components.space2d.resizer.impl.RatioResizer;
 import standard.factory.EntityFactory;
@@ -170,11 +174,14 @@ class BGQApp
 		var mouseEnt : Entity = new Entity("debugMouse");
 		mouseEnt.add(new ShowMousePosition(this.layerModule));
 		
+		createAudioTest();
+		
 		var keyboardBindingEnt : Entity = new Entity("debugBinding");
 		var keyboardBinding : DebugKeyBinding = new DebugKeyBinding();
 		keyboardBinding.addCallBack(Keyboard.L, showLayer);
 		keyboardBinding.addCallBack(Keyboard.M, showMousePos);
 		keyboardBinding.addCallBack(Keyboard.F, showFps);
+		keyboardBinding.addCallBack(Keyboard.S, testSound);
 		keyboardBindingEnt.add(keyboardBinding);
 		
 		this.app.addEntity(fpsEnt);
@@ -216,5 +223,18 @@ class BGQApp
 			return;
 			
 		dComp.show();	
+	}
+	
+	private var test : Audio;
+	
+	private function createAudioTest() : Void
+	{
+		var audio : Sound = Assets.getSound("audios/fx/clic.mp3");
+		test = new Audio("audio", AudioType.fx, audio);
+	}
+	
+	private function testSound() : Void
+	{
+		test.play();
 	}
 }
