@@ -17,11 +17,12 @@ import standard.components.debug.impl.DebugKeyBinding;
 import standard.components.debug.impl.ShowFps;
 import standard.components.debug.impl.ShowMousePosition;
 import standard.components.graphic.display.impl.Layer;
-import standard.components.sound.Audio;
-import standard.components.sound.AudioType;
+import standard.components.audio.Audio;
+import standard.components.audio.AudioType;
 import standard.components.space2d.UtilitySize2D;
 import standard.components.space2d.resizer.impl.RatioResizer;
 import standard.factory.EntityFactory;
+import standard.module.audio.AudioModule;
 import standard.module.debug.DebugModule;
 import standard.module.graphic.AnimRenderModule;
 import standard.module.graphic.GameElementModule;
@@ -65,6 +66,8 @@ class BGQApp
 	public var locationModule(default, null) : LocationModule;
 	
 	public var pointerModule(default, null) : PointerBehavioursModule;
+	
+	public var audioModule(default, null) : AudioModule;
 	
 	public var shipModule(default, null) : ShipTemplateModule;
 	
@@ -132,6 +135,7 @@ class BGQApp
 		this.animRenderModule = new AnimRenderModule();
 		this.locationModule = new LocationModule(Lib.current.stage);
 		this.pointerModule = new PointerBehavioursModule();
+		this.audioModule = new AudioModule();
 		this.localeModule = new LocalizationModule("fr");
 		
 		this.localeModule.addLocalizationFile(this.datas.csvManager.getCsv("localeMenu"));
@@ -145,9 +149,10 @@ class BGQApp
 		this.app.addModule(this.geModule,2);
 		this.app.addModule(this.animRenderModule,3);
 		this.app.addModule(this.locationModule,4);
-		this.app.addModule(this.pointerModule,5);
-		this.app.addModule(this.shipModule,6);
-		this.app.addModule(this.localeModule,7);
+		this.app.addModule(this.pointerModule, 5);
+		this.app.addModule(this.audioModule,6);
+		this.app.addModule(this.shipModule,7);
+		this.app.addModule(this.localeModule,8);
 		
 		
 		#if debug
@@ -182,6 +187,7 @@ class BGQApp
 		keyboardBinding.addCallBack(Keyboard.M, showMousePos);
 		keyboardBinding.addCallBack(Keyboard.F, showFps);
 		keyboardBinding.addCallBack(Keyboard.S, testSound);
+		keyboardBinding.addCallBack(Keyboard.V, randomGlobalVolume);
 		keyboardBindingEnt.add(keyboardBinding);
 		
 		this.app.addEntity(fpsEnt);
@@ -236,5 +242,10 @@ class BGQApp
 	private function testSound() : Void
 	{
 		test.play();
+	}
+	
+	private function randomGlobalVolume() : Void
+	{
+		this.audioModule.globalVolume = Math.random();
 	}
 }
