@@ -179,8 +179,6 @@ class BGQApp
 		var mouseEnt : Entity = new Entity("debugMouse");
 		mouseEnt.add(new ShowMousePosition(this.layerModule));
 		
-		createAudioTest();
-		
 		var keyboardBindingEnt : Entity = new Entity("debugBinding");
 		var keyboardBinding : DebugKeyBinding = new DebugKeyBinding();
 		keyboardBinding.addCallBack(Keyboard.L, showLayer);
@@ -231,17 +229,11 @@ class BGQApp
 		dComp.show();	
 	}
 	
-	private var test : Audio;
-	
-	private function createAudioTest() : Void
-	{
-		var audio : Sound = Assets.getSound("audios/fx/clic.mp3");
-		test = new Audio("audio", AudioType.fx, audio);
-	}
+
 	
 	private function testSound() : Void
 	{
-		test.play();
+		datas.audios.get("click").play();
 	}
 	
 	private function randomGlobalVolume() : Void

@@ -1,4 +1,5 @@
 package data;
+import assets.audio.AudioLibrary;
 import data.crew.CrewManager;
 import data.ship.ShipPartManager;
 import data.ship.TemplateManager;
@@ -21,14 +22,20 @@ class DataManager
 	
 	public var templateManager(default, null) : TemplateManager;
 	
+	public var audios : AudioLibrary;
+	
 	public function new(entityFactory : EntityFactory) 
 	{
 		this.csvManager = new CsvManager();
 		parseCsv();
 		
+		this.audios = new AudioLibrary();
+		this.audios.loadFromCsv(this.csvManager.getCsv("audio"));
+		
 		this.crewManager = new CrewManager();
 		this.templateManager = new TemplateManager("datas/ship/shipTemplates.json");
 		this.shipParts = new ShipPartManager(entityFactory, this.csvManager.getCsv("shipPartData"));
+		
 		
 		
 	}
@@ -41,6 +48,9 @@ class DataManager
 		
 		//ship data
 		this.csvManager.parseAndRegisterCsv("shipPartData", Assets.getText("datas/ship/shipPartDef.csv"));
+		
+		//sound
+		this.csvManager.parseAndRegisterCsv("audio", Assets.getText("datas/audio/audios.csv"));
 	}
 	
 }
