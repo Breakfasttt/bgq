@@ -229,11 +229,9 @@ class BGQApp
 		dComp.show();	
 	}
 	
-
-	
 	private function testSound() : Void
 	{
-		datas.audios.get("click").play();
+		datas.audios.get("ambientMenu").play();
 	}
 	
 	private function randomGlobalVolume() : Void
