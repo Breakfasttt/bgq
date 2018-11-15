@@ -63,7 +63,6 @@ class MainMenu extends ScreenContainer
 		m_creditsBtn.setLoc("menuCredits", null);
 		m_creditsBtn.textDisplay.setFont(FontName.scienceFair);
 		m_creditsBtn.textDisplay.setTextColor(0x846248);
-		m_creditsBtn.setEnable(false);
 		
 		createTitle();
 		

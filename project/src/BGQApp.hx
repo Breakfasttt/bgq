@@ -1,9 +1,10 @@
 package src;
+import assets.audio.AudioLibrary;
 import assets.model.library.ModelFactory;
 import assets.model.library.ModelLibrary;
 import core.Application;
 import core.entity.Entity;
-import data.DataManager;
+import data.GameDataManager;
 import misc.name.LayerName;
 import misc.name.ScreenName;
 import module.ship.ShipTemplateModule;
@@ -32,6 +33,7 @@ import standard.module.graphic.PopUpModule;
 import standard.module.graphic.ScreenModule;
 import standard.module.input.PointerBehavioursModule;
 import standard.module.localization.LocalizationModule;
+import tools.file.csv.CsvManager;
 import tools.math.Anchor;
 
 /**
@@ -47,7 +49,11 @@ class BGQApp
 	//base
 	public var app(default, null) : Application;
 	
+	public var csvManager(default, null) : CsvManager;
+	
 	public var modelLibrary(default, null) : ModelLibrary;
+	
+	public var audiosLibrary(default, null) : AudioLibrary;
 	
 	public var entityFactory(default, null) : EntityFactory;
 	
@@ -83,7 +89,7 @@ class BGQApp
 	
 	//data
 	
-	public var datas(default, null) : DataManager;
+	public var datas(default, null) : GameDataManager;
 	
 	
 	public function new() 
@@ -95,21 +101,41 @@ class BGQApp
 		this.app = new Application();
 		this.app.init("Bubble Galaxie quest", 1920, 1080);
 		
-		
-		loadModel();
-		this.datas = new DataManager(this.entityFactory);
-		
+		loadLibraryAndGameData();
 		createLayer();
 		prepareGameModule();
 		prepareScreen();
 	}
 	
-	private function loadModel() : Void
+	private function loadLibraryAndGameData() : Void
 	{
+		this.csvManager = new CsvManager();
+		parseCsv();
+		
 		this.modelLibrary = new ModelLibrary(new ModelFactory());
 		modelLibrary.loadModels("model/modelDescriptor.json");
-		this.entityFactory = new EntityFactory(modelLibrary);
+		
+		this.audiosLibrary = new AudioLibrary();
+		this.audiosLibrary.loadFromCsv(this.csvManager.getCsv("audio"));
+		
+		this.entityFactory = new EntityFactory(modelLibrary, audiosLibrary);
+		
+		this.datas = new GameDataManager(this.entityFactory, this.csvManager);
 	}
+	
+	private function parseCsv() : Void
+	{
+		//locale
+		this.csvManager.parseAndRegisterCsv("localeMenu", Assets.getText("datas/localization/menu.csv"));
+		this.csvManager.parseAndRegisterCsv("localeShipPart", Assets.getText("datas/localization/shipPart.csv"));
+		
+		//ship data
+		this.csvManager.parseAndRegisterCsv("shipPartData", Assets.getText("datas/ship/shipPartDef.csv"));
+		
+		//sound
+		this.csvManager.parseAndRegisterCsv("audio", Assets.getText("datas/audio/audios.csv"));
+	}
+	
 	
 	private function createLayer() : Void
 	{
@@ -138,8 +164,8 @@ class BGQApp
 		this.audioModule = new AudioModule();
 		this.localeModule = new LocalizationModule("fr");
 		
-		this.localeModule.addLocalizationFile(this.datas.csvManager.getCsv("localeMenu"));
-		this.localeModule.addLocalizationFile(this.datas.csvManager.getCsv("localeShipPart"));
+		this.localeModule.addLocalizationFile(this.csvManager.getCsv("localeMenu"));
+		this.localeModule.addLocalizationFile(this.csvManager.getCsv("localeShipPart"));
 		
 		
 		this.shipModule = new ShipTemplateModule();
@@ -184,8 +210,6 @@ class BGQApp
 		keyboardBinding.addCallBack(Keyboard.L, showLayer);
 		keyboardBinding.addCallBack(Keyboard.M, showMousePos);
 		keyboardBinding.addCallBack(Keyboard.F, showFps);
-		keyboardBinding.addCallBack(Keyboard.S, testSound);
-		keyboardBinding.addCallBack(Keyboard.V, randomGlobalVolume);
 		keyboardBindingEnt.add(keyboardBinding);
 		
 		this.app.addEntity(fpsEnt);
@@ -227,15 +251,5 @@ class BGQApp
 			return;
 			
 		dComp.show();	
-	}
-	
-	private function testSound() : Void
-	{
-		datas.audios.get("ambientMenu").play();
-	}
-	
-	private function randomGlobalVolume() : Void
-	{
-		this.audioModule.globalVolume = Math.random();
 	}
 }

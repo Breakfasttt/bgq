@@ -8,6 +8,7 @@ import screen.game.GameScreen;
 import screen.menu.MainMenu;
 import screen.options.OptionMenu;
 import screen.shipSelection.ShipSelectionScreen;
+import standard.components.audio.Audio;
 import standard.factory.EntityFactory;
 import tools.math.Anchor;
 
@@ -21,6 +22,8 @@ class ScreenFactory
 	private var m_entityFactoryRef : EntityFactory;
 	
 	private var m_bg : Entity;
+	
+	private var m_audioBackground : Entity;
 	
 	public var mainMenuScreen(default, null) : MainMenu;
 	public var optionsMenuScreen(default, null) : OptionMenu;
@@ -41,6 +44,8 @@ class ScreenFactory
 		
 		this.m_bg = this.m_entityFactoryRef.createGameElement("mainMenu::Bg", backEntity, "mainMenuBg", 0, Anchor.topLeft, Anchor.topLeft);
 		
+		this.m_audioBackground = this.m_entityFactoryRef.createAudioEntity("ambientMenu");
+		
 		this.mainMenuScreen = new MainMenu(m_appRef, m_entityFactoryRef);
 		this.optionsMenuScreen = new OptionMenu(m_appRef, m_entityFactoryRef);
 		
@@ -51,12 +56,16 @@ class ScreenFactory
 		
 		
 		this.m_appRef.addEntity(this.m_bg);
+		this.m_appRef.addEntity(this.m_audioBackground);
 		this.m_appRef.addEntity(this.mainMenuScreen.entity);
 		this.m_appRef.addEntity(this.optionsMenuScreen.entity);
 		this.m_appRef.addEntity(this.crewSelectionScreen.entity);
 		this.m_appRef.addEntity(this.crewSelectionSummary.entity);
 		this.m_appRef.addEntity(this.shipSelection.entity);
 		this.m_appRef.addEntity(this.gameScreen.entity);
+		
+		this.m_audioBackground.getComponent(Audio).play();
+		
 	}
 	
 }

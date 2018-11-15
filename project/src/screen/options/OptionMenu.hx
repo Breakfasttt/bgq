@@ -8,6 +8,7 @@ import openfl.text.TextFieldAutoSize;
 import openfl.text.TextFormatAlign;
 import src.BGQApp;
 import src.misc.name.FontName;
+import standard.components.audio.AudioType;
 import standard.components.graphic.animation.Animation;
 import standard.components.graphic.display.impl.TextDisplay;
 import standard.components.localization.Localization;
@@ -52,10 +53,20 @@ class OptionMenu extends ScreenContainer
 	private var m_localeBtn : LocTextButton;
 	
 	private var m_backBtn : LocTextButton;
+	 
+	private var m_functWhenVolumePress : Dynamic;
+	private var m_startStepVolume : Float; // En ms
+	private var m_currentStepVolume : Float;  // En ms
+	private var m_timeElapsed : Float;
+	private var m_alreadyPress : Bool;
 	
 	public function new(appRef:Application, entityFactory:EntityFactory) 
 	{
 		super(ScreenName.optionsMenu, appRef, entityFactory);
+		m_startStepVolume = 800; // on comment par modifier de 0.01 toutes les 800 ms
+		m_currentStepVolume = m_startStepVolume;
+		m_timeElapsed = 0.0;
+		m_alreadyPress = false;
 	}
 	
 	override function configure():Void 
@@ -171,6 +182,21 @@ class OptionMenu extends ScreenContainer
 		m_ambientPlusButtons.init("btnPlus", 1 , new Anchor(0.5, 0.75), Anchor.center);
 		m_ambientMinusButtons.init("btnMoins", 1 , new Anchor(0.4, 0.75), Anchor.center);
 		
+		m_globalPlusButtons.btnBehaviour.onPress = this.onPressVolumeBtn.bind(AudioType.misc, 1.0);
+		m_globalMinusButtons.btnBehaviour.onPress = this.onPressVolumeBtn.bind(AudioType.misc, -1.0);
+		m_globalPlusButtons.btnBehaviour.onRelease = this.onReleaseVolumeBtn;
+		m_globalMinusButtons.btnBehaviour.onRelease = this.onReleaseVolumeBtn;
+		
+		m_fxPlusButtons.btnBehaviour.onPress = this.onPressVolumeBtn.bind(AudioType.fx, 1.0);
+		m_fxMinusButtons.btnBehaviour.onPress = this.onPressVolumeBtn.bind(AudioType.fx, -1.0);
+		m_fxPlusButtons.btnBehaviour.onRelease = this.onReleaseVolumeBtn;
+		m_fxMinusButtons.btnBehaviour.onRelease = this.onReleaseVolumeBtn;
+		
+		m_ambientPlusButtons.btnBehaviour.onPress = this.onPressVolumeBtn.bind(AudioType.ambient, 1.0);
+		m_ambientMinusButtons.btnBehaviour.onPress = this.onPressVolumeBtn.bind(AudioType.ambient, -1.0);
+		m_ambientPlusButtons.btnBehaviour.onRelease = this.onReleaseVolumeBtn;
+		m_ambientMinusButtons.btnBehaviour.onRelease = this.onReleaseVolumeBtn;
+		
 		
 		m_localeBtn = new LocTextButton(this.entity.name + "::localBtn", this.m_appRef, this.m_entityFactoryRef);
 		m_localeBtn.init("genericBtn", 4 , new Anchor(0.66, 0.5), Anchor.centerLeft, onLocalbtn, null , null , null, 1.0, 1.0);
@@ -196,8 +222,6 @@ class OptionMenu extends ScreenContainer
 		m_globalLocText.setDataAt(0, Math.round(m_audiosValueRef.globalVolume * 100));
 		m_fxLocText.setDataAt(0, Math.round(m_audiosValueRef.fxVolume * 100));
 		m_ambientLocText.setDataAt(0, Math.round(m_audiosValueRef.ambientVolume * 100));
-		
-		
 	}
 	
 	private function onLocalbtn() : Void
@@ -216,4 +240,82 @@ class OptionMenu extends ScreenContainer
 		BGQApp.self.datas.crewManager.reset();
 		BGQApp.self.screenModule.goToScreen(ScreenName.mainMenu);
 	}
+	
+	
+	private function addGlobalVolume(delta : Float) : Void
+	{
+		BGQApp.self.audioModule.addGlobalVolume(delta); // clamp la dedans, pas besoin de le refaire
+		m_audiosValueRef.globalVolume = BGQApp.self.audioModule.globalVolume; // pour la sauvegarde éventuel
+	}
+	
+	private function addFxVolume(delta : Float) : Void
+	{
+		BGQApp.self.audioModule.addTypeVolume(AudioType.fx, delta); // clamp la dedans, pas besoin de le refaire
+		m_audiosValueRef.fxVolume = BGQApp.self.audioModule.getTypeVolume(AudioType.fx); // pour la sauvegarde éventuel
+	}
+	
+	private function addAmbientVolume(delta : Float) : Void
+	{
+		BGQApp.self.audioModule.addTypeVolume(AudioType.ambient, delta); // clamp la dedans, pas besoin de le refaire
+		m_audiosValueRef.ambientVolume = BGQApp.self.audioModule.getTypeVolume(AudioType.ambient); // pour la sauvegarde éventuel
+	}
+	
+	public function onPressVolumeBtn(audioType : AudioType, factor : Float) : Void
+	{
+		//m_timeElapsed += this.m_appRef.tick.lastDelta;
+		
+		//var step : Float = 8 / (m_timeElapsed * m_timeElapsed);
+		
+		/*trace("== ===== ==");
+		trace("this.m_appRef.tick.lastDelta = " + this.m_appRef.tick.lastDelta);
+		trace("m_timeElapsed = " + m_timeElapsed);
+		trace("step = " + step);
+		trace("== ===== ==");*/
+		
+		//if (m_timeElapsed < step)
+		//{
+			switch(audioType)
+			{
+				case AudioType.ambient : 	addAmbientVolume(0.01 * factor);
+				case AudioType.fx : 		addFxVolume(0.01 * factor);
+				case AudioType.misc : 		addGlobalVolume(0.01 * factor);
+				default : {}
+			}
+			
+			this.refreshValue();
+		//}
+		
+		if (!m_alreadyPress)
+		{
+			m_alreadyPress = true;
+			m_functWhenVolumePress = alreadyPress.bind(_, audioType, factor);
+			m_appRef.tick.tick.add(m_functWhenVolumePress);
+		}
+		
+	}
+	
+	public function onReleaseVolumeBtn() : Void
+	{
+		m_timeElapsed = 0.0;
+		m_currentStepVolume = m_startStepVolume;
+		m_alreadyPress = false;
+		m_appRef.tick.tick.remove(m_functWhenVolumePress);
+		m_functWhenVolumePress = null;
+	}
+	
+	public function alreadyPress(delta : Float, audioType : AudioType, factor : Float) : Void
+	{
+		m_timeElapsed += delta;
+		
+		if (m_timeElapsed >= m_currentStepVolume)
+		{
+			onPressVolumeBtn(audioType, factor);
+			m_currentStepVolume = m_currentStepVolume / 2.0;
+			m_timeElapsed = 0.0;
+			
+			if (m_currentStepVolume <= m_startStepVolume / 20.0)
+				m_currentStepVolume = m_startStepVolume / 20.0;
+		}
+	}
+	
 }
