@@ -2,6 +2,11 @@ id;fr;en
 placeholder;placeholder;placeholder
 wip;Développement en cours;Work in progress
 ;;
+btnBack;Retour;Back
+accept;Confirmer;O.K.
+cancel;Annuler;Cancel
+empty;;
+;;
 menuPlay;Jouer;Play
 menuOptions;Options;Options
 menuCredits;Crédits;Credits
@@ -16,3 +21,24 @@ crewSummaryShipSelectionBtn;Hangar;Hangar
 ;;
 shipSelectionSwapShip;Changer de vaisseau;Swap Ship
 shipSelectionStartButton;Décoller;Fly off
+;;
+;;
+optionsMenuTitle;Options;Options
+optionsGlobalVolume;Volume global : %d;Global volume : %d
+optionsFxVolume;Volume FX : %d;FX volume : %d
+optionsAmbientVolume;Musique : %d;Music : %d
+;;
+crewSelectionShowCrew;Voir équipage;Show Crew
+crewSelectionInfos;Engager les membres d'équipages;Hire Crews Members
+crewSelectionInfosFull;Votre équipage est au complet. Appuyez sur le bouton Equipage pour l'inspecter.;Your crew is full, click on the crew button to inspect it.
+crewSelectionThanks;Merci pour cet entretien, on vous rappellera…;Thanks for this meeting, we will call you...
+creawSelectionHireOk;On vous engage ! Bienvenue au B.S.E.;We Hire you ! Welcome to the B.S.E.
+;;
+crewSummaryNoMembers;Aucun membre d'équipage recruté;There are no crew member hired
+;;
+;;
+popupLeaveGameTitle;Quitter la partie ?;Leave the game ?
+popupLeaveGameInfos;Vous êtes sur le point de quitter la partie, votre recrutement sera annulé. Etes vous sûr ?;You are about to leave the game, your recruitment will be canceled. Are you sure ?
+;;
+popupFiredCrewTitle;Virer le membre d'équipage ?;Fired this crew member ?
+popupFiredCrewInfos;Vous êtes sur le point de virer un membre d'équipage, Etes vous sûr ?;You're about to fire a crew member, are you sure?

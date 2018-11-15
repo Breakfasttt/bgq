@@ -30,8 +30,6 @@ class MainMenu extends ScreenContainer
 	private var m_optionsBtn : LocTextButton;
 	
 	private var m_creditsBtn : LocTextButton;
-	
-	private var m_localeBtn : LocTextButton;
 
 	public function new(appRef:Application, entityFactory:EntityFactory) 
 	{
@@ -49,35 +47,29 @@ class MainMenu extends ScreenContainer
 	override function createElement():Void 
 	{
 		m_playBtn = new LocTextButton("mainMenu::playBtn", this.m_appRef, this.m_entityFactoryRef);
-		m_playBtn.init("", "genericBtn", 1 , new Anchor(0.5, 0.3), Anchor.center, onPlayBtn);
+		m_playBtn.init("genericBtn", 1 , new Anchor(0.5, 0.3), Anchor.center, onPlayBtn);
 		m_playBtn.setLoc("menuPlay", null);
 		m_playBtn.textDisplay.setFont(FontName.scienceFair);
 		m_playBtn.textDisplay.setTextColor(0x846248);
 		
 		m_optionsBtn = new LocTextButton("mainMenu::optionsBtn", this.m_appRef, this.m_entityFactoryRef);
-		m_optionsBtn.init("", "genericBtn", 2,  new Anchor(0.5, 0.45), Anchor.center, onOptionsBtn);
+		m_optionsBtn.init("genericBtn", 2,  new Anchor(0.5, 0.45), Anchor.center, onOptionsBtn);
 		m_optionsBtn.setLoc("menuOptions", null);
 		m_optionsBtn.textDisplay.setFont(FontName.scienceFair);
 		m_optionsBtn.textDisplay.setTextColor(0x846248);
 		
 		m_creditsBtn = new LocTextButton("mainMenu::creditsBtn", this.m_appRef, this.m_entityFactoryRef);
-		m_creditsBtn.init("", "genericBtn", 3 , new Anchor(0.5, 0.6), Anchor.center, onCreditsbtn);
+		m_creditsBtn.init("genericBtn", 3 , new Anchor(0.5, 0.6), Anchor.center, onCreditsbtn);
 		m_creditsBtn.setLoc("menuCredits", null);
 		m_creditsBtn.textDisplay.setFont(FontName.scienceFair);
 		m_creditsBtn.textDisplay.setTextColor(0x846248);
-		
-		m_localeBtn = new LocTextButton("mainMenu::localBtn", this.m_appRef, this.m_entityFactoryRef);
-		m_localeBtn.init("", "genericBtn", 4 , new Anchor(0.98, 0.01), Anchor.topRight, onLocalbtn, null ,null , null, 0.6, 0.6);
-		m_localeBtn.setLoc("menuLocale", null);
-		m_localeBtn.textDisplay.setFont(FontName.scienceFair);
-		m_localeBtn.textDisplay.setTextColor(0x846248);
+		m_creditsBtn.setEnable(false);
 		
 		createTitle();
 		
 		this.add(m_playBtn.entity);
 		this.add(m_optionsBtn.entity);
 		this.add(m_creditsBtn.entity);
-		this.add(m_localeBtn.entity);
 		this.add(m_title);
 	}
 	
@@ -104,7 +96,7 @@ class MainMenu extends ScreenContainer
 	
 	private function onOptionsBtn() : Void
 	{
-		
+		BGQApp.self.screenModule.goToScreen(ScreenName.optionsMenu);
 	}
 	
 	private function onCreditsbtn() : Void
@@ -112,13 +104,6 @@ class MainMenu extends ScreenContainer
 		
 	}
 	
-	private function onLocalbtn() : Void
-	{
-		if(BGQApp.self.localeModule.localeCode == "fr")
-			BGQApp.self.localeModule.setLocaleCode("en");
-		else
-			BGQApp.self.localeModule.setLocaleCode("fr");
-	}
 	
 	
 }

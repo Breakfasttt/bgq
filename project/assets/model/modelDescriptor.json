@@ -8,6 +8,14 @@
 		"mainResourcePath":"model/btn/generic.tl"
 	},
 	{
+		"name":"btnPlus",
+		"mainResourcePath":"model/btn/btnPlus.tl"
+	},
+	{
+		"name":"btnMoins",
+		"mainResourcePath":"model/btn/btnMoins.tl"
+	},
+	{
 		"name":"crewfile",
 		"mainResourcePath":"img/crewSelection/crewfile.png"
 	},

@@ -86,14 +86,14 @@ class ShipSelectionScreen extends ScreenContainer
 		m_infosDisplay.setMiscProperties(false, false, false, false, false, false);
 		
 		m_swapTemplateBtn = new LocTextButton("ShipSelectionScreen::swapTemplate", this.m_appRef, this.m_entityFactoryRef);
-		m_swapTemplateBtn.init("Changer de vaisseau", "genericBtn", 4 , new Anchor(0.04, 0.11), Anchor.centerLeft, onSwapTemplate);
+		m_swapTemplateBtn.init("genericBtn", 4 , new Anchor(0.04, 0.11), Anchor.centerLeft, onSwapTemplate);
 		m_swapTemplateBtn.setLoc("shipSelectionSwapShip");
 		m_swapTemplateBtn.textDisplay.setFontSize(32);
 		m_swapTemplateBtn.textDisplay.setFont(FontName.scienceFair);
 		m_swapTemplateBtn.textDisplay.setTextColor(0x846248);
 		
 		m_startBtn = new LocTextButton("ShipSelectionScreen::startbtn", this.m_appRef, this.m_entityFactoryRef);
-		m_startBtn.init("Décoller", "genericBtn", 5 , new Anchor(0.04, 0.5), Anchor.centerLeft, onFlyOff);
+		m_startBtn.init("genericBtn", 5 , new Anchor(0.04, 0.5), Anchor.centerLeft, onFlyOff);
 		m_startBtn.setLoc("shipSelectionStartButton");
 		m_startBtn.textDisplay.setFontSize(32);
 		m_startBtn.textDisplay.setFont(FontName.scienceFair);

@@ -6,6 +6,7 @@ import screen.crewSelection.CrewSelectionScreen;
 import screen.crewSummary.CrewSummaryScreen;
 import screen.game.GameScreen;
 import screen.menu.MainMenu;
+import screen.options.OptionMenu;
 import screen.shipSelection.ShipSelectionScreen;
 import standard.factory.EntityFactory;
 import tools.math.Anchor;
@@ -22,6 +23,7 @@ class ScreenFactory
 	private var m_bg : Entity;
 	
 	public var mainMenuScreen(default, null) : MainMenu;
+	public var optionsMenuScreen(default, null) : OptionMenu;
 	public var crewSelectionScreen(default, null) : CrewSelectionScreen;
 	public var crewSelectionSummary(default, null) : CrewSummaryScreen;
 	public var shipSelection(default, null) : ShipSelectionScreen;
@@ -40,6 +42,8 @@ class ScreenFactory
 		this.m_bg = this.m_entityFactoryRef.createGameElement("mainMenu::Bg", backEntity, "mainMenuBg", 0, Anchor.topLeft, Anchor.topLeft);
 		
 		this.mainMenuScreen = new MainMenu(m_appRef, m_entityFactoryRef);
+		this.optionsMenuScreen = new OptionMenu(m_appRef, m_entityFactoryRef);
+		
 		this.crewSelectionScreen = new CrewSelectionScreen(m_appRef, m_entityFactoryRef);
 		this.crewSelectionSummary = new CrewSummaryScreen(m_appRef, m_entityFactoryRef);
 		this.shipSelection = new ShipSelectionScreen(m_appRef, m_entityFactoryRef);
@@ -48,6 +52,7 @@ class ScreenFactory
 		
 		this.m_appRef.addEntity(this.m_bg);
 		this.m_appRef.addEntity(this.mainMenuScreen.entity);
+		this.m_appRef.addEntity(this.optionsMenuScreen.entity);
 		this.m_appRef.addEntity(this.crewSelectionScreen.entity);
 		this.m_appRef.addEntity(this.crewSelectionSummary.entity);
 		this.m_appRef.addEntity(this.shipSelection.entity);

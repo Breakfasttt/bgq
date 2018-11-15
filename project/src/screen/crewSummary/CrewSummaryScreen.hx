@@ -49,7 +49,7 @@ class CrewSummaryScreen extends ScreenContainer
 	{
 		super(ScreenName.crewSummary, appRef, entityFactory);
 		
-		m_confirmFiredPopup = new ConfirmPopup(this.m_appRef, this.m_entityFactoryRef, "popupConfirmFired", "Virer le membre d'équipage ?", "Vous êtes sur le point de virer un membre d'équipage, Etes vous sûr ?");
+		m_confirmFiredPopup = new ConfirmPopup(this.m_appRef, this.m_entityFactoryRef, "popupConfirmFired", "popupFiredCrewTitle", "popupFiredCrewInfos");
 		m_confirmFiredPopup.confirmCb = confirmFired;
 		
 	}
@@ -86,21 +86,21 @@ class CrewSummaryScreen extends ScreenContainer
 		}
 		
 		m_recruitBtn = new LocTextButton(this.entity.name + "::recruitBtn", m_appRef, m_entityFactoryRef);
-		m_recruitBtn.init("Recrutement", "genericBtn", 6, new Anchor(0.33, 0.97), Anchor.botCenter, onSelectRecruitBtn);
+		m_recruitBtn.init("genericBtn", 6, new Anchor(0.33, 0.97), Anchor.botCenter, onSelectRecruitBtn);
 		m_recruitBtn.setLoc("crewSummaryRecruitBtn");
 		m_recruitBtn.textDisplay.setFont(FontName.scienceFair);
 		m_recruitBtn.textDisplay.setTextColor(0x846248);
 		m_recruitBtn.textDisplay.setFontSize(50);
 		
 		m_firedBtn = new LocTextButton(this.entity.name + "::firedBtn", m_appRef, m_entityFactoryRef);
-		m_firedBtn.init("Virer", "genericBtn", 7, new Anchor(0.66, 0.97), Anchor.botCenter, onSelectFiredBtn);
+		m_firedBtn.init("genericBtn", 7, new Anchor(0.66, 0.97), Anchor.botCenter, onSelectFiredBtn);
 		m_firedBtn.setLoc("crewSummaryHireBtn");
 		m_firedBtn.textDisplay.setFont(FontName.scienceFair);
 		m_firedBtn.textDisplay.setTextColor(0x846248);
 		m_firedBtn.textDisplay.setFontSize(50);
 		
 		m_nextBtn = new LocTextButton(this.entity.name + "::nextBtn", m_appRef, m_entityFactoryRef);
-		m_nextBtn.init("Hangar", "genericBtn", 99, new Anchor(0.97, 0.50), Anchor.centerRight, onSelectNext, null, null, null, 0.7, 0.7);
+		m_nextBtn.init("genericBtn", 99, new Anchor(0.97, 0.50), Anchor.centerRight, onSelectNext, null, null, null, 0.7, 0.7);
 		m_nextBtn.setLoc("crewSummaryShipSelectionBtn");
 		m_nextBtn.textDisplay.setFont(FontName.scienceFair);
 		m_nextBtn.textDisplay.setTextColor(0x846248);
@@ -108,7 +108,7 @@ class CrewSummaryScreen extends ScreenContainer
 		m_nextBtn.display.skin.visible = false;
 		
 		
-		m_infos = this.m_entityFactoryRef.createTextField(this.entity.name + "::infos", null, "Aucun membre d'équipage recruté", 10, Anchor.center, Anchor.center);
+		m_infos = this.m_entityFactoryRef.createLocTextField(this.entity.name + "::infos", null, "crewSummaryNoMembers", null, 10, Anchor.center, Anchor.center);
 		var dispInfos : TextDisplay = m_infos.getComponent(TextDisplay);
 		dispInfos.setFont(FontName.scienceFair);
 		dispInfos.setAutoSize(TextFieldAutoSize.LEFT);

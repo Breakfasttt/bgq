@@ -11,8 +11,10 @@ import src.BGQApp;
 import src.misc.name.FontName;
 import standard.components.graphic.display.impl.Screen;
 import standard.components.graphic.display.impl.TextDisplay;
+import standard.components.localization.Localization;
 import standard.components.space2d.Position2D;
 import standard.factory.EntityFactory;
+import standard.utils.uicontainer.impl.LocTextButton;
 import standard.utils.uicontainer.impl.ScreenContainer;
 import standard.utils.uicontainer.impl.TextButton;
 import tools.math.Anchor;
@@ -25,13 +27,15 @@ class CrewSelectionScreen extends ScreenContainer
 {
 
 	private var m_infos : Entity;
+	private var m_infosTextLoc : Localization;
 	
 	private var m_slideInfos : Entity;
 	private var m_slideTextDisplay : TextDisplay;
+	private var m_slideTextLoc : Localization;
 	
-	private var m_backBtn : TextButton;
+	private var m_backBtn : LocTextButton;
 	
-	private var m_crewBtn : TextButton;
+	private var m_crewBtn : LocTextButton;
 	
 	private var m_crewFile : CrewFileUi;
 	
@@ -45,7 +49,7 @@ class CrewSelectionScreen extends ScreenContainer
 	{
 		super(ScreenName.crewSelection, appRef, entityFactory);	
 		m_mover = new SimpleEntityMover(m_appRef.tick);
-		m_backToMenuPopup = new ConfirmPopup(this.m_appRef, this.m_entityFactoryRef, "popupBacktoMenu", "Quitter la partie ?", "Vous êtes sur le point de quitter la partie, votre recrutement sera annulé. Etes vous sûr ?");
+		m_backToMenuPopup = new ConfirmPopup(this.m_appRef, this.m_entityFactoryRef, "popupBacktoMenu", "popupLeaveGameTitle", "popupLeaveGameInfos");
 		m_backToMenuPopup.confirmCb = onBackToMenu;
 		//m_backToMenuPopup.cancelCb = onCancelBackToMenu;
 	}
@@ -59,10 +63,11 @@ class CrewSelectionScreen extends ScreenContainer
 	override function createElement():Void 
 	{
 		
-		m_infos = m_entityFactoryRef.createTextField("CrewSelectionScreen::infos", this.entity, "Engager les membres d'équipage", 99,
+		m_infos = m_entityFactoryRef.createLocTextField("CrewSelectionScreen::infos", this.entity, "crewSelectionInfos", null, 99,
 													new Anchor(0.5, 0.1), Anchor.center);
 													
 		var textdisplay : TextDisplay =  m_infos.getComponent(TextDisplay);
+		m_infosTextLoc = m_infos.getComponent(Localization);
 		textdisplay.setFont(FontName.scienceFair);
 		textdisplay.setTextColor(0x846248);
 		textdisplay.setAlignment(TextFormatAlign.CENTER);
@@ -70,20 +75,23 @@ class CrewSelectionScreen extends ScreenContainer
 		textdisplay.setSize(m_appRef.width, 60);
 		textdisplay.setMiscProperties(false, false, false, false, false, false);
 		
-		m_backBtn = new TextButton("CrewSelectionScreen::backButton", this.m_appRef, this.m_entityFactoryRef);
-		m_backBtn.init("Retour", "genericBtn", 1 , new Anchor(20, 20,false), Anchor.topLeft, onBackButton, null, null, 0.75,0.75);
+		m_backBtn = new LocTextButton("CrewSelectionScreen::backButton", this.m_appRef, this.m_entityFactoryRef);
+		m_backBtn.init("genericBtn", 1 , new Anchor(20, 20, false), Anchor.topLeft, onBackButton, null, null, 0.75, 0.75);
+		m_backBtn.setLoc("btnBack");
 		m_backBtn.textDisplay.setFont(FontName.scienceFair);
 		m_backBtn.textDisplay.setTextColor(0x846248);
 		m_backBtn.textDisplay.setFontSize(50);
 		
-		m_crewBtn = new TextButton("CrewSelectionScreen::crewButton", this.m_appRef, this.m_entityFactoryRef);
-		m_crewBtn.init("Voir équipage", "genericBtn", 2 , new Anchor(0.5, 0.95), Anchor.center, onCrewButton);
+		m_crewBtn = new LocTextButton("CrewSelectionScreen::crewButton", this.m_appRef, this.m_entityFactoryRef);
+		m_crewBtn.init("genericBtn", 2 , new Anchor(0.5, 0.95), Anchor.center, onCrewButton);
+		m_crewBtn.setLoc("crewSelectionShowCrew");
 		m_crewBtn.textDisplay.setFont(FontName.scienceFair);
 		m_crewBtn.textDisplay.setTextColor(0x846248);
 		
 		
-		m_slideInfos = m_entityFactoryRef.createTextField("CrewSelectionScreen::SlideInfos", this.entity, "test", 4,  new Anchor(0.5, 0.20), Anchor.center);
+		m_slideInfos = m_entityFactoryRef.createLocTextField("CrewSelectionScreen::SlideInfos", this.entity, "test", null, 4,  new Anchor(0.5, 0.20), Anchor.center);
 		m_slideTextDisplay =  m_slideInfos.getComponent(TextDisplay);
+		m_slideTextLoc = m_slideInfos.getComponent(Localization);
 		m_slideTextDisplay.setFont(FontName.scienceFair);
 		m_slideTextDisplay.setTextColor(0x846248);
 		m_slideTextDisplay.setAlignment(TextFormatAlign.CENTER);
@@ -143,11 +151,11 @@ class CrewSelectionScreen extends ScreenContainer
 	private function onFileSlide() : Void
 	{
 		if (m_crewFile.slider.slideSens < 0.0)
-			m_slideTextDisplay.text.text = "Merci pour cet entretien, on vous rappellera...";
+			m_slideTextLoc.set("crewSelectionThanks");
 		else if(m_crewFile.slider.slideSens > 0.0)
-			m_slideTextDisplay.text.text = "On vous engage ! Bienvenue au BSE.";
+			m_slideTextLoc.set("creawSelectionHireOk");
 		else
-			m_slideTextDisplay.text.text = "";
+			m_slideTextLoc.set("empty");
 			
 		
 		m_slideTextDisplay.skin.alpha = m_crewFile.slider.confirmRatio;
@@ -214,19 +222,17 @@ class CrewSelectionScreen extends ScreenContainer
 	private function updateInfos() : Void
 	{
 		var pos : Position2D = m_infos.getComponent(Position2D);
-		var td : TextDisplay = m_infos.getComponent(TextDisplay);
 		
 		if (BGQApp.self.datas.crewManager.crewIsFull())
 		{
 			pos.position2d.setValue(0.5, 0.5);
-			td.text.text = "Votre équipage est au complet. Appuyez sur le bouton Equipage pour l'inspecter.";
+			m_infosTextLoc.set("crewSelectionInfosFull");
 			//m_crewFile.display.skin.visible = false;
 			this.remove(m_crewFile.entity);
 		}
 		else
 		{
 			pos.position2d.setValue(0.5, 0.1);
-			td.text.text = "Engager les membres d'équipages";
 			//m_crewFile.display.skin.visible = true;
 			this.add(m_crewFile.entity);
 		}
