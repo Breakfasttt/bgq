@@ -8,6 +8,8 @@ import data.randomizer.CrewMemberPicker;
 class CrewManager 
 {
 
+	private var m_maxCrewMember : Int;
+	
 	private var m_crewMemberPicker : CrewMemberPicker;
 	
 	private var m_selectedCrew : Array<CrewMember>;
@@ -17,9 +19,10 @@ class CrewManager
 	
 	private var m_selectableCrewMember : Array<CrewMember>;
 	
-	public function new() 
+	public function new(maxCrewMember : Int = 5) 
 	{
 		m_crewMemberPicker = new CrewMemberPicker("datas/name.txt", "datas/firstname.txt");
+		m_maxCrewMember = maxCrewMember;
 		m_selectedCrew = [];
 		m_crewMemberHeroes = []; //todo
 		m_selectableCrewMember = [];
@@ -27,14 +30,14 @@ class CrewManager
 	
 	private function generate5CrewMember() : Void
 	{
-		for (i in 0...5)
+		for (i in 0...m_maxCrewMember)
 			m_selectableCrewMember.push(m_crewMemberPicker.generate());
 	}
 	
 	public function getGeneratedCrewMember() : CrewMember
 	{
 		
-		if (m_selectableCrewMember.length < 5)
+		if (m_selectableCrewMember.length < m_maxCrewMember)
 			generate5CrewMember();
 			
 		var result : CrewMember = 	m_selectableCrewMember.shift();
@@ -58,7 +61,7 @@ class CrewManager
 	
 	public function crewIsFull() : Bool
 	{
-		return m_selectedCrew.length == 5;
+		return m_selectedCrew.length == m_maxCrewMember;
 	}
 	
 	public function getSelectedCrews() : Array<CrewMember>

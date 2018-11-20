@@ -1,4 +1,5 @@
 package data.crew.profession;
+import data.crew.CrewMember;
 
 /**
  * ...
@@ -18,12 +19,27 @@ class Profession
 		this.keyName = keyName;
 		this.maxLevel = maxLevel;
 		this.currentLevel = currentLevel;
+		this.crewMemberRef = null;
 	}
 	
-	
-	public function applyEffect() : Void
+	public function applyStaticCrewEffect(crewMember : CrewMember) : Void
 	{
-		//todo
+		trace("Please override applyStaticCrewEffect for " + this.keyName + " profession");
+	}
+	
+	public function applyStaticShipEffect() : Void
+	{
+		trace("Please override applyStaticShipEffect for " + this.keyName + " profession");
+	}
+	
+	public function applyDynamicCrewEffect(crewMember : CrewMember) : Void
+	{
+		trace("Please override applyDynamicCrewEffect for " + this.keyName + " profession");
+	}
+	
+	public function applyDynamicShipEffect() : Void
+	{
+		trace("Please override applyDynamicShipEffect for " + this.keyName + " profession");
 	}
 	
 }
