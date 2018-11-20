@@ -9,6 +9,7 @@ import src.misc.name.FontName;
 import standard.components.graphic.display.impl.GameElementDisplay;
 import standard.components.graphic.display.impl.TextDisplay;
 import standard.components.input.PointerBehavioursComponent;
+import standard.components.localization.Localization;
 import standard.components.misc.ParentEntity;
 import standard.components.space2d.Depth;
 import standard.factory.EntityFactory;
@@ -37,10 +38,6 @@ class CrewFileUi extends UiContainer
 	
 	private var m_ProfessionTf: Entity;
 	
-	private var m_gnPersonalityTf: Entity;
-	private var m_defectPersonalityTf: Entity;
-	
-	private var m_dnaTf: Entity;
 	
 	public var slider(default,null) : SlideEntity;
 
@@ -75,20 +72,12 @@ class CrewFileUi extends UiContainer
 		m_firstnameTf = m_entityFactoryRef.createTextField(this.entity.name + "::firstnameTf", this.entity, "", 2, new Anchor(30,385,false), Anchor.topLeft);
 		m_uniqueIdTf = m_entityFactoryRef.createTextField(this.entity.name + "::uniqueId", this.entity, "", 3, new Anchor(30, 455, false), Anchor.topLeft);
 		
-		m_ProfessionTf = m_entityFactoryRef.createTextField(this.entity.name + "::professionTf", this.entity, "", 4, new Anchor(400, 30, false), Anchor.topLeft);
-		
-		m_gnPersonalityTf = m_entityFactoryRef.createTextField(this.entity.name + "::gnPersonalityTf", this.entity, "", 5, new Anchor(400, 160, false), Anchor.topLeft);
-		m_defectPersonalityTf = m_entityFactoryRef.createTextField(this.entity.name + "::defectPersonalityTf", this.entity, "", 6, new Anchor(400, 230, false), Anchor.topLeft);
-		
-		m_dnaTf = m_entityFactoryRef.createTextField(this.entity.name + "::dnaTf", this.entity, "Nom : ", 7, new Anchor(400, 380, false), Anchor.topLeft);
+		m_ProfessionTf = m_entityFactoryRef.createLocTextField(this.entity.name + "::professionTf", this.entity, "", null, 4, new Anchor(400, 30, false), Anchor.topLeft);
 		
 		applyTextFormat(m_nameTf);
 		applyTextFormat(m_firstnameTf);
 		applyTextFormat(m_uniqueIdTf);
 		applyTextFormat(m_ProfessionTf);
-		applyTextFormat(m_gnPersonalityTf);
-		applyTextFormat(m_defectPersonalityTf);
-		applyTextFormat(m_dnaTf);
 		
 		resetField();
 		
@@ -97,9 +86,6 @@ class CrewFileUi extends UiContainer
 		this.add(m_firstnameTf);
 		this.add(m_uniqueIdTf);
 		this.add(m_ProfessionTf);
-		this.add(m_gnPersonalityTf);
-		this.add(m_defectPersonalityTf);
-		this.add(m_dnaTf);
 	}
 	
 	private function applyTextFormat(entity : Entity) : Void
@@ -119,12 +105,20 @@ class CrewFileUi extends UiContainer
 	
 	private function setText(entity : Entity, text : String) : Void
 	{
-		var td : TextDisplay = entity.getComponent(TextDisplay);
 		
-		if (td == null)
-			return;
+		var loc : Localization = entity.getComponent(Localization);
+		
+		if (loc == null)
+		{
+			var td : TextDisplay = entity.getComponent(TextDisplay);
+			if(td == null)
+				return;
 			
-		td.text.text = text;
+			td.text.text = text;
+			return;
+		}
+			
+		loc.set(text);
 	}
 	
 	public function setCrewData(crewMember : CrewMember) : Void
@@ -142,10 +136,8 @@ class CrewFileUi extends UiContainer
 		this.setText(m_nameTf, "Nom :  Inconnu");
 		this.setText(m_firstnameTf, "Prénom : Inconnu" );
 		this.setText(m_uniqueIdTf, "Id : Inconnu");
-		this.setText(m_ProfessionTf, "Profession : Inconnu");
-		this.setText(m_gnPersonalityTf, "Qualité : Inconnu");
-		this.setText(m_defectPersonalityTf, "Imperfection : Inconnu");
-		this.setText(m_dnaTf, "Gène : Inconnu");		
+		
+		this.setText(m_ProfessionTf, "unknow");		
 	}
 	
 	private function applyCrewValue() : Void
@@ -154,22 +146,6 @@ class CrewFileUi extends UiContainer
 		this.setText(m_firstnameTf, "Prénom : " + m_crewMemberRef.firstname);
 		this.setText(m_uniqueIdTf, "Id : " + m_crewMemberRef.uniqueId);
 		
-		this.setText(m_ProfessionTf, "Profession : " +  m_crewMemberRef.profession.name);
-		
-		if (m_crewMemberRef.goodNessPersonality != null)
-			this.setText(m_gnPersonalityTf, "Qualité : " +   m_crewMemberRef.goodNessPersonality.name);
-		else
-			this.setText(m_gnPersonalityTf, "Qualité : aucune");
-			
-		if (m_crewMemberRef.defectPersonality != null)
-			this.setText(m_defectPersonalityTf, "Imperfection : " +  m_crewMemberRef.defectPersonality.name);
-		else
-			this.setText(m_defectPersonalityTf, "défaut : aucun");
-			
-		if (m_crewMemberRef.dna != null)
-			this.setText(m_dnaTf, "Gène : " +  m_crewMemberRef.dna.name);
-		else
-			this.setText(m_dnaTf, "Gène : Aucun");
-			
+		this.setText(m_ProfessionTf, m_crewMemberRef.profession.keyName);
 	}
 }

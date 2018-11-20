@@ -1,6 +1,4 @@
 package data.crew;
-import data.crew.dna.Dna;
-import data.crew.personality.Personality;
 import data.crew.profession.Profession;
 
 /**
@@ -28,12 +26,8 @@ class CrewMember
 	
 	public var profession(default, null) : Profession;
 	
-	public var goodNessPersonality(default, null) : Personality; // bon
-	public var defectPersonality(default, null) : Personality; // mauvais
 	
-	public var dna(default, null) : Dna;
-	
-	public function new(crewModelName : String, firstName : String, name : String, uniqueId : String, profession : Profession, gnPerso : Personality = null, dPerso : Personality = null, dna : Dna = null) 
+	public function new(crewModelName : String, firstName : String, name : String, uniqueId : String, profession : Profession) 
 	{
 		this.crewModelName = crewModelName;
 		this.firstname = firstName;
@@ -47,9 +41,6 @@ class CrewMember
 		this.currentStamina = this.maxStamina ;
 		
 		this.profession = profession;
-		this.goodNessPersonality = gnPerso;
-		this.defectPersonality = dPerso;
-		this.dna = dna;
 	}
 	
 	public function toString() : String
@@ -62,18 +53,7 @@ class CrewMember
 										+ "/" + this.maxHealth
 										+ " S : " + this.currentStamina
 										+ "/" + this.maxStamina
-										+ " Prof : " + this.profession.name;
-		
-		
-		if (this.goodNessPersonality != null)
-			result += " GNP : " +  this.goodNessPersonality.name;
-			
-		if (this.defectPersonality != null)
-			result += " DP : " +  this.defectPersonality.name;
-			
-		if (this.dna != null)
-			result += " Dna : " +  this.dna.name;
-			
+										+ " Prof : " + this.profession.keyName;
 		return result;	
 	}
 	

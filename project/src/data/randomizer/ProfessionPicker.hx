@@ -20,7 +20,7 @@ class ProfessionPicker
 		
 		switch(random)
 		{
-			case  0 : return new Profession();
+			case  0 : return new Profession("wip");
 			default : return null;
 		}
 	}

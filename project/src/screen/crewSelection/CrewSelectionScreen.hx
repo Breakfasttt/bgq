@@ -89,7 +89,7 @@ class CrewSelectionScreen extends ScreenContainer
 		m_crewBtn.textDisplay.setTextColor(0x846248);
 		
 		
-		m_slideInfos = m_entityFactoryRef.createLocTextField("CrewSelectionScreen::SlideInfos", this.entity, "test", null, 4,  new Anchor(0.5, 0.20), Anchor.center);
+		m_slideInfos = m_entityFactoryRef.createLocTextField("CrewSelectionScreen::SlideInfos", this.entity, "wip", null, 4,  new Anchor(0.5, 0.20), Anchor.center);
 		m_slideTextDisplay =  m_slideInfos.getComponent(TextDisplay);
 		m_slideTextLoc = m_slideInfos.getComponent(Localization);
 		m_slideTextDisplay.setFont(FontName.scienceFair);
