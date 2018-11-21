@@ -77,7 +77,7 @@ class CrewFileUi extends UiContainer
 		
 		m_crewSkin = new CrewMemberSkin(this.entity.name + ":CrewSkin", this.m_appRef, this.m_entityFactoryRef,5);
 		//m_crewSkin.display.skin.visible = true;
-		//m_crewSkin.position.position2d.setValue(0.2, 0.2);
+		m_crewSkin.position.position2d.setValue(0.0375, 0.05);
 		
 		applyTextFormat(m_nameTf);
 		applyTextFormat(m_firstnameTf);
@@ -155,7 +155,7 @@ class CrewFileUi extends UiContainer
 		this.setText(m_ProfessionTf, m_crewMemberRef.profession.keyName);
 		
 		//this.m_crewSkin.display.skin.visible = true;
-		this.m_crewSkin.set(Std.random(11), Std.random(11), Std.random(11));
+		this.m_crewSkin.set(Std.random(11)+1, Std.random(11)+1, Std.random(11)+1);
 		
 	}
 }
