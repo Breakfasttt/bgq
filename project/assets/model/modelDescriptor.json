@@ -20,8 +20,16 @@
 		"mainResourcePath":"img/crewSelection/crewfile.png"
 	},
 	{
-		"name":"crewHeadTimeline",
-		"mainResourcePath":"model/timeline/crewHeadTimeline.flss"
+		"name":"bodyTimeline",
+		"mainResourcePath":"model/timeline/baseTimeLine.flss"
+	},
+	{
+		"name":"eyesTimeline",
+		"mainResourcePath":"model/timeline/eyesTimeLine.flss"
+	},
+	{
+		"name":"workTimeLine",
+		"mainResourcePath":"model/timeline/workTimeLine.flss"
 	},
 	{
 		"name":"simplePopupBg",

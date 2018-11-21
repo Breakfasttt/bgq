@@ -19,7 +19,6 @@ class Profession
 		this.keyName = keyName;
 		this.maxLevel = maxLevel;
 		this.currentLevel = currentLevel;
-		this.crewMemberRef = null;
 	}
 	
 	public function applyStaticCrewEffect(crewMember : CrewMember) : Void

@@ -74,8 +74,16 @@ class CrewSummaryScreen extends ScreenContainer
 																new Anchor(25.0,50+150*i,false), Anchor.topLeft, 
 																Model.defaultAnim);
 																
-			entity.getComponent(Animation).useAnimationPivot = false;
-			entity.getComponent(Animation).gotoAndStop(0);
+			
+			var anim = entity.getComponent(Animation);
+			
+			if (anim != null)
+			{
+				anim.useAnimationPivot = false;
+				anim.gotoAndStop(0);
+			}
+			
+			
 			var behaviours : PointerBehavioursComponent = new PointerBehavioursComponent();
 			var btnBehaviour : EntityAsSimpleButton = new EntityAsSimpleButton(false,"", false);
 			btnBehaviour.onSelect = showCrew.bind(i);
@@ -166,6 +174,9 @@ class CrewSummaryScreen extends ScreenContainer
 		for (i in 0...m_crewSummaryBlock.length)
 		{
 			anim = m_crewSummaryBlock[i].getComponent(Animation);
+			
+			if (anim == null)
+				continue;
 			
 			if (i < crewsNumber)
 				anim.gotoAndStop(i + 1);

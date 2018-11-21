@@ -16,6 +16,7 @@ import standard.factory.EntityFactory;
 import standard.module.graphic.LocationModule;
 import standard.utils.uicontainer.UiContainer;
 import tools.math.Anchor;
+import uiblock.CrewMemberSkin;
 
 /**
  * ...
@@ -28,7 +29,7 @@ class CrewFileUi extends UiContainer
 	
 	private var m_bg : Entity;
 	
-	private var m_icon : Entity;
+	private var m_crewSkin : CrewMemberSkin;
 	
 	private var m_crewMemberRef : CrewMember;
 	
@@ -74,6 +75,10 @@ class CrewFileUi extends UiContainer
 		
 		m_ProfessionTf = m_entityFactoryRef.createLocTextField(this.entity.name + "::professionTf", this.entity, "", null, 4, new Anchor(400, 30, false), Anchor.topLeft);
 		
+		m_crewSkin = new CrewMemberSkin(this.entity.name + ":CrewSkin", this.m_appRef, this.m_entityFactoryRef,5);
+		//m_crewSkin.display.skin.visible = true;
+		//m_crewSkin.position.position2d.setValue(0.2, 0.2);
+		
 		applyTextFormat(m_nameTf);
 		applyTextFormat(m_firstnameTf);
 		applyTextFormat(m_uniqueIdTf);
@@ -86,6 +91,7 @@ class CrewFileUi extends UiContainer
 		this.add(m_firstnameTf);
 		this.add(m_uniqueIdTf);
 		this.add(m_ProfessionTf);
+		this.add(m_crewSkin.entity);
 	}
 	
 	private function applyTextFormat(entity : Entity) : Void
@@ -147,5 +153,9 @@ class CrewFileUi extends UiContainer
 		this.setText(m_uniqueIdTf, "Id : " + m_crewMemberRef.uniqueId);
 		
 		this.setText(m_ProfessionTf, m_crewMemberRef.profession.keyName);
+		
+		//this.m_crewSkin.display.skin.visible = true;
+		this.m_crewSkin.set(Std.random(11), Std.random(11), Std.random(11));
+		
 	}
 }
