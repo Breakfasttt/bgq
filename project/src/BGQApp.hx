@@ -5,6 +5,7 @@ import assets.model.library.ModelLibrary;
 import core.Application;
 import core.entity.Entity;
 import data.GameDataManager;
+import data.randomizer.NameRandomizer;
 import misc.name.LayerName;
 import misc.name.ScreenName;
 import module.ship.ShipTemplateModule;
@@ -100,6 +101,13 @@ class BGQApp
 		
 		this.app = new Application();
 		this.app.init("Bubble Galaxie quest", 1920, 1080);
+		
+		var test : NameRandomizer = new NameRandomizer();
+		//test.init("datas/nameLibrary/refList/firstname.txt");
+		
+		//for (i in 0...1000)
+			//trace(test.generate(4,10));
+		
 		
 		loadLibraryAndGameData();
 		createLayer();

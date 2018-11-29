@@ -21,7 +21,7 @@ class CrewManager
 	
 	public function new(maxCrewMember : Int = 5) 
 	{
-		m_crewMemberPicker = new CrewMemberPicker("datas/name.txt", "datas/firstname.txt");
+		m_crewMemberPicker = new CrewMemberPicker("datas/nameLibrary/name.txt", "datas/nameLibrary/firstname.txt");
 		m_maxCrewMember = maxCrewMember;
 		m_selectedCrew = [];
 		m_crewMemberHeroes = []; //todo

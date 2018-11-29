@@ -8,60 +8,89 @@ import openfl.Assets;
 class NameRandomizer 
 {
 	
-	private var m_rawDataFirstName : String;
-	private var m_rawDataName : String;
+	private var m_rawData : String;
 	
-	private var m_firstNameProba : Map<String, Map<String, Int>>;
-	private var m_NameProba : Map<String, Map<String, Int>>;
+	private var m_firstLetterProba : Array<String>;
+	
+	private var m_groupProba : Map<String, Array<String>>;
+	
+	private var m_init : Bool;
 	
 	public function new ()
 	{
-		
+		m_init = false;
 	}
 	
-	public function init(firstNameFile : String, nameFile : String, NickName : String) : Void
+	public function init(wordsLibraryFileName : String) : Void
 	{
-		m_rawDataFirstName = Assets.getText(firstNameFile);
-		//m_rawDataName = Assets.getText(nameFile);
+		m_init = false;
 		
-		m_firstNameProba = loadProbaMap(m_rawDataFirstName);
-		//loadProbaMap(m_NameProba, m_rawDataName);
+		m_rawData = Assets.getText(wordsLibraryFileName);
+		
+		loadProbaMap(m_rawData);
+		
+		m_init  = true;
+	}
+	
+	private function keepOneOccurence(arr : Array<String>) :  Array<String>
+	{
+		var result : Array<String> = [];
+		
+		for (item in arr)
+		{
+			if (Lambda.has(result, item))
+				continue;
+				
+			
+			result.push(item);
+		}
+		
+		return result;
 	}
 	
 	
-	private function loadProbaMap(rawData : String) : Map<String, Map<String,Int>>
+	private function loadProbaMap(rawData : String) : Void
 	{
 		rawData = rawData.toLowerCase();
+		
+		m_firstLetterProba = new Array();
+		m_groupProba = new Map();
+		
 		var datas : Array<String> = rawData.split("\r\n");
-		var probaMap = new Map();
+		datas.length;
+		datas = keepOneOccurence(datas);
 		
 		for (data in datas)
 		{
-			for (i in 0...data.length)
+			for (i in 0...data.length+1)
 			{
-				var letter : String = data.charAt(i);
+				var letterM2 : String = data.charAt(i-2);
+				var letterM1 : String = data.charAt(i-1);
+				var letterM0 : String = data.charAt(i);
+				var groupBeforeLetterToTest : String = letterM2 + letterM1;
 				
-				if (!probaMap.exists(letter))
-					probaMap.set(letter, new Map());
-					
-				var map : Map<String,Int> = probaMap.get(letter);
-				
-				incrementeMap(map, "total");
-				
-				if(i == 0)
-					incrementeMap(map, "firstcharacter");
-				
-				if (i + 1 >= data.length)
-					incrementeMap(map, "end");
+				if (groupBeforeLetterToTest.length == 0)
+					m_firstLetterProba.push(letterM0);
 				else
-					incrementeMap(map, data.charAt(i + 1));
+				{
+					var groupMapProba : Array<String> = null;
+					if (!m_groupProba.exists(groupBeforeLetterToTest))
+						groupMapProba = new Array<String>();
+					else
+						groupMapProba = m_groupProba.get(groupBeforeLetterToTest);
+					
+					if(letterM0.length !=0)
+						groupMapProba.push(letterM0);
+					else
+						groupMapProba.push("$");
+					
+					m_groupProba.set(groupBeforeLetterToTest, groupMapProba);
+				}
 			}
 		}
-		
-		return probaMap;
 	}
-	
-	private function incrementeMap(map : Map<String, Int>, key : String)
+		
+	/*private function incrementeMap(map : Map<String, Int>, key : String)
 	{
 		if (!map.exists(key))
 			map.set(key, 1);
@@ -70,140 +99,61 @@ class NameRandomizer
 			var value : Int = map.get(key) + 1;
 			map.set(key, value);	
 		}
-	}
+	}*/
 	
 	
-	private function pickLetter(map : Map<String, Map<String,Int>>, reference : String, withEnd : Bool) : String
+	private function pickLetter(group : String) : String
 	{
-		if (map == null)
+		var result : String = null;
+		
+		if(group == null || group.length ==0)
+			return m_firstLetterProba[Std.random(m_firstLetterProba.length)];
+			
+		
+		var arrProbaForGroup : Array<String> = m_groupProba.get(group);
+		
+		if (arrProbaForGroup == null || arrProbaForGroup.length == 0)
 			return null;
-			
-		var probaArray : Array<Float> = [];
-		var characArray : Array<String> = [];
-			
-		if (reference == null)
-		{
-			var totalFirst : Float  = 0;
-			var secondMap : Map<String,Int> = null;
-			for (key in map.keys())
-			{
-				secondMap = map.get(key);
-				
-				if (secondMap.exists("firstcharacter"))
-					totalFirst += secondMap.get("firstcharacter");
-			}
-			
-			for (key in map.keys())
-			{
-				secondMap = map.get(key);
-				if (secondMap != null && secondMap.exists("firstcharacter"))
-				{
-					var lastProba : Float = 0.0;
-					
-					if(probaArray.length > 0)
-						lastProba = probaArray[probaArray.length - 1];
-						
-					probaArray.push(lastProba + (secondMap.get("firstcharacter") / totalFirst));
-					characArray.push(key);
-				}
-				else
-					return continue;
-			}
-		}
 		else
-		{
-			var secondMap : Map<String,Int> = map.get(reference);
-			var endNumber : Int = secondMap.get("end");
-			
-			if (withEnd)
-				endNumber = 0;
-			
-			if (secondMap != null)
-			{
-				for (key in secondMap.keys())
-				{
-					if (!withEnd && key == "end")
-						continue;
-						
-					if (key == "firstcharacter")
-						continue;
-						
-					if (key == "total")
-						continue;
-					
-					var lastProba : Float = 0.0;
-					
-					if(probaArray.length > 0)
-						lastProba = probaArray[probaArray.length - 1];
-						
-					probaArray.push(lastProba + (secondMap.get(key) / (secondMap.get("total") - endNumber )));
-					characArray.push(key);
-				}
-			}	
-		}
-		
-		if (characArray.length <= 0)
-			return null;
-			
-		var random : Float  = Math.random();
-		
-		for (i in 0...probaArray.length)
-		{
-			if (random <= probaArray[i])
-				return characArray[i];
-		}
+			return arrProbaForGroup[Std.random(arrProbaForGroup.length)];
 		
 		return null;
 	}
 	
-	private function generate(map : Map<String, Map<String, Int>>, minLetter : Int = -1, maxLetter : Int = -1) : String
+	public function generate(minLetter : Int = -1, maxLetter : Int = -1) : String
 	{
-		if (map == null)
-			return null;
 		
-		var result : String = "";
-		var nameLength : Int = -1;
-		
-		if(minLetter > 0 && maxLetter > 0)
-			nameLength = Std.random(maxLetter + 1) + minLetter;
-			
-		var generated : Bool = false;
-		var pickedLetter : String = null;
-		var withEnd : Bool = false;
-		
-		while (!generated)
+		if (!m_init)
 		{
-			withEnd = minLetter < 0 ? (result.length > 0) : (result.length >= minLetter);
-			
-			pickedLetter = this.pickLetter(map, pickedLetter, withEnd);
-			
-			if (pickedLetter == null)
-			{
-				trace("An error as occured on firstname generation. Maybe some missing data ? Generation aborted. We return an incomplet name");
-				generated = true;
-			}
-			else if (pickedLetter == "end")
-				generated = true;
-			else
-				result += pickedLetter;
-				 
-			if (maxLetter > 0 && result.length >= maxLetter)
-				generated = true;
+			trace("NameRandomizer is not initialized");
+			return null;
 		}
 		
+		var result : String = "";
+		var lastPick : String = "";
+		var lastGroup : String = "";
 		
-		return result;		
-	}
-	
-	public function generateName() : String
-	{
-		return generate(m_NameProba);
-	}
-	
-	public function generateFirstName(minLetter : Int = 4, MaxLetter : Int = 10) : String
-	{
-		return generate(m_firstNameProba, minLetter, MaxLetter);
-		return generate(m_NameProba, minLetter, MaxLetter);
+		while (lastPick != "$")
+		{
+			lastPick = pickLetter(lastGroup);
+			
+			if (lastPick != "$")
+				result += lastPick;
+			
+			lastGroup = result.charAt(result.length - 2) + result.charAt(result.length - 1);
+			
+			if (lastPick == "$" && result.length < minLetter)
+			{
+				lastPick = "";
+				lastGroup = "";
+				result = "";
+			}
+			
+			if (maxLetter > 0 && result.length >= maxLetter)
+				lastPick = "$";
+		}
+		
+		return result;
 	}
 	
 }
