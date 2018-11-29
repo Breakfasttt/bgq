@@ -77,7 +77,7 @@ class CrewFileUi extends UiContainer
 		
 		m_crewSkin = new CrewMemberSkin(this.entity.name + ":CrewSkin", this.m_appRef, this.m_entityFactoryRef,5);
 		//m_crewSkin.display.skin.visible = true;
-		m_crewSkin.position.position2d.setValue(0.0375, 0.05);
+		m_crewSkin.position.position2d.setValue(0.0375, 0.0420);
 		
 		applyTextFormat(m_nameTf);
 		applyTextFormat(m_firstnameTf);

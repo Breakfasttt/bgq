@@ -92,6 +92,7 @@ class BGQApp
 	
 	public var datas(default, null) : GameDataManager;
 	
+	private var m_nameParser : NameRandomizer;
 	
 	public function new() 
 	{
@@ -102,13 +103,13 @@ class BGQApp
 		this.app = new Application();
 		this.app.init("Bubble Galaxie quest", 1920, 1080);
 		
-		var test : NameRandomizer = new NameRandomizer();
-		//test.init("datas/nameLibrary/refList/firstname.txt");
-		
-		//for (i in 0...1000)
-			//trace(test.generate(4,10));
-		
-		
+		//m_nameParser = new NameRandomizer();
+		//m_nameParser.init("datas/nameLibrary/refList/noms2008nat_txt.txt",onParsingEnded);
+		onParsingEnded();
+	}
+	
+	private function onParsingEnded() : Void
+	{
 		loadLibraryAndGameData();
 		createLayer();
 		prepareGameModule();
@@ -218,6 +219,7 @@ class BGQApp
 		keyboardBinding.addCallBack(Keyboard.L, showLayer);
 		keyboardBinding.addCallBack(Keyboard.M, showMousePos);
 		keyboardBinding.addCallBack(Keyboard.F, showFps);
+		keyboardBinding.addCallBack(Keyboard.N, generateName);
 		keyboardBindingEnt.add(keyboardBinding);
 		
 		this.app.addEntity(fpsEnt);
@@ -259,5 +261,11 @@ class BGQApp
 			return;
 			
 		dComp.show();	
+	}
+	
+	private function generateName() : Void
+	{
+		for (i in 0...1000)
+			trace(m_nameParser.generate(4, 10));
 	}
 }

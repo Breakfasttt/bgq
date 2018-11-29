@@ -1,4 +1,5 @@
 package data.randomizer;
+import haxe.Timer;
 import openfl.Assets;
 
 /**
@@ -10,24 +11,42 @@ class NameRandomizer
 	
 	private var m_rawData : String;
 	
+	private var m_datas : Array<String>;
+	
+	private var m_alreadyParsed : Array<String>;
+	
+	private var m_parsePerFrame : Int = 1000;
+	
+	private var m_parsed : Int = 0;
+	
 	private var m_firstLetterProba : Array<String>;
 	
 	private var m_groupProba : Map<String, Array<String>>;
 	
 	private var m_init : Bool;
 	
+	private var m_parsingEnded : Void->Void;
+	
 	public function new ()
 	{
 		m_init = false;
 	}
 	
-	public function init(wordsLibraryFileName : String) : Void
+	public function init(wordsLibraryFileName : String, parsingEnded : Void->Void) : Void
 	{
 		m_init = false;
+		m_parsingEnded  = parsingEnded;
 		
 		m_rawData = Assets.getText(wordsLibraryFileName);
+		m_rawData = m_rawData.toLowerCase();
+		m_datas = m_rawData.split("\r\n");
+		trace("to parse : " + m_datas.length);
 		
-		loadProbaMap(m_rawData);
+		m_firstLetterProba = new Array();
+		m_groupProba = new Map();
+		m_alreadyParsed = new Array();
+		
+		loadProbaMap();
 		
 		m_init  = true;
 	}
@@ -49,19 +68,24 @@ class NameRandomizer
 	}
 	
 	
-	private function loadProbaMap(rawData : String) : Void
+	private function loadProbaMap() : Void
 	{
-		rawData = rawData.toLowerCase();
+		var softParsed : Int = 0;
+		var data : String = null;
 		
-		m_firstLetterProba = new Array();
-		m_groupProba = new Map();
-		
-		var datas : Array<String> = rawData.split("\r\n");
-		datas.length;
-		datas = keepOneOccurence(datas);
-		
-		for (data in datas)
+		while(softParsed < m_parsePerFrame && m_parsed < m_datas.length)
 		{
+			data = m_datas[m_parsed];
+			
+			if (data == null || data == "" || Lambda.has(m_alreadyParsed, data))
+			{
+				softParsed++;
+				m_parsed++;
+				continue;
+			}
+			
+			m_alreadyParsed.push(data);
+				
 			for (i in 0...data.length+1)
 			{
 				var letterM2 : String = data.charAt(i-2);
@@ -87,7 +111,23 @@ class NameRandomizer
 					m_groupProba.set(groupBeforeLetterToTest, groupMapProba);
 				}
 			}
+			
+			softParsed++;
+			m_parsed++;
 		}
+		
+		if (m_parsed < m_datas.length  && m_parsed < 20000)
+		{
+			trace("wait 10ms for parsing, parsed = " + m_parsed + "/" + m_datas.length);
+			Timer.delay(loadProbaMap, 10);
+		}
+		else if (m_parsingEnded != null)
+		{
+			trace("name parsing ended");
+			m_parsingEnded();
+		}
+			
+		
 	}
 		
 	/*private function incrementeMap(map : Map<String, Int>, key : String)
