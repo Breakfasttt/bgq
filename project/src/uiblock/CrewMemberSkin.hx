@@ -6,6 +6,7 @@ import core.entity.Entity;
 import standard.components.graphic.animation.Animation;
 import standard.components.graphic.display.impl.GameElementDisplay;
 import standard.components.space2d.Depth;
+import standard.components.space2d.UtilitySize2D;
 import standard.factory.EntityFactory;
 import standard.utils.uicontainer.UiContainer;
 import tools.math.Anchor;
@@ -17,6 +18,7 @@ import tools.math.MathUtils;
  */
 class CrewMemberSkin extends UiContainer 
 {
+	private static var m_iconSize : Float = 250.0;
 	
 	private var m_body : Entity;
 	
@@ -43,6 +45,9 @@ class CrewMemberSkin extends UiContainer
 		this.display = new GameElementDisplay(null);
 		this.entity.add(this.display);
 		this.entity.add(new Depth(depth));
+		this.utilitySize.autoUtilitySize = false;
+		this.utilitySize.height = m_iconSize;
+		this.utilitySize.width = m_iconSize;
 		
 		this.createElement();
 	}
@@ -56,6 +61,18 @@ class CrewMemberSkin extends UiContainer
 		m_bodyAnimation = m_body.getComponent(Animation);
 		m_eyesAnimation = m_eyes.getComponent(Animation);
 		m_worksAnimation = m_works.getComponent(Animation);
+
+		m_body.getComponent(UtilitySize2D).autoUtilitySize = false;
+		m_body.getComponent(UtilitySize2D).width = m_iconSize;
+		m_body.getComponent(UtilitySize2D).height = m_iconSize;
+		
+		m_eyes.getComponent(UtilitySize2D).autoUtilitySize = false;
+		m_eyes.getComponent(UtilitySize2D).width = m_iconSize;
+		m_eyes.getComponent(UtilitySize2D).height = m_iconSize;
+		
+		m_works.getComponent(UtilitySize2D).autoUtilitySize = false;
+		m_works.getComponent(UtilitySize2D).width = m_iconSize;
+		m_works.getComponent(UtilitySize2D).height = m_iconSize;
 		
 		m_bodyAnimation.useAnimationPivot = false;
 		m_eyesAnimation.useAnimationPivot = false;

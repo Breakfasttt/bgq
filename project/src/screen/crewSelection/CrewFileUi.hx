@@ -6,12 +6,14 @@ import data.crew.CrewMember;
 import input.behaviour.SlideEntity;
 import openfl.text.TextFormatAlign;
 import src.misc.name.FontName;
+import standard.components.graphic.display.Display;
 import standard.components.graphic.display.impl.GameElementDisplay;
 import standard.components.graphic.display.impl.TextDisplay;
 import standard.components.input.PointerBehavioursComponent;
 import standard.components.localization.Localization;
 import standard.components.misc.ParentEntity;
 import standard.components.space2d.Depth;
+import standard.components.space2d.Scale2D;
 import standard.factory.EntityFactory;
 import standard.module.graphic.LocationModule;
 import standard.utils.uicontainer.UiContainer;
@@ -77,7 +79,8 @@ class CrewFileUi extends UiContainer
 		
 		m_crewSkin = new CrewMemberSkin(this.entity.name + ":CrewSkin", this.m_appRef, this.m_entityFactoryRef,5);
 		//m_crewSkin.display.skin.visible = true;
-		m_crewSkin.position.position2d.setValue(0.0375, 0.0420);
+		m_crewSkin.position.position2d.ratioMode = false;
+		m_crewSkin.position.position2d.setValue(30, 30);
 		
 		applyTextFormat(m_nameTf);
 		applyTextFormat(m_firstnameTf);
@@ -134,6 +137,10 @@ class CrewFileUi extends UiContainer
 		
 		if (this.m_crewMemberRef != null)
 			this.applyCrewValue();
+			
+		trace("crew skin H : " + this.m_crewSkin.display.skin.height);
+		trace("skin H : " + m_bg.getComponent(Display).skin.height);
+		trace("skin scale : " + m_bg.getComponent(Scale2D).scale);
 	}
 	
 	

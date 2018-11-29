@@ -60,6 +60,7 @@ class CrewSelectionScreen extends ScreenContainer
 		
 	}
 	
+	
 	override function createElement():Void 
 	{
 		
@@ -121,13 +122,20 @@ class CrewSelectionScreen extends ScreenContainer
 		this.add(m_slideInfos);
 	}
 	
-	override function onCustomScreenOpen():Void 
+	override function onCustomScreenInit():Void 
 	{
+		
 		m_currentCrewToHire = BGQApp.self.datas.crewManager.getGeneratedCrewMember();
 		m_crewFile.setCrewData(m_currentCrewToHire);
 		m_crewFile.slider.reinitPosition();
 		updateInfos();
 	}
+	
+	override function onCustomScreenOpen():Void 
+	{
+	}
+	
+	
 	
 	private function onBackButton() : Void
 	{

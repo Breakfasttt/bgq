@@ -54,7 +54,7 @@ class ConfirmPopup extends PopupContainer
 
 		this.utilitySize.autoUtilitySize = false;
 		this.utilitySize.width = 800.0;
-		this.utilitySize.height = 600.0;		
+		this.utilitySize.height = 600.0;
 	}
 	
 	override function createElement():Void 
