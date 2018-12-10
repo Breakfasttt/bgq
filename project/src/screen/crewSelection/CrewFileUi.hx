@@ -40,6 +40,7 @@ class CrewFileUi extends UiContainer
 	private var m_uniqueIdTf: Entity;
 	
 	private var m_ProfessionTf: Entity;
+	private var m_ProfessionDescTf: Entity;
 	
 	
 	public var slider(default,null) : SlideEntity;
@@ -71,11 +72,12 @@ class CrewFileUi extends UiContainer
 	{
 		m_bg = m_entityFactoryRef.createGameElement(this.entity.name + "::BG", this.entity, "crewfile", 0, Anchor.topLeft, Anchor.topLeft);
 		
-		m_nameTf = m_entityFactoryRef.createTextField(this.entity.name + "::nameTf", this.entity, "", 1, new Anchor(30,315,false), Anchor.topLeft);
-		m_firstnameTf = m_entityFactoryRef.createTextField(this.entity.name + "::firstnameTf", this.entity, "", 2, new Anchor(30,385,false), Anchor.topLeft);
-		m_uniqueIdTf = m_entityFactoryRef.createTextField(this.entity.name + "::uniqueId", this.entity, "", 3, new Anchor(30, 455, false), Anchor.topLeft);
+		m_nameTf = m_entityFactoryRef.createTextField(this.entity.name + "::nameTf", this.entity, "", 1, new Anchor(357,30,false), Anchor.topLeft);
+		m_firstnameTf = m_entityFactoryRef.createTextField(this.entity.name + "::firstnameTf", this.entity, "", 2, new Anchor(357,130,false), Anchor.topLeft);
+		m_uniqueIdTf = m_entityFactoryRef.createTextField(this.entity.name + "::uniqueId", this.entity, "", 3, new Anchor(357, 230, false), Anchor.topLeft);
 		
-		m_ProfessionTf = m_entityFactoryRef.createLocTextField(this.entity.name + "::professionTf", this.entity, "", null, 4, new Anchor(400, 30, false), Anchor.topLeft);
+		m_ProfessionTf = m_entityFactoryRef.createLocTextField(this.entity.name + "::professionTf", this.entity, "", null, 4, new Anchor(30, 320, false), Anchor.topLeft);
+		m_ProfessionDescTf = m_entityFactoryRef.createLocTextField(this.entity.name + "::professionDescTf", this.entity, "", null, 4, new Anchor(30, 395, false), Anchor.topLeft);
 		
 		m_crewSkin = new CrewMemberSkin(this.entity.name + ":CrewSkin", this.m_appRef, this.m_entityFactoryRef,5);
 		//m_crewSkin.display.skin.visible = true;
@@ -86,6 +88,7 @@ class CrewFileUi extends UiContainer
 		applyTextFormat(m_firstnameTf);
 		applyTextFormat(m_uniqueIdTf);
 		applyTextFormat(m_ProfessionTf);
+		applyTextFormat(m_ProfessionDescTf, true);
 		
 		resetField();
 		
@@ -94,10 +97,11 @@ class CrewFileUi extends UiContainer
 		this.add(m_firstnameTf);
 		this.add(m_uniqueIdTf);
 		this.add(m_ProfessionTf);
+		this.add(m_ProfessionDescTf);
 		this.add(m_crewSkin.entity);
 	}
 	
-	private function applyTextFormat(entity : Entity) : Void
+	private function applyTextFormat(entity : Entity, desc : Bool = false) : Void
 	{
 		var td : TextDisplay = entity.getComponent(TextDisplay);
 		
@@ -105,10 +109,17 @@ class CrewFileUi extends UiContainer
 			return;
 			
 		td.setFont(FontName.scienceFair);
-		td.setFontSize(22);
-		td.setTextColor(0xF2F2F2);
+		td.setFontSize(30);
+		td.setTextColor(0x002B36);
 		td.setAlignment(TextFormatAlign.LEFT);
-		td.setSize(357, 50);
+		
+		if (desc)
+		{
+			td.setSize(722, 170);
+			td.text.multiline = true;
+		}
+		else
+			td.setSize(357, 50);
 		td.setMiscProperties(false, false, false, false, false, false);
 	}
 	
@@ -137,10 +148,6 @@ class CrewFileUi extends UiContainer
 		
 		if (this.m_crewMemberRef != null)
 			this.applyCrewValue();
-			
-		trace("crew skin H : " + this.m_crewSkin.display.skin.height);
-		trace("skin H : " + m_bg.getComponent(Display).skin.height);
-		trace("skin scale : " + m_bg.getComponent(Scale2D).scale);
 	}
 	
 	
