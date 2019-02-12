@@ -32,10 +32,10 @@ class CrewMemberPicker
 		var name : String = m_namePicker.pickRandomName();
 		var firstname : String = m_namePicker.pickRandomfirstName();
 		var id : String = UniqueId.generate(10, "0123456789") + "-" + UniqueId.generate(4, "abcdefghijklmnopkrstuvw");
-		var personality : Profession = m_professionPicker.generate();
+		var profession : Profession = m_professionPicker.generate();
 		
-		
-		return new CrewMember(model, name, firstname, id, personality);
+		//todo => enlever le hardcode un jour peut etre
+		return new CrewMember(model, name, firstname, id, Std.random(11)+1, Std.random(11)+1, profession);
 	}
 	
 }

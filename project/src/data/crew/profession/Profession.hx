@@ -8,14 +8,17 @@ import data.crew.CrewMember;
 class Profession 
 {
 
+	public var eProfessionName(default, null) : EProfessionName;
+	
 	public var keyName(default, null) : String;
 	
 	public var maxLevel(default, null) : Int;
 	
 	public var currentLevel : Int;
 	
-	public function new(keyName : String, maxLevel : Int = 3, currentLevel : Int = 0) 
+	public function new(eProfName : EProfessionName, keyName : String, maxLevel : Int = 3, currentLevel : Int = 0) 
 	{
+		this.eProfessionName = eProfName;
 		this.keyName = keyName;
 		this.maxLevel = maxLevel;
 		this.currentLevel = currentLevel;

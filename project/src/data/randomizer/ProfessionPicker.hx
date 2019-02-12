@@ -1,4 +1,5 @@
 package data.randomizer;
+import data.crew.profession.EProfessionName;
 import data.crew.profession.Profession;
 
 /**
@@ -16,12 +17,8 @@ class ProfessionPicker
 	public function generate() : Profession
 	{
 		
-		var random : Int = Std.random(1);
-		
-		switch(random)
-		{
-			case  0 : return new Profession("wip");
-			default : return null;
-		}
+		var random : Int = Std.random(Type.allEnums(EProfessionName).length-1) + 1;
+		var randEnum : EProfessionName = Type.createEnumIndex(EProfessionName, random);
+		return new Profession(randEnum,"wip"); //Todo, corrigé ça
 	}
 }

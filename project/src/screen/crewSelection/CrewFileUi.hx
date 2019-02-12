@@ -169,7 +169,7 @@ class CrewFileUi extends UiContainer
 		this.setText(m_ProfessionTf, m_crewMemberRef.profession.keyName);
 		
 		//this.m_crewSkin.display.skin.visible = true;
-		this.m_crewSkin.set(Std.random(11)+1, Std.random(11)+1, Std.random(11)+1);
+		this.m_crewSkin.set(m_crewMemberRef.bodyId, m_crewMemberRef.eyesId, m_crewMemberRef.worksId);
 		
 	}
 }

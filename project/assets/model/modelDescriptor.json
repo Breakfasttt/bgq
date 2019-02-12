@@ -16,6 +16,10 @@
 		"mainResourcePath":"model/btn/btnMoins.tl"
 	},
 	{
+		"name":"nextArrowBtn",
+		"mainResourcePath":"model/btn/nextArrowBtn.tl"
+	},
+	{
 		"name":"crewfile",
 		"mainResourcePath":"img/crewSelection/crewfile.png"
 	},

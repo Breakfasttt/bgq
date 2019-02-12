@@ -16,19 +16,19 @@
   </output>
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
-    <class path="C:\dev\HaxeToolkit\haxe\lib\openfl\8,6,4\src" />
-    <class path="C:\dev\HaxeToolkit\haxe\lib\lime\7,1,1\src" />
-    <class path="C:\dev\HaxeToolkit\haxe\lib\actuate\1,8,7" />
-    <class path="C:\dev\HaxeToolkit\haxe\lib\msignal\1,2,4" />
+    <class path="C:\dev\HaxeToolkit\haxe\lib\openfl\8,8,0\src" />
+    <class path="C:\dev\HaxeToolkit\haxe\lib\lime\7,2,1\src" />
+    <class path="C:\dev\HaxeToolkit\haxe\lib\actuate\1,8,9\src" />
+    <class path="C:\dev\HaxeToolkit\haxe\lib\msignal\1,2,5" />
     <class path="C:\dev\HaxeToolkit\haxe\lib\polygonal-printf\1,0,2-beta" />
     <class path="src" />
     <class path="..\..\..\pgk\pgk\src" />
-    <class path="C:\dev\HaxeToolkit\haxe\lib\openfl\8,6,4\externs\flash" />
+    <class path="C:\dev\HaxeToolkit\haxe\lib\openfl\8,8,0\externs\flash" />
     <class path="bin\flash\haxe" />
   </classpaths>
   <!-- Build options -->
   <build>
-    <option directives="openfl=8.6.4&#xA;lime=7.1.1&#xA;actuate=1.8.7&#xA;msignal=1.2.4&#xA;polygonal-printf=1.0.2-beta&#xA;tools=7.1.1&#xA;no-compilation&#xA;openfl-flash&#xA;web" />
+    <option directives="openfl=8.8.0&#xA;lime=7.2.1&#xA;actuate=1.8.9&#xA;msignal=1.2.5&#xA;polygonal-printf=1.0.2-beta&#xA;tools=7.2.1&#xA;no-compilation&#xA;openfl-flash&#xA;openfl-disable-handle-error&#xA;web" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
     <option mainClass="ApplicationMain" />

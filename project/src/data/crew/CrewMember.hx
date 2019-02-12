@@ -27,8 +27,12 @@ class CrewMember
 	
 	public var profession(default, null) : Profession;
 	
+	public var bodyId(default, null) : Int;
+	public var eyesId(default, null) : Int;
+	public var worksId(default, null) : Int;
 	
-	public function new(crewModelName : String, firstName : String, name : String, uniqueId : String, profession : Profession) 
+	
+	public function new(crewModelName : String, firstName : String, name : String, uniqueId : String, bodyId : Int, eyesId : Int, profession : Profession) 
 	{
 		this.crewModelName = crewModelName;
 		this.firstname = firstName;
@@ -41,7 +45,11 @@ class CrewMember
 		this.maxStamina = 100;
 		this.currentStamina = this.maxStamina ;
 		
-		this.profession = profession;
+		this.profession = profession; // todo
+		
+		this.bodyId = bodyId;
+		this.eyesId = eyesId;
+		this.worksId = profession.eProfessionName.getIndex();
 	}
 	
 	public function toString() : String
