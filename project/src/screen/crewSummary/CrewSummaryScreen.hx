@@ -39,6 +39,8 @@ class CrewSummaryScreen extends ScreenContainer
 	private var m_nextCrewBtn : Button;
 	private var m_previousCrewBtn : Button;
 	
+	private var m_pinNavs : Array<Entity>;
+	
 	private var m_crewFile : CrewFileUi;
 	
 	private var m_infos : Entity;
@@ -98,6 +100,14 @@ class CrewSummaryScreen extends ScreenContainer
 		m_previousCrewBtn.show(true);
 		m_previousCrewBtn.btnBehaviour.onSelect = showPreviousCrewMember;
 		
+		m_pinNavs = new Array();
+		var tempPin : Entity = null;
+		
+		for (i in 0...5)
+		{
+			tempPin = m_entityFactoryRef.createGameElement(this.entity.name + "::pinNav" + i, this.entity, "pinNav", 13 + i, new Anchor(0.05*i,0.5), Anchor.center, Model.defaultAnim);
+			m_pinNavs.push(tempPin);
+		}
 		
 		m_infos = this.m_entityFactoryRef.createLocTextField(this.entity.name + "::infos", null, "crewSummaryNoMembers", null, 10, Anchor.center, Anchor.center);
 		var dispInfos : TextDisplay = m_infos.getComponent(TextDisplay);
@@ -118,6 +128,12 @@ class CrewSummaryScreen extends ScreenContainer
 		this.add(m_nextStepBtn.entity);
 		this.add(m_nextCrewBtn.entity);
 		this.add(m_previousCrewBtn.entity);
+		
+		for (ent in m_pinNavs)
+			this.add(ent);
+			
+		m_pinNavs[4].getComponent(Animation).gotoAndStop(2);
+		
 	}
 	
 	override function onCustomScreenInit():Void 

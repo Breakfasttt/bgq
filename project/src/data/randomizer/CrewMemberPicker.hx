@@ -35,7 +35,7 @@ class CrewMemberPicker
 		var profession : Profession = m_professionPicker.generate();
 		
 		//todo => enlever le hardcode un jour peut etre
-		return new CrewMember(model, name, firstname, id, Std.random(11)+1, Std.random(11)+1, profession);
+		return new CrewMember(model, firstname, name, id, Std.random(11)+1, Std.random(11)+1, profession);
 	}
 	
 }

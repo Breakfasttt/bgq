@@ -19,6 +19,6 @@ class ProfessionPicker
 		
 		var random : Int = Std.random(Type.allEnums(EProfessionName).length-1) + 1;
 		var randEnum : EProfessionName = Type.createEnumIndex(EProfessionName, random);
-		return new Profession(randEnum,"wip"); //Todo, corrigé ça
+		return new Profession(randEnum); //Todo, corrigé ça
 	}
 }

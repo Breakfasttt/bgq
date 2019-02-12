@@ -1,0 +1,41 @@
+id;fr;en
+unknow_title;Métier inconnu;Unknow
+unknow_desc;Pas de description;/
+;;
+commander_title;Commandant;
+commander_desc;C'est le commandant d'un vaisseau spatiale;
+;;
+;;
+astrophysicist_title;Astro-physicien;
+astrophysicist_desc;Spécialiste pour savoir après quel étoile il faut tourner;
+;;
+cooker_title;Cuisinier;
+cooker_desc;Fait la tambouille pour les autres;
+;;
+engineer_title;Ingénieur;
+engineer_desc;Connais tout sur tout, mais principalement sur la gestion de la gravité artificielle;
+;;
+machinist_title;Machiniste;
+machinist_desc;Le moteur, c'est lui !;
+;;
+scientist_title;Scientifique;
+scientist_desc;Connais encore plus tout sur tout, mais incollable sur les générateurs de bouclier;
+;;
+soldier_title;Soldat;
+soldier_desc;Pan pan boum;
+;;
+roboticExpert_title;Expert en robotique;
+roboticExpert_desc;Adore s'acheter les derniers drones à la mode;
+;;
+medic_title;Médecin;
+medic_desc;Toujours la quand il y a besoin de calmant;
+;;
+toolsManager_title;Equipementier;
+toolsManager_desc;Expert de la méthode Konmari;
+;;
+psy_title;Psychologue;
+psy_desc;Vous demande toujours de raconter votre enfance;
+;;
+;;
+technician_title;Technicien;
+technician_desc;Joue de la clef anglaise mieux que personne;

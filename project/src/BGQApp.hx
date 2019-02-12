@@ -137,6 +137,7 @@ class BGQApp
 		//locale
 		this.csvManager.parseAndRegisterCsv("localeMenu", Assets.getText("datas/localization/menu.csv"));
 		this.csvManager.parseAndRegisterCsv("localeShipPart", Assets.getText("datas/localization/shipPart.csv"));
+		this.csvManager.parseAndRegisterCsv("localeProfession", Assets.getText("datas/localization/profession.csv"));
 		
 		//ship data
 		this.csvManager.parseAndRegisterCsv("shipPartData", Assets.getText("datas/ship/shipPartDef.csv"));
@@ -175,6 +176,7 @@ class BGQApp
 		
 		this.localeModule.addLocalizationFile(this.csvManager.getCsv("localeMenu"));
 		this.localeModule.addLocalizationFile(this.csvManager.getCsv("localeShipPart"));
+		this.localeModule.addLocalizationFile(this.csvManager.getCsv("localeProfession"));
 		
 		
 		this.shipModule = new ShipTemplateModule();

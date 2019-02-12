@@ -36,6 +36,10 @@
 		"mainResourcePath":"model/timeline/workTimeLine.flss"
 	},
 	{
+		"name":"pinNav",
+		"mainResourcePath":"model/timeline/pinNav.flss"
+	},
+	{
 		"name":"simplePopupBg",
 		"mainResourcePath":"img/simplePopup/bg.png"
 	},

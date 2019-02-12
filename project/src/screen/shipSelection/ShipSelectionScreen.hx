@@ -36,6 +36,8 @@ class ShipSelectionScreen extends ScreenContainer
 	private var m_infos : Entity;
 	private var m_infosDisplay : TextDisplay;
 	
+	private var m_backBtn : LocTextButton;
+	
 	private var m_swapTemplateBtn : LocTextButton;
 	
 	private var m_startBtn : LocTextButton;
@@ -74,8 +76,8 @@ class ShipSelectionScreen extends ScreenContainer
 	
 	override function createElement():Void 
 	{
-		m_infos = m_entityFactoryRef.createTextField("ShipSelectionScreen::infos", this.entity, "", 99,
-													new Anchor(0.04, 0.26), Anchor.centerLeft);
+		m_infos = m_entityFactoryRef.createTextField(this.entity.name + "::infos", this.entity, "", 99,
+													new Anchor(0.04, 0.40), Anchor.centerLeft);
 													
 		m_infosDisplay =  m_infos.getComponent(TextDisplay);
 		m_infosDisplay.setFont(FontName.scienceFair);
@@ -85,15 +87,22 @@ class ShipSelectionScreen extends ScreenContainer
 		m_infosDisplay.setSize(600, 60);
 		m_infosDisplay.setMiscProperties(false, false, false, false, false, false);
 		
-		m_swapTemplateBtn = new LocTextButton("ShipSelectionScreen::swapTemplate", this.m_appRef, this.m_entityFactoryRef);
-		m_swapTemplateBtn.init("genericBtn", 4 , new Anchor(0.04, 0.11), Anchor.centerLeft, onSwapTemplate);
+		m_backBtn = new LocTextButton(this.entity.name + "::backBtn", this.m_appRef, this.m_entityFactoryRef);
+		m_backBtn.init("genericBtn", 1 , new Anchor(20, 20, false), Anchor.topLeft, onBackButton, null, null, 0.75, 0.75);
+		m_backBtn.setLoc("btnBack");
+		m_backBtn.textDisplay.setFont(FontName.scienceFair);
+		m_backBtn.textDisplay.setTextColor(0x846248);
+		m_backBtn.textDisplay.setFontSize(50);
+		
+		m_swapTemplateBtn = new LocTextButton(this.entity.name + "::swapTemplate", this.m_appRef, this.m_entityFactoryRef);
+		m_swapTemplateBtn.init("genericBtn", 5 , new Anchor(0.04, 0.30), Anchor.centerLeft, onSwapTemplate);
 		m_swapTemplateBtn.setLoc("shipSelectionSwapShip");
 		m_swapTemplateBtn.textDisplay.setFontSize(32);
 		m_swapTemplateBtn.textDisplay.setFont(FontName.scienceFair);
 		m_swapTemplateBtn.textDisplay.setTextColor(0x846248);
 		
-		m_startBtn = new LocTextButton("ShipSelectionScreen::startbtn", this.m_appRef, this.m_entityFactoryRef);
-		m_startBtn.init("genericBtn", 5 , new Anchor(0.04, 0.5), Anchor.centerLeft, onFlyOff);
+		m_startBtn = new LocTextButton(this.entity.name + "::startbtn", this.m_appRef, this.m_entityFactoryRef);
+		m_startBtn.init("genericBtn", 6 , new Anchor(0.04, 0.5), Anchor.centerLeft, onFlyOff);
 		m_startBtn.setLoc("shipSelectionStartButton");
 		m_startBtn.textDisplay.setFontSize(32);
 		m_startBtn.textDisplay.setFont(FontName.scienceFair);
@@ -122,11 +131,13 @@ class ShipSelectionScreen extends ScreenContainer
 		
 		this.add(m_infos);
 		this.add(m_shipContainer);
+		this.add(m_backBtn.entity);
 		this.add(m_swapTemplateBtn.entity);
 		this.add(m_startBtn.entity);
 		this.add(m_spatioport);
 		this.add(m_light1);
 		this.add(m_light2);
+		
 	}
 	
 	override function onCustomScreenInit():Void 
@@ -173,5 +184,12 @@ class ShipSelectionScreen extends ScreenContainer
 		//m_mover.moveTo( -1.0, m_tempPosition.y, 0.2 ,null);
 		this.m_opener.setCloseTransition(m_fadeTransition);
 		BGQApp.self.screenModule.goToScreen(ScreenName.gameScreen, false);
+	}
+	
+	private function onBackButton() : Void
+	{
+		this.invertTransition();
+		BGQApp.self.screenFactory.crewSelectionSummary.invertTransition();
+		BGQApp.self.screenModule.goToScreen(ScreenName.crewSummary);
 	}
 }

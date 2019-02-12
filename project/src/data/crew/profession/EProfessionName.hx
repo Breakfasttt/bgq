@@ -11,11 +11,11 @@ enum EProfessionName
 	cooker;
 	engineer;
 	machinist;
+	medic;
+	psy;
+	roboticExpert;
 	scientist;
 	soldier;
-	roboticExpert;
-	medic;
 	toolsManager;
-	psy;
-	technician;
+	//technicien; // n'existe plus
 }

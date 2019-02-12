@@ -42,10 +42,8 @@ class CrewFileUi extends UiContainer
 	private var m_ProfessionTf: Entity;
 	private var m_ProfessionDescTf: Entity;
 	
-	
 	public var slider(default,null) : SlideEntity;
 
-	
 	public function new(name:String, appRef:Application, entityFactory:EntityFactory, parentEntity : Entity, depth : Float) 
 	{
 		super(name, appRef, entityFactory);
@@ -116,11 +114,14 @@ class CrewFileUi extends UiContainer
 		if (desc)
 		{
 			td.setSize(722, 170);
-			td.text.multiline = true;
+			td.setMiscProperties(false, true, true, false, false, false);
 		}
 		else
+		{
 			td.setSize(357, 50);
-		td.setMiscProperties(false, false, false, false, false, false);
+			td.setMiscProperties(false, false, false, false, false, false);
+		}
+		
 	}
 	
 	private function setText(entity : Entity, text : String) : Void
@@ -133,7 +134,6 @@ class CrewFileUi extends UiContainer
 			var td : TextDisplay = entity.getComponent(TextDisplay);
 			if(td == null)
 				return;
-			
 			td.text.text = text;
 			return;
 		}
@@ -166,7 +166,11 @@ class CrewFileUi extends UiContainer
 		this.setText(m_firstnameTf, "Prénom : " + m_crewMemberRef.firstname);
 		this.setText(m_uniqueIdTf, "Id : " + m_crewMemberRef.uniqueId);
 		
-		this.setText(m_ProfessionTf, m_crewMemberRef.profession.keyName);
+		var keyProfTitle : String = m_crewMemberRef.profession.eProfessionName.getName() + "_title";
+		var keyProfDesc : String = m_crewMemberRef.profession.eProfessionName.getName() + "_desc";
+		
+		this.setText(m_ProfessionTf, keyProfTitle); //m_crewMemberRef.profession.keyName);
+		this.setText(m_ProfessionDescTf, keyProfDesc);
 		
 		//this.m_crewSkin.display.skin.visible = true;
 		this.m_crewSkin.set(m_crewMemberRef.bodyId, m_crewMemberRef.eyesId, m_crewMemberRef.worksId);

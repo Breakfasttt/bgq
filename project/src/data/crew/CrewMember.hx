@@ -62,7 +62,7 @@ class CrewMember
 										+ "/" + this.maxHealth
 										+ " S : " + this.currentStamina
 										+ "/" + this.maxStamina
-										+ " Prof : " + this.profession.keyName;
+										+ " Prof : " + this.profession.eProfessionName.getName();
 		return result;	
 	}
 	
