@@ -22,6 +22,7 @@ import standard.utils.uicontainer.impl.LocTextButton;
 import standard.utils.uicontainer.impl.ScreenContainer;
 import standard.utils.uicontainer.impl.TextButton;
 import tools.math.Anchor;
+import uiblock.PinsNav;
 
 /**
  * ...
@@ -39,7 +40,7 @@ class CrewSummaryScreen extends ScreenContainer
 	private var m_nextCrewBtn : Button;
 	private var m_previousCrewBtn : Button;
 	
-	private var m_pinNavs : Array<Entity>;
+	private var m_pinsNav : PinsNav;
 	
 	private var m_crewFile : CrewFileUi;
 	
@@ -99,15 +100,7 @@ class CrewSummaryScreen extends ScreenContainer
 		m_previousCrewBtn.init("nextArrowBtn", 12, new Anchor(0.10,0.50), Anchor.center, null,null,null,null,-1.0);
 		m_previousCrewBtn.show(true);
 		m_previousCrewBtn.btnBehaviour.onSelect = showPreviousCrewMember;
-		
-		m_pinNavs = new Array();
-		var tempPin : Entity = null;
-		
-		for (i in 0...5)
-		{
-			tempPin = m_entityFactoryRef.createGameElement(this.entity.name + "::pinNav" + i, this.entity, "pinNav", 13 + i, new Anchor(0.05*i,0.5), Anchor.center, Model.defaultAnim);
-			m_pinNavs.push(tempPin);
-		}
+
 		
 		m_infos = this.m_entityFactoryRef.createLocTextField(this.entity.name + "::infos", null, "crewSummaryNoMembers", null, 10, Anchor.center, Anchor.center);
 		var dispInfos : TextDisplay = m_infos.getComponent(TextDisplay);
@@ -119,28 +112,29 @@ class CrewSummaryScreen extends ScreenContainer
 		dispInfos.setMiscProperties(false, false, false, false, false, false);
 		
 		m_crewFile = new CrewFileUi(this.entity.name + "::crewFile", this.m_appRef, this.m_entityFactoryRef, this.entity, 3);
-		m_crewFile.scale.scale.set(1.5,1.5);
+		m_crewFile.scale.scale.set(1.4,1.4);
 		m_crewFile.position.position2d = new Anchor(0.5, 0.05);
 		m_crewFile.pivot.pivot = Anchor.topCenter;
+		
+		m_pinsNav = new PinsNav(this.entity.name +"::pinsNav", 5, 100, 25, this.m_appRef, this.m_entityFactoryRef);
+		m_pinsNav.position.position2d.setValue(0.5, 0.85);
+		m_pinsNav.pivot.pivot.setValue(0.5, 0.5);
 		
 		this.add(m_recruitBtn.entity);
 		this.add(m_firedBtn.entity);
 		this.add(m_nextStepBtn.entity);
 		this.add(m_nextCrewBtn.entity);
 		this.add(m_previousCrewBtn.entity);
-		
-		for (ent in m_pinNavs)
-			this.add(ent);
-			
-		m_pinNavs[4].getComponent(Animation).gotoAndStop(2);
-		
+		this.add(m_pinsNav.entity);
 	}
 	
 	override function onCustomScreenInit():Void 
 	{
 		m_maxCrewNumber = BGQApp.self.datas.crewManager.getCurrentCrewNumber();
+		m_pinsNav.setNbreUnlocked(m_maxCrewNumber);
 		m_nextStepBtn.show(false);
 		m_lastCrewSelected = -1;
+		m_pinsNav.setSelectedIndex(-1);
 		
 		if (m_maxCrewNumber == 0)
 		{
@@ -159,6 +153,7 @@ class CrewSummaryScreen extends ScreenContainer
 			
 			m_lastCrewSelected = 0;
 			m_crewFile.setCrewData(BGQApp.self.datas.crewManager.getSelectedCrew(m_lastCrewSelected));
+			m_pinsNav.setSelectedIndex(m_lastCrewSelected);
 			
 			if (m_maxCrewNumber > 1)
 			{
@@ -193,12 +188,16 @@ class CrewSummaryScreen extends ScreenContainer
 	{
 		var crewMember : CrewMember = BGQApp.self.datas.crewManager.getSelectedCrew(m_lastCrewSelected);
 		BGQApp.self.datas.crewManager.removeToSelected(crewMember);
+		m_maxCrewNumber = BGQApp.self.datas.crewManager.getCurrentCrewNumber();
+		m_pinsNav.setNbreUnlocked(m_maxCrewNumber);
 		
 		if(BGQApp.self.datas.crewManager.getCurrentCrewNumber() <= 0)
 			m_lastCrewSelected = -1;
 		else
 			m_lastCrewSelected = 0;
 		
+		m_pinsNav.setSelectedIndex(m_lastCrewSelected);
+			
 		onCustomScreenInit();
 	}
 	
@@ -235,6 +234,8 @@ class CrewSummaryScreen extends ScreenContainer
 		var crewMember : CrewMember = BGQApp.self.datas.crewManager.getSelectedCrew(index);
 		if(crewMember!=null)
 			m_crewFile.setCrewData(crewMember);
+			
+		m_pinsNav.setSelectedIndex(m_lastCrewSelected);
 	}
 	
 	private function onSelectNext() : Void
